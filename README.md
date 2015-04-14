@@ -1,8 +1,15 @@
 
 ### soundCloud ReactJS app
 
+## install dependencies
 
-```sh
-npm install
-node server.js
+```
+$ npm install
+```
+
+## start server
+
+
+```
+$ node server.js
 ```
