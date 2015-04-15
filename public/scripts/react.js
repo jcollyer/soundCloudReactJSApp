@@ -14,6 +14,15 @@ var Comment = React.createClass({
   }
 });
 
+var MusicPlayerBox = React.createClass({
+  render: function() {
+    return (
+      <div className="MusicPlayerBox">
+        <h3>Music Player Box</h3>
+      </div>
+    );
+  }
+});
 var CommentBox = React.createClass({
   loadCommentsFromServer: function() {
     $.ajax({
@@ -111,5 +120,10 @@ var CommentForm = React.createClass({
 
 React.render(
   <CommentBox url="comments.json" pollInterval={2000} />,
-  document.getElementById('content')
+  document.getElementById('comment-box')
+);
+
+React.render(
+  <MusicPlayerBox />,
+  document.getElementById('react-music-player')
 );
