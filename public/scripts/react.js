@@ -19,10 +19,72 @@ var MusicPlayerBox = React.createClass({
     return (
       <div className="MusicPlayerBox">
         <h3>Music Player Box</h3>
+        <Player />
+        <MusicTable />
       </div>
     );
   }
 });
+
+var Player = React.createClass({
+  render: function() {
+    return (
+      <div className="Player">
+        <div id="target">
+          <iframe id="soundcloud_widget" src="http://w.soundcloud.com/player/?url=https://api.soundcloud.com/tracks/39804767&show_artwork=false&liking=false&sharing=false&auto_play=false" width="420" height="120" frameborder="no">
+          </iframe>
+        </div>
+
+        <div id="current_time"></div>
+        <button id="toggle">toggle</button>
+        <button id="next">Next</button>
+        <button id="prev">Prev</button>
+        <button id="mute">Mute</button>
+
+      </div>
+    );
+  }
+});
+
+var MusicTable = React.createClass({
+  render: function() {
+    return (
+      <div className="MusicTable">
+        <h3>Music Table</h3>
+        <GenreList />
+        <Song />
+      </div>
+    );
+  }
+});
+
+var GenreList = React.createClass({
+  render: function() {
+    return (
+      <div className="GenreList">
+        <ul>
+          <li><a href="#" onclick="showList('beats')" class="genre">Beats</a></li>
+          <li><a href="#" onclick="showList('rnb')" class="genre">RnB</a></li>
+          <li><a href="#" onclick="showList('house')" class="genre">House</a></li>
+          <li><a href="#" onclick="showList('hip-hop')" class="genre">Hip-Hop</a></li>
+        </ul>
+      </div>
+    );
+  }
+});
+
+var Song = React.createClass({
+  render: function() {
+    return (
+      <div className="Song">
+        song
+      </div>
+    );
+  }
+});
+
+
+
 var CommentBox = React.createClass({
   loadCommentsFromServer: function() {
     $.ajax({

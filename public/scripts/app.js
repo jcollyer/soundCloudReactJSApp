@@ -8,13 +8,6 @@ $(document).ready(function(){
   var target = document.getElementById('target');
   var playlist = [];
 
-  // according to docs: https://developers.soundcloud.com/docs/api/html5-widget
-  var iframe   = document.querySelector('iframe');
-  var iframeID = iframe.id;
-  var player   = SC.Widget(iframe);
-  var player2  = SC.Widget(iframeID);
-  // widget1 === widget2
-
 
   // var iframe = document.getElementById('soundcloud_widget');
   // var player = SC.Widget(iframe);
@@ -110,7 +103,12 @@ $(document).ready(function(){
       // redirect_uri: "file:///Users/jcollyer/Documents/projects/soundCloud/index.html",
     });
 
-
+    // according to docs: https://developers.soundcloud.com/docs/api/html5-widget
+    var iframe   = document.querySelector('iframe');
+    var iframeID = iframe.id;
+    var player   = SC.Widget(iframe);
+    var player2  = SC.Widget(iframeID);
+    // widget1 === widget2
 
   };//window.onload
 
