@@ -1,6 +1,7 @@
 
-$(document).ready(function(){
 
+
+$(document).ready(function(){
 
   var toggle = document.getElementById('toggle');
   var tracks = document.getElementsByClassName("tracks");
@@ -55,10 +56,10 @@ $(document).ready(function(){
   };
 
 
-  toggle.onclick = function(e) {
-    e.preventDefault();
-    player.toggle();
-  };
+  // toggle.onclick = function(e) {
+  //   e.preventDefault();
+  //   player.toggle();
+  // };
 
   showList = function(genre) {
     results.innerHTML = "";
@@ -103,13 +104,6 @@ $(document).ready(function(){
       // redirect_uri: "file:///Users/jcollyer/Documents/projects/soundCloud/index.html",
     });
 
-    // according to docs: https://developers.soundcloud.com/docs/api/html5-widget
-    var iframe   = document.querySelector('iframe');
-    var iframeID = iframe.id;
-    var player   = SC.Widget(iframe);
-    var player2  = SC.Widget(iframeID);
-    // widget1 === widget2
-
-  };//window.onload
+  };
 
 })

@@ -59,15 +59,25 @@ var MusicTable = React.createClass({
 });
 
 var GenreList = React.createClass({
+  handleClick: function(event) {
+    var genre = event.target.getAttribute("data-genre");
+    var playlist = [];
+    SC.get('/tracks', { genres: genre }, function(tracks) {
+      tracks.forEach(function(track, index) {
+        results.innerHTML = results.innerHTML + '<li onclick="playTrack('+track.id+')"><img src="'+track.artwork_url+'" /><p>'+track.title+'</p>  </li>';
+        playlist.push(track.id);
+      });
+    });
+
+
+  },
   render: function() {
     return (
       <div className="GenreList">
-        <ul>
-          <li><a href="#" onclick="showList('beats')" class="genre">Beats</a></li>
-          <li><a href="#" onclick="showList('rnb')" class="genre">RnB</a></li>
-          <li><a href="#" onclick="showList('house')" class="genre">House</a></li>
-          <li><a href="#" onclick="showList('hip-hop')" class="genre">Hip-Hop</a></li>
-        </ul>
+        <li onClick={this.handleClick} data-genre="beats">Beats</li>
+        <li onClick={this.handleClick} data-genre="rnb">RnB</li>
+        <li onClick={this.handleClick} data-genre="house">House</li>
+        <li onClick={this.handleClick} data-genre="hip-hop">Hip-Hop</li>
       </div>
     );
   }
@@ -77,13 +87,19 @@ var Song = React.createClass({
   render: function() {
     return (
       <div className="Song">
-        song
+        <li onClick={this.handleClick(track.id)}>
+          <img src=track.artwork_url />
+          <p>track.title</p>
+        </li>
       </div>
     );
   }
 });
 
 
+
+
+////////////////////////////////////////////////////////////////
 
 var CommentBox = React.createClass({
   loadCommentsFromServer: function() {
@@ -189,3 +205,11 @@ React.render(
   <MusicPlayerBox />,
   document.getElementById('react-music-player')
 );
+
+
+  // according to docs: https://developers.soundcloud.com/docs/api/html5-widget
+    var iframe   = document.querySelector('iframe');
+    var iframeID = iframe.id;
+    var player   = SC.Widget(iframe);
+    var player2  = SC.Widget(iframeID);
+  // widget1 === widget2
