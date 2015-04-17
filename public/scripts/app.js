@@ -1,115 +1,109 @@
-var converter = new Showdown.converter();
 
-var Comment = React.createClass({
-  render: function() {
-    var rawMarkup = converter.makeHtml(this.props.children.toString());
-    return (
-      <div className="comment">
-        <h2 className="commentAuthor">
-          {this.props.author}
-        </h2>
-        <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
-      </div>
-    );
-  }
-});
 
-var CommentBox = React.createClass({
-  loadCommentsFromServer: function() {
-    $.ajax({
-      url: this.props.url,
-      dataType: 'json',
-      success: function(data) {
-        this.setState({data: data});
-      }.bind(this),
-      error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-  },
-  handleCommentSubmit: function(comment) {
-    var comments = this.state.data;
-    comments.push(comment);
-    this.setState({data: comments}, function() {
-      // `setState` accepts a callback. To avoid (improbable) race condition,
-      // `we'll send the ajax request right after we optimistically set the new
-      // `state.
-      $.ajax({
-        url: this.props.url,
-        dataType: 'json',
-        type: 'POST',
-        data: comment,
-        success: function(data) {
-          this.setState({data: data});
-        }.bind(this),
-        error: function(xhr, status, err) {
-          console.error(this.props.url, status, err.toString());
-        }.bind(this)
+
+$(document).ready(function(){
+
+  var toggle = document.getElementById('toggle');
+  var tracks = document.getElementsByClassName("tracks");
+  var results = document.getElementById('results');
+  var target = document.getElementById('target');
+  var playlist = [];
+
+
+  // var iframe = document.getElementById('soundcloud_widget');
+  // var player = SC.Widget(iframe);
+
+  function showTrackList(genre) {
+    SC.get('/tracks', { genres: genre }, function(tracks) {
+      tracks.forEach(function(track, index) {
+        results.innerHTML = results.innerHTML + '<li onclick="playTrack('+track.id+')"><img src="'+track.artwork_url+'" /><p>'+track.title+'</p>  </li>';
+        playlist.push(track.id);
       });
     });
-  },
-  getInitialState: function() {
-    return {data: []};
-  },
-  componentDidMount: function() {
-    this.loadCommentsFromServer();
-    setInterval(this.loadCommentsFromServer, this.props.pollInterval);
-  },
-  render: function() {
-    return (
-      <div className="commentBox">
-        <h1>Comments</h1>
-        <CommentList data={this.state.data} />
-        <CommentForm onCommentSubmit={this.handleCommentSubmit} />
-      </div>
-    );
-  }
-});
+  };
 
-var CommentList = React.createClass({
-  render: function() {
-    var commentNodes = this.props.data.map(function(comment, index) {
-      return (
-        // `key` is a React-specific concept and is not mandatory for the
-        // purpose of this tutorial. if you're curious, see more here:
-        // http://facebook.github.io/react/docs/multiple-components.html#dynamic-children
-        <Comment author={comment.author} key={index}>
-          {comment.text}
-        </Comment>
-      );
+
+
+
+  playTrack = function(id) {
+    // var src = 'http://w.soundcloud.com/player/?url=https://api.soundcloud.com/tracks/'+id+'&show_artwork=false&liking=false&sharing=false&auto_play=false" width="420" height="120" frameborder="no"'
+    // iframe.setAttribute("src", src);
+    url = "https://api.soundcloud.com/tracks/"+id+"";
+
+    player.load(url, {
+      auto_play: true
     });
-    return (
-      <div className="commentList">
-        {commentNodes}
-      </div>
-    );
-  }
-});
+    player.bind(SC.Widget.Events.READY, function() {
+      playerReady();
+    });
 
-var CommentForm = React.createClass({
-  handleSubmit: function(e) {
-    e.preventDefault();
-    var author = React.findDOMNode(this.refs.author).value.trim();
-    var text = React.findDOMNode(this.refs.text).value.trim();
-    if (!text || !author) {
-      return;
-    }
-    this.props.onCommentSubmit({author: author, text: text});
-    React.findDOMNode(this.refs.author).value = '';
-    React.findDOMNode(this.refs.text).value = '';
-  },
-  render: function() {
-    return (
-      <form className="commentForm" onSubmit={this.handleSubmit}>
-        <input type="text" placeholder="Your name" ref="author" />
-        <input type="text" placeholder="Say something..." ref="text" />
-        <input type="submit" value="Post" />
-      </form>
-    );
-  }
-});
+    player.bind(SC.Widget.Events.FINISH, function() {
+      console.log("track finished!");
+    });
 
-React.render(
-  <CommentBox url="comments.json" pollInterval={2000} />,
-  document.getElementById('content')
-);
+    player.bind(SC.Widget.Events.PLAY_PROGRESS, function(e) {
+      var currentTime = e.relativePosition;
+
+      setCurrentTime(currentTime);
+      toHHMMSS(currentTime);
+      // console.log( e.relativePosition*100);
+       // $('.progress-bar').css('width', ( e.relativePosition*100)+"%");
+    });
+
+    // player.bind(SC.Widget.Events.LOAD_PROGRESS, function() {
+    //   console.log("loaded: " player.getLoaded());
+    // });
+  };
+
+
+  // toggle.onclick = function(e) {
+  //   e.preventDefault();
+  //   player.toggle();
+  // };
+
+  showList = function(genre) {
+    results.innerHTML = "";
+    console.log(genre);
+    showTrackList(genre);
+  };
+
+  playerReady = function() {
+    console.log("track ready!");
+  };
+
+  setCurrentTime = function(currentTime) {
+    time = currentTime;
+  };
+
+  getCurrentTime = function() {
+    return time;
+  };
+
+
+
+  toHHMMSS = function(seconds) {
+    var date = new Date(seconds * 1000);
+    var hh = date.getUTCHours();
+    var mm = date.getUTCMinutes();
+    var ss = date.getSeconds();
+    // This line gives you 12-hour (not 24) time
+    if (hh > 12) {hh = hh - 12;}
+    // These lines ensure you have two-digits
+    if (hh < 10) {hh = "0"+hh;}
+    if (mm < 10) {mm = "0"+mm;}
+    if (ss < 10) {ss = "0"+ss;}
+
+    return (hh > 1 && (hh + ":")) || "" + mm + ":" + ss;
+  };
+
+
+
+  // window.onload = function() {
+  //   SC.initialize({
+  //     client_id: "be2f745f816c1df784b23dc87a1fd65f"
+  //     // redirect_uri: "file:///Users/jcollyer/Documents/projects/soundCloud/index.html",
+  //   });
+
+  // };
+
+})
