@@ -98,12 +98,12 @@ $(document).ready(function(){
 
 
 
-  window.onload = function() {
-    SC.initialize({
-      client_id: "be2f745f816c1df784b23dc87a1fd65f"
-      // redirect_uri: "file:///Users/jcollyer/Documents/projects/soundCloud/index.html",
-    });
+  // window.onload = function() {
+  //   SC.initialize({
+  //     client_id: "be2f745f816c1df784b23dc87a1fd65f"
+  //     // redirect_uri: "file:///Users/jcollyer/Documents/projects/soundCloud/index.html",
+  //   });
 
-  };
+  // };
 
 })
