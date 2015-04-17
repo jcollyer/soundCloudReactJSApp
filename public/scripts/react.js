@@ -1,18 +1,4 @@
-var converter = new Showdown.converter();
-
-var Comment = React.createClass({
-  render: function() {
-    var rawMarkup = converter.makeHtml(this.props.children.toString());
-    return (
-      <div className="comment">
-        <h2 className="commentAuthor">
-          {this.props.author}
-        </h2>
-        <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
-      </div>
-    );
-  }
-});
+songs = [{}];
 
 var MusicPlayerBox = React.createClass({
   render: function() {
@@ -52,20 +38,20 @@ var MusicTable = React.createClass({
       <div className="MusicTable">
         <h3>Music Table</h3>
         <GenreList />
-        <Song />
       </div>
     );
   }
 });
 
 var GenreList = React.createClass({
+
   handleClick: function(event) {
     var genre = event.target.getAttribute("data-genre");
     var playlist = [];
     SC.get('/tracks', { genres: genre }, function(tracks) {
       tracks.forEach(function(track, index) {
         results.innerHTML = results.innerHTML + '<li onclick="playTrack('+track.id+')"><img src="'+track.artwork_url+'" /><p>'+track.title+'</p>  </li>';
-        playlist.push(track.id);
+        songs.push(track);
       });
     });
 
@@ -78,28 +64,56 @@ var GenreList = React.createClass({
         <li onClick={this.handleClick} data-genre="rnb">RnB</li>
         <li onClick={this.handleClick} data-genre="house">House</li>
         <li onClick={this.handleClick} data-genre="hip-hop">Hip-Hop</li>
+        <TrackList />
+      </div>
+    );
+  }
+});
+
+TrackList = React.createClass({
+
+  getInitialState: function() {
+    return {
+      songs: songs
+    }
+  },
+  render: function() {
+    return (
+      <div>
+        {this.state.songs.map(function(song){
+          return (
+            <Song name={song.id} image={song.image} />
+          )
+        })}
       </div>
     );
   }
 });
 
 var Song = React.createClass({
+  handleClick: function() {
+
+  },
   render: function() {
     return (
       <div className="Song">
-        <li onClick={this.handleClick(track.id)}>
-          <img src=track.artwork_url />
-          <p>track.title</p>
-        </li>
+        <h2>{this.props.name}</h2>
+        <img src={this.props.image} />
       </div>
     );
   }
 });
 
 
+React.render(
+  <MusicPlayerBox />,
+  document.getElementById('react-music-player')
+);
+
 
 
 ////////////////////////////////////////////////////////////////
+var converter = new Showdown.converter();
 
 var CommentBox = React.createClass({
   loadCommentsFromServer: function() {
@@ -196,20 +210,21 @@ var CommentForm = React.createClass({
   }
 });
 
+var Comment = React.createClass({
+  render: function() {
+    var rawMarkup = converter.makeHtml(this.props.children.toString());
+    return (
+      <div className="comment">
+        <h2 className="commentAuthor">
+          {this.props.author}
+        </h2>
+        <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
+      </div>
+    );
+  }
+});
+
 React.render(
   <CommentBox url="comments.json" pollInterval={2000} />,
   document.getElementById('comment-box')
 );
-
-React.render(
-  <MusicPlayerBox />,
-  document.getElementById('react-music-player')
-);
-
-
-  // according to docs: https://developers.soundcloud.com/docs/api/html5-widget
-    var iframe   = document.querySelector('iframe');
-    var iframeID = iframe.id;
-    var player   = SC.Widget(iframe);
-    var player2  = SC.Widget(iframeID);
-  // widget1 === widget2
