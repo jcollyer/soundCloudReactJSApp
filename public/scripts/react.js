@@ -51,19 +51,14 @@ var MusicTable = React.createClass({
 
 
 var GenreList = React.createClass({
-  newSongs: function(songs) {
-    // debugger;
-    this.setState({songs: songs});
-  },
   getTracks: function(genre) {
     SC.get('/tracks', { genres: genre, limit: 5 }, function(tracks) {
       songs = [];
       tracks.map(function(track, index) {
-        // results.innerHTML = results.innerHTML + '<li onclick="playTrack('+track.id+')"><img src="'+track.artwork_url+'" /><p>'+track.title+'</p>  </li>';
         songs.push(track);
       });
     });
-    this.newSongs(songs);
+    this.setState({songs: songs});
   },
   handleClick: function(event) {
     var genre = event.target.getAttribute("data-genre");
@@ -93,7 +88,7 @@ TrackList = React.createClass({
       <div>
         {this.props.songs.map(function(song){
           return (
-            <Song title={song.title} artwork={song.artwork_url} />
+            <Song title={song.title} artwork={song.artwork_url} id={song.id} />
           )
         })}
       </div>
@@ -102,11 +97,42 @@ TrackList = React.createClass({
 });
 
 var Song = React.createClass({
+  handleClick: function(event) {
+    id = event.target.getAttribute("data-id");
+    url = "https://api.soundcloud.com/tracks/"+id+"";
+    // according to docs: https://developers.soundcloud.com/docs/api/html5-widget
+    var iframe   = document.querySelector('iframe');
+    var iframeID = iframe.id;
+    var player   = SC.Widget(iframe);
+    var player2  = SC.Widget(iframeID);
+    // widget1 === widget2
+    // debugger;
+    player.load(url, {
+      auto_play: true
+    });
+    player.bind(SC.Widget.Events.READY, function() {
+      playerReady();
+    });
+
+    player.bind(SC.Widget.Events.FINISH, function() {
+      console.log("track finished!");
+    });
+
+    player.bind(SC.Widget.Events.PLAY_PROGRESS, function(e) {
+      var currentTime = e.relativePosition;
+
+      setCurrentTime(currentTime);
+      toHHMMSS(currentTime);
+      // console.log( e.relativePosition*100);
+       // $('.progress-bar').css('width', ( e.relativePosition*100)+"%");
+    });
+  },
   render: function() {
     return (
       <div className="Song">
         <p>{this.props.title}</p>
-        <img src={this.props.artwork} />
+        <img src={this.props.artwork} data-id={this.props.id} onClick={this.handleClick} />
+        <p>{this.props.id}</p>
       </div>
     );
   }
