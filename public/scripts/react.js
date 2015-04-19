@@ -1,7 +1,8 @@
-  SC.initialize({
-    client_id: "be2f745f816c1df784b23dc87a1fd65f"
-    // redirect_uri: "file:///Users/jcollyer/Documents/projects/soundCloud/index.html",
-  });
+SC.initialize({
+  client_id: "be2f745f816c1df784b23dc87a1fd65f"
+  // redirect_uri: "file:///Users/jcollyer/Documents/projects/soundCloud/index.html",
+});
+
 songs = [{"title":"something"},{"title":"something2"}];
 
 var MusicPlayerBox = React.createClass({
@@ -47,45 +48,52 @@ var MusicTable = React.createClass({
   }
 });
 
+
+
 var GenreList = React.createClass({
+  newSongs: function(songs) {
+    // debugger;
+    this.setState({songs: songs});
+  },
   getTracks: function(genre) {
-    SC.get('/tracks', { genres: genre }, function(tracks) {
+    SC.get('/tracks', { genres: genre, limit: 5 }, function(tracks) {
+      songs = [];
       tracks.map(function(track, index) {
         // results.innerHTML = results.innerHTML + '<li onclick="playTrack('+track.id+')"><img src="'+track.artwork_url+'" /><p>'+track.title+'</p>  </li>';
         songs.push(track);
       });
     });
+    this.newSongs(songs);
   },
   handleClick: function(event) {
     var genre = event.target.getAttribute("data-genre");
     this.getTracks(genre);
+      // debugger;
+
+  },
+  getInitialState: function() {
+    return {songs: songs}
   },
   render: function() {
     return (
-      <div className="GenreList">
+      <div>
         <li onClick={this.handleClick} data-genre="beats">Beats</li>
         <li onClick={this.handleClick} data-genre="rnb">RnB</li>
         <li onClick={this.handleClick} data-genre="house">House</li>
         <li onClick={this.handleClick} data-genre="hip-hop">Hip-Hop</li>
-        <TrackList list={songs} />
+        <TrackList songs={songs} />
       </div>
     );
   }
 });
 
 TrackList = React.createClass({
-  getInitialState: function() {
-    debugger;
-    return {
-      songs: songs
-    }
-  },
   render: function() {
     return (
       <div>
-        {this.state.songs.map(function(song){
+        {this.props.songs.map(function(song){
           return (
-            <Song name={song.title} image={song.artwork_url} />
+            <Song title={song.title} artwork={song.artwork_url} />
           )
         })}
       </div>
@@ -94,14 +102,11 @@ TrackList = React.createClass({
 });
 
 var Song = React.createClass({
-  handleClick: function() {
-
-  },
   render: function() {
     return (
       <div className="Song">
-        <p>{this.props.name}</p>
-        <img src={this.props.image} />
+        <p>{this.props.title}</p>
+        <img src={this.props.artwork} />
       </div>
     );
   }
