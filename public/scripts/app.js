@@ -67,9 +67,7 @@ $(document).ready(function(){
     showTrackList(genre);
   };
 
-  playerReady = function() {
-    console.log("track ready!");
-  };
+
 
   setCurrentTime = function(currentTime) {
     time = currentTime;

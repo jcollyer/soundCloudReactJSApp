@@ -5,6 +5,11 @@ SC.initialize({
 
 songs = [{"title":"something"},{"title":"something2"}];
 
+playerReady = function() {
+  console.log("track ready!");
+};
+
+
 var MusicPlayerBox = React.createClass({
   render: function() {
     return (
@@ -49,10 +54,12 @@ var MusicTable = React.createClass({
 });
 
 
+// http://stackoverflow.com/questions/16394100/order-by-playbacks-when-fetching-tracks-from-soundcloud
+// https://api-v2.soundcloud.com/explore/metal?limit=5&offset=0
 
 var GenreList = React.createClass({
   getTracks: function(genre) {
-    SC.get('/tracks', { genres: genre, limit: 5 }, function(tracks) {
+    SC.get('/tracks', { genres: genre, limit: 5, order: 'created_at' }, function(tracks) {
       songs = [];
       tracks.map(function(track, index) {
         songs.push(track);
@@ -110,6 +117,7 @@ var Song = React.createClass({
     player.load(url, {
       auto_play: true
     });
+
     player.bind(SC.Widget.Events.READY, function() {
       playerReady();
     });
