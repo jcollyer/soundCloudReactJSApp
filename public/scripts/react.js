@@ -4,11 +4,55 @@ SC.initialize({
 });
 
 songs = [{"title":"something"},{"title":"something2"}];
+tracks = [{"title":"track1"},{"title":"track2"}];
 
 playerReady = function() {
   console.log("track ready!");
 };
 
+var MyTracksButton = React.createClass({
+  getInitialState: function() {
+    return {tracks:tracks};
+  },
+  handleClick: function() {
+    $.ajax({
+      // url: this.props.url,
+      url: 'http://api.soundcloud.com/tracks?client_id=be2f745f816c1df784b23dc87a1fd65f',
+      dataType: 'json',
+      success: function(tracks) {
+        this.setState({tracks: tracks});
+        // debugger;
+      }.bind(this),
+      error: function(xhr, status, err) {
+        // console.error(this.props.url, status, err.toString());
+        console.error('https://api.soundcloud.com/tracks?client_id=be2f745f816c1df784b23dc87a1fd65f', status, err.toString());
+      }.bind(this)
+    });
+
+  },
+  render: function() {
+    return (
+      <div>
+        <button onClick={this.handleClick}>My Tracks</button>
+        <MyTracks tracks={this.state.tracks} />
+      </div>
+    );
+  }
+});
+
+var MyTracks = React.createClass({
+  render: function() {
+    return (
+      <div>
+        {this.props.tracks.map(function(track){
+          return (
+            <Song title={track.title} artwork={track.artwork_url} id={track.id} />
+          )
+        })}
+      </div>
+    );
+  }
+});
 
 var MusicPlayerBox = React.createClass({
   render: function() {
@@ -23,16 +67,17 @@ var MusicPlayerBox = React.createClass({
 });
 
 var Player = React.createClass({
+  toggleTrack: function() {
+
+  },
   render: function() {
     return (
-      <div className="Player">
-        <div id="target">
-          <iframe id="soundcloud_widget" src="http://w.soundcloud.com/player/?url=https://api.soundcloud.com/tracks/39804767&show_artwork=false&liking=false&sharing=false&auto_play=false" width="420" height="120" frameborder="no">
-          </iframe>
-        </div>
+      <div>
+        <iframe id="soundcloud_widget" src="http://w.soundcloud.com/player/?url=https://api.soundcloud.com/tracks/39804767&show_artwork=false&liking=false&sharing=false&auto_play=false" width="420" height="120" frameborder="no">
+        </iframe>
 
         <div id="current_time"></div>
-        <button id="toggle">toggle</button>
+        <button id="toggle" onClick={this.toggleTrack}>toggle</button>
         <button id="next">Next</button>
         <button id="prev">Prev</button>
         <button id="mute">Mute</button>
@@ -63,15 +108,15 @@ var GenreList = React.createClass({
       songs = [];
       tracks.map(function(track, index) {
         songs.push(track);
+        console.log(songs)
       });
     });
-    this.setState({songs: songs});
+    console.log(songs)
   },
   handleClick: function(event) {
     var genre = event.target.getAttribute("data-genre");
     this.getTracks(genre);
-      // debugger;
-
+    this.setState({songs: songs});
   },
   getInitialState: function() {
     return {songs: songs}
@@ -79,11 +124,11 @@ var GenreList = React.createClass({
   render: function() {
     return (
       <div>
-        <li onClick={this.handleClick} data-genre="beats">Beats</li>
-        <li onClick={this.handleClick} data-genre="rnb">RnB</li>
-        <li onClick={this.handleClick} data-genre="house">House</li>
-        <li onClick={this.handleClick} data-genre="hip-hop">Hip-Hop</li>
-        <TrackList songs={songs} />
+        <button onClick={this.handleClick} data-genre="beats">Beats</button>
+        <button onClick={this.handleClick} data-genre="rnb">RnB</button>
+        <button onClick={this.handleClick} data-genre="house">House</button>
+        <button onClick={this.handleClick} data-genre="hip-hop">Hip-Hop</button>
+        <TrackList songs={this.state.songs} />
       </div>
     );
   }
@@ -126,14 +171,14 @@ var Song = React.createClass({
       console.log("track finished!");
     });
 
-    player.bind(SC.Widget.Events.PLAY_PROGRESS, function(e) {
-      var currentTime = e.relativePosition;
+    // player.bind(SC.Widget.Events.PLAY_PROGRESS, function(e) {
+    //   var currentTime = e.relativePosition;
 
-      setCurrentTime(currentTime);
-      toHHMMSS(currentTime);
-      // console.log( e.relativePosition*100);
-       // $('.progress-bar').css('width', ( e.relativePosition*100)+"%");
-    });
+    //   setCurrentTime(currentTime);
+    //   toHHMMSS(currentTime);
+    //   // console.log( e.relativePosition*100);
+    //    // $('.progress-bar').css('width', ( e.relativePosition*100)+"%");
+    // });
   },
   render: function() {
     return (
@@ -151,6 +196,12 @@ React.render(
   <MusicPlayerBox />,
   document.getElementById('react-music-player')
 );
+
+React.render(
+  <MyTracksButton />,
+  document.getElementById('track-button')
+);
+
 
 
 
