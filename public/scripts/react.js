@@ -5,7 +5,7 @@ SC.initialize({
 
 songs = [{"title":"something"},{"title":"something2"}];
 tracks = [{"title":"track1"},{"title":"track2"}];
-
+var player;
 playerReady = function() {
   console.log("track ready!");
 };
@@ -58,7 +58,6 @@ var MusicPlayerBox = React.createClass({
   render: function() {
     return (
       <div className="MusicPlayerBox">
-        <h3>Music Player Box</h3>
         <Player />
         <MusicTable />
       </div>
@@ -67,21 +66,48 @@ var MusicPlayerBox = React.createClass({
 });
 
 var Player = React.createClass({
+  getInitialState: function() {
+    return {url: "http://w.soundcloud.com/player/?url=https://api.soundcloud.com/tracks/39804767&show_artwork=false&liking=false&sharing=false&auto_play=false"};
+  },
   toggleTrack: function() {
-
+    this.getPlayer();
+    debugger;
+    player.toggle();
+  },
+  nextTrack: function() {
+    this.getPlayer();
+    player.next();
+  },
+  prevTrack: function() {
+    this.getPlayer();
+    player.prev();
+  },
+  muteToggleTrack: function() {
+    var player = player || this.getPlayer();
+    player.getVolume(function(vol){
+      if(vol == 0 ) {
+        player.setVolume(1);
+      } else {
+        player.setVolume(0);
+      }
+    });
+  },
+  getPlayer: function() {
+    iframe   = document.querySelector('iframe');
+    iframeID = iframe.id;
+    return SC.Widget(iframe);
   },
   render: function() {
     return (
       <div>
-        <iframe id="soundcloud_widget" src="http://w.soundcloud.com/player/?url=https://api.soundcloud.com/tracks/39804767&show_artwork=false&liking=false&sharing=false&auto_play=false" width="420" height="120" frameborder="no">
-        </iframe>
-
         <div id="current_time"></div>
         <button id="toggle" onClick={this.toggleTrack}>toggle</button>
-        <button id="next">Next</button>
-        <button id="prev">Prev</button>
-        <button id="mute">Mute</button>
+        <button id="next" onClick={this.nextTrack}>Next</button>
+        <button id="prev" onClick={this.prevTrack}>Prev</button>
+        <button id="mute" onClick={this.muteToggleTrack}>Mute</button>
 
+        <iframe id="soundcloud_widget" src={this.state.url} width="420" height="120" frameborder="no">
+        </iframe>
       </div>
     );
   }
