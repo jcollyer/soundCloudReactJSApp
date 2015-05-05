@@ -17,18 +17,16 @@ var MyTracksButton = React.createClass({
   handleClick: function() {
     $.ajax({
       // url: this.props.url,
-      url: 'http://api.soundcloud.com/tracks?client_id=be2f745f816c1df784b23dc87a1fd65f',
+      url: 'http://api.soundcloud.com/playlists/104432492.json?client_id=be2f745f816c1df784b23dc87a1fd65f',
       dataType: 'json',
       success: function(tracks) {
-        this.setState({tracks: tracks});
-        // debugger;
+        this.setState({tracks: tracks.tracks});
       }.bind(this),
       error: function(xhr, status, err) {
         // console.error(this.props.url, status, err.toString());
-        console.error('https://api.soundcloud.com/tracks?client_id=be2f745f816c1df784b23dc87a1fd65f', status, err.toString());
+        console.error('http://api.soundcloud.com/playlists/405726.json?client_id=be2f745f816c1df784b23dc87a1fd65f', status, err.toString());
       }.bind(this)
     });
-
   },
   render: function() {
     return (
@@ -70,16 +68,15 @@ var Player = React.createClass({
     return {url: "http://w.soundcloud.com/player/?url=https://api.soundcloud.com/tracks/39804767&show_artwork=false&liking=false&sharing=false&auto_play=false"};
   },
   toggleTrack: function() {
-    this.getPlayer();
-    debugger;
+    var player = player || this.getPlayer();
     player.toggle();
   },
   nextTrack: function() {
-    this.getPlayer();
+    var player = player || this.getPlayer();
     player.next();
   },
   prevTrack: function() {
-    this.getPlayer();
+    var player = player || this.getPlayer();
     player.prev();
   },
   muteToggleTrack: function() {
@@ -206,12 +203,16 @@ var Song = React.createClass({
     //    // $('.progress-bar').css('width', ( e.relativePosition*100)+"%");
     // });
   },
+  favoriteTrack: function() {
+
+  },
   render: function() {
     return (
       <div className="Song">
         <p>{this.props.title}</p>
         <img src={this.props.artwork} data-id={this.props.id} onClick={this.handleClick} />
         <p>{this.props.id}</p>
+        <button onClick={this.favoriteTrack}>Favorite</button>
       </div>
     );
   }
