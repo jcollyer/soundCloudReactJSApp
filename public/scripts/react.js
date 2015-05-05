@@ -1,6 +1,16 @@
 SC.initialize({
-  client_id: "be2f745f816c1df784b23dc87a1fd65f"
-  // redirect_uri: "file:///Users/jcollyer/Documents/projects/soundCloud/index.html",
+  client_id: "51b52c948e268a19b58f87f3d47861ad",
+  redirect_uri: "http://localhost:3000/callback.html"
+});
+
+
+$('button.connect').click(function(e) {
+  e.preventDefault();
+  SC.connect(function() {
+    SC.get('/me', function(me) {
+      $('#username').html(me.username);
+    });
+  });
 });
 
 songs = [{"title":"something"},{"title":"something2"}];
