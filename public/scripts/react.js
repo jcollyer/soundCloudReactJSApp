@@ -13,8 +13,6 @@ $('button.connect').click(function(e) {
   });
 });
 
-songs = [{"title":"something"},{"title":"something2"}];
-tracks = [{"title":"track1"},{"title":"track2"}];
 var player;
 playerReady = function() {
   console.log("track ready!");
@@ -22,7 +20,7 @@ playerReady = function() {
 
 var MyTracksButton = React.createClass({
   getInitialState: function() {
-    return {tracks:tracks};
+    return {tracks:[]};
   },
   handleClick: function() {
     $.ajax({
@@ -193,7 +191,7 @@ var GenreList = React.createClass({
     this.setState({songs: songs});
   },
   getInitialState: function() {
-    return {songs: songs}
+    return {songs: []}
   },
   render: function() {
     return (
@@ -293,7 +291,6 @@ var Song = React.createClass({
       <div className="Song">
         <p>{this.props.title}</p>
         <img src={this.props.artwork} data-id={this.props.id} onClick={this.handleClick} />
-        <p>{this.props.id}</p>
         <button onClick={this.favoriteTrack} data-id={this.props.id}>Favorite</button>
         <button onClick={this.addTrackToPlaylist} data-id={this.props.id}>+Playlist</button>
       </div>
