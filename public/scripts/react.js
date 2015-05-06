@@ -27,14 +27,14 @@ var MyTracksButton = React.createClass({
   handleClick: function() {
     $.ajax({
       // url: this.props.url,
-      url: 'http://api.soundcloud.com/playlists/104432492.json?client_id=be2f745f816c1df784b23dc87a1fd65f',
+      url: 'https://api.soundcloud.com/users/143543661/playlists.json?client_id=51b52c948e268a19b58f87f3d47861ad',
       dataType: 'json',
       success: function(tracks) {
         this.setState({tracks: tracks.tracks});
       }.bind(this),
       error: function(xhr, status, err) {
         // console.error(this.props.url, status, err.toString());
-        console.error('http://api.soundcloud.com/playlists/405726.json?client_id=be2f745f816c1df784b23dc87a1fd65f', status, err.toString());
+        console.error('http://api.soundcloud.com/playlists/405726.json?client_id=51b52c948e268a19b58f87f3d47861ad', status, err.toString());
       }.bind(this)
     });
   },
@@ -214,7 +214,7 @@ var Song = React.createClass({
     // });
   },
   favoriteTrack: function() {
-
+    id = event.target.getAttribute("data-id");
   },
   render: function() {
     return (
@@ -222,7 +222,7 @@ var Song = React.createClass({
         <p>{this.props.title}</p>
         <img src={this.props.artwork} data-id={this.props.id} onClick={this.handleClick} />
         <p>{this.props.id}</p>
-        <button onClick={this.favoriteTrack}>Favorite</button>
+        <button onClick={this.favoriteTrack} data-id={this.props.id}>Favorite</button>
       </div>
     );
   }
