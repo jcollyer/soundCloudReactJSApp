@@ -54,13 +54,56 @@ var MyTracks = React.createClass({
       <div>
         {this.props.tracks.map(function(track){
           return (
-            <Song title={track.title} artwork={track.artwork_url} id={track.id} />
+            <Track title={track.title} artwork={track.artwork_url} id={track.id} />
           )
         })}
       </div>
     );
   }
 });
+
+var Track = React.createClass({
+  handleClick: function(event) {
+    id = event.target.getAttribute("data-id");
+    url = "https://api.soundcloud.com/tracks/"+id+"";
+    // according to docs: https://developers.soundcloud.com/docs/api/html5-widget
+    var iframe   = document.querySelector('iframe');
+    var iframeID = iframe.id;
+    var player   = SC.Widget(iframe);
+    var player2  = SC.Widget(iframeID);
+    // widget1 === widget2
+    // debugger;
+    player.load(url, {
+      auto_play: true
+    });
+
+    player.bind(SC.Widget.Events.READY, function() {
+      playerReady();
+    });
+
+    player.bind(SC.Widget.Events.FINISH, function() {
+      console.log("track finished!");
+    });
+
+    // player.bind(SC.Widget.Events.PLAY_PROGRESS, function(e) {
+    //   var currentTime = e.relativePosition;
+
+    //   setCurrentTime(currentTime);
+    //   toHHMMSS(currentTime);
+    //   // console.log( e.relativePosition*100);
+    //    // $('.progress-bar').css('width', ( e.relativePosition*100)+"%");
+    // });
+  },
+  render: function() {
+    return (
+      <div className="track">
+        <p>{this.props.title}</p>
+        <img src={this.props.artwork} data-id={this.props.id} onClick={this.handleClick} />
+      </div>
+    );
+  }
+});
+
 
 var MusicPlayerBox = React.createClass({
   render: function() {
@@ -213,11 +256,16 @@ var Song = React.createClass({
   },
   addTrackToPlaylist: function() {
     id = event.target.getAttribute("data-id");
-    // var tracks = ["21778201", "22448500", "21928809"];
-    var tracks = ["21778201", "22448500", "21928809"].map(function(id) { return { id: id }; });
-    // debugger;
     SC.connect(function() {
       SC.get('/me/playlists', { limit: 1 }, function(playlist) {
+        var oTracksIds = [];
+        var oTracks = playlist[0].tracks;
+        oTracks.forEach(function (track){
+          var stringifyIDs = JSON.stringify(track.id)
+          oTracksIds.push(stringifyIDs);
+        });
+        oTracksIds.push(id);
+        var tracks = oTracksIds.map(function(id) { return { id: id }; });
         SC.put(playlist[0].uri, { playlist: { tracks: tracks } }, function(response, error){
           if(error){
             console.log("Some error occured: " + error.message);
