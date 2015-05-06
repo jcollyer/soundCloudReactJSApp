@@ -213,7 +213,9 @@ var Song = React.createClass({
   },
   addTrackToPlaylist: function() {
     id = event.target.getAttribute("data-id");
-    var tracks = [21778201, 22448500, 21928809];
+    // var tracks = ["21778201", "22448500", "21928809"];
+    var tracks = ["21778201", "22448500", "21928809"].map(function(id) { return { id: id }; });
+    // debugger;
     SC.connect(function() {
       SC.get('/me/playlists', { limit: 1 }, function(playlist) {
         SC.put(playlist[0].uri, { playlist: { tracks: tracks } }, function(response, error){
