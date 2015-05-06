@@ -30,7 +30,7 @@ var MyTracksButton = React.createClass({
       url: 'https://api.soundcloud.com/users/143543661/playlists.json?client_id=51b52c948e268a19b58f87f3d47861ad',
       dataType: 'json',
       success: function(tracks) {
-        this.setState({tracks: tracks.tracks});
+        this.setState({tracks: tracks[0].tracks});
       }.bind(this),
       error: function(xhr, status, err) {
         // console.error(this.props.url, status, err.toString());
@@ -141,10 +141,8 @@ var GenreList = React.createClass({
       songs = [];
       tracks.map(function(track, index) {
         songs.push(track);
-        console.log(songs)
       });
     });
-    console.log(songs)
   },
   handleClick: function(event) {
     var genre = event.target.getAttribute("data-genre");
@@ -213,8 +211,32 @@ var Song = React.createClass({
     //    // $('.progress-bar').css('width', ( e.relativePosition*100)+"%");
     // });
   },
+  addTrackToPlaylist: function() {
+    id = event.target.getAttribute("data-id");
+    var tracks = [21778201, 22448500, 21928809];
+    SC.connect(function() {
+      SC.get('/me/playlists', { limit: 1 }, function(playlist) {
+        SC.put(playlist[0].uri, { playlist: { tracks: tracks } }, function(response, error){
+          if(error){
+            console.log("Some error occured: " + error.message);
+          }else{
+            console.log("tracks added to playlist!");
+          }
+        });
+      });
+    });
+  },
   favoriteTrack: function() {
     id = event.target.getAttribute("data-id");
+    SC.connect(function() {
+      SC.put('/me/favorites/'+id, function(status, error) {
+        if (error) {
+          alert("Error: " + error.message);
+        } else {
+          alert("Favorite:  " + id);
+        }
+      });
+    });
   },
   render: function() {
     return (
@@ -223,6 +245,7 @@ var Song = React.createClass({
         <img src={this.props.artwork} data-id={this.props.id} onClick={this.handleClick} />
         <p>{this.props.id}</p>
         <button onClick={this.favoriteTrack} data-id={this.props.id}>Favorite</button>
+        <button onClick={this.addTrackToPlaylist} data-id={this.props.id}>+Playlist</button>
       </div>
     );
   }
