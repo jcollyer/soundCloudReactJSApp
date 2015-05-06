@@ -3,6 +3,7 @@
   <head>
     <title>SoundCloud ReactJS app</title>
     <!-- Not present in the tutorial. Just for basic styling. -->
+    <link rel="stylesheet" href="css/grid.min.css">
     <link rel="stylesheet" href="css/base.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.0/react.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.0/JSXTransformer.js"></script>
@@ -15,12 +16,17 @@
 
   </head>
   <body>
-    <button class="connect">connect to soundcloud</button>
     <script type="text/jsx;harmony=true" src="scripts/react.js"></script>
-    <div id="react-music-player"></div>
-    <div id="track-button"></div>
-    <div id="username"></div>
-
+    <div class="row">
+      <div class="col-md-6">
+        <button class="connect">connect to soundcloud</button>
+        <div id="react-music-player"></div>
+      </div>
+      <div class="col-md-3">
+        <div id="track-button"></div>
+        <div id="username"></div>
+      </div>
+    </div>
     <!-- comment box react tutorial -->
     <!-- <div id="comment-box"></div> -->
 
