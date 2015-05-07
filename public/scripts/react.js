@@ -52,7 +52,9 @@ var MyTracks = React.createClass({
       <div>
         {this.props.tracks.map(function(track){
           return (
-            <Track title={track.title} artwork={track.artwork_url} id={track.id} />
+            <div>
+              <Track title={track.title} artwork={track.artwork_url} id={track.id} />
+            </div>
           )
         })}
       </div>
@@ -82,21 +84,17 @@ var Track = React.createClass({
     player.bind(SC.Widget.Events.FINISH, function() {
       console.log("track finished!");
     });
-
-    // player.bind(SC.Widget.Events.PLAY_PROGRESS, function(e) {
-    //   var currentTime = e.relativePosition;
-
-    //   setCurrentTime(currentTime);
-    //   toHHMMSS(currentTime);
-    //   // console.log( e.relativePosition*100);
-    //    // $('.progress-bar').css('width', ( e.relativePosition*100)+"%");
-    // });
+  },
+  deleteTrack: function() {
+    debugger;
   },
   render: function() {
     return (
-      <div className="track">
+      <div className="track"  key={track.id}>
         <p>{this.props.title}</p>
         <img src={this.props.artwork} data-id={this.props.id} onClick={this.handleClick} />
+        <br />
+        <button onClick={this.deleteTrack}>Delete Track</button>
       </div>
     );
   }
@@ -154,7 +152,7 @@ var Player = React.createClass({
         <button id="prev" onClick={this.prevTrack}>Prev</button>
         <button id="mute" onClick={this.muteToggleTrack}>Mute</button>
 
-        <iframe id="soundcloud_widget" src={this.state.url} width="420" height="120" frameborder="no">
+        <iframe id="soundcloud_widget" src={this.state.url} width="420" height="120" frameBorder="no">
         </iframe>
       </div>
     );
