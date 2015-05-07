@@ -86,15 +86,37 @@ var Track = React.createClass({
     });
   },
   deleteTrack: function() {
-    debugger;
+    id = event.target.getAttribute("data-id");
+    $.ajax({
+       // url: this.props.url,
+       url: 'https://api.soundcloud.com/users/143543661/playlists.json?client_id=51b52c948e268a19b58f87f3d47861ad',
+       dataType: 'json',
+       success: function(playlist) {
+        var array = [];
+        forEach(playlist[0].tracks, function(track){
+          thisTrack = JSON.stringify(track.id);
+          return array.push(thisTrack);
+        });
+        var index = array.indexOf(id);
+        if (index > -1) array.splice(index, 1);
+
+
+         this.setState({tracks: array});
+        debugger;
+       }.bind(this),
+       error: function(xhr, status, err) {
+         // console.error(this.props.url, status, err.toString());
+         console.error('http://api.soundcloud.com/playlists/405726.json?client_id=51b52c948e268a19b58f87f3d47861ad', status, err.toString());
+       }.bind(this)
+     });
   },
   render: function() {
     return (
-      <div className="track"  key={track.id}>
+      <div className="track" key={this.props.id}>
         <p>{this.props.title}</p>
         <img src={this.props.artwork} data-id={this.props.id} onClick={this.handleClick} />
         <br />
-        <button onClick={this.deleteTrack}>Delete Track</button>
+        <button data-id={this.props.id} onClick={this.deleteTrack}>Delete Track</button>
       </div>
     );
   }
