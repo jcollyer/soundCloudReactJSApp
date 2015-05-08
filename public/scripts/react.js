@@ -3,15 +3,19 @@ SC.initialize({
   redirect_uri: "http://localhost:3000/callback.html"
 });
 
-
-$('button.connect').click(function(e) {
-  e.preventDefault();
+var isLoggedIn = false;
+var login = function() {
   SC.connect(function() {
     SC.get('/me', function(me) {
       $('#username').html(me.username);
     });
   });
+  isLoggedIn = true;
+};
+$('button.connect').click(function() {
+  login();
 });
+
 
 var player;
 playerReady = function() {
@@ -85,8 +89,7 @@ var Track = React.createClass({
       console.log("track finished!");
     });
   },
-  deleteTrack: function() {
-    id = event.target.getAttribute("data-id");
+  removeTrack: function(id) {
     SC.get('/me/playlists', { limit: 1 }, function(playlist) {
       var oTracksIds = [];
       var oTracks = playlist[0].tracks;
@@ -107,6 +110,14 @@ var Track = React.createClass({
         }
       });
     });
+  },
+  deleteTrack: function() {
+    id = event.target.getAttribute("data-id");
+    if(isLoggedIn) {
+      this.removeTrack(id);
+    } else {
+      login();
+    }
   },
   render: function() {
     return (
