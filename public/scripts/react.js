@@ -87,28 +87,26 @@ var Track = React.createClass({
   },
   deleteTrack: function() {
     id = event.target.getAttribute("data-id");
-    $.ajax({
-       // url: this.props.url,
-       url: 'https://api.soundcloud.com/users/143543661/playlists.json?client_id=51b52c948e268a19b58f87f3d47861ad',
-       dataType: 'json',
-       success: function(playlist) {
-        var array = [];
-        forEach(playlist[0].tracks, function(track){
-          thisTrack = JSON.stringify(track.id);
-          return array.push(thisTrack);
-        });
-        var index = array.indexOf(id);
-        if (index > -1) array.splice(index, 1);
+    SC.get('/me/playlists', { limit: 1 }, function(playlist) {
+      var oTracksIds = [];
+      var oTracks = playlist[0].tracks;
+      oTracks.forEach(function (track){
+        var stringifyIDs = JSON.stringify(track.id)
+        oTracksIds.push(stringifyIDs);
+      });
 
+      var i = oTracksIds.indexOf(id);
+      if (i > -1) oTracksIds.splice(i, 1);
 
-         this.setState({tracks: array});
-        debugger;
-       }.bind(this),
-       error: function(xhr, status, err) {
-         // console.error(this.props.url, status, err.toString());
-         console.error('http://api.soundcloud.com/playlists/405726.json?client_id=51b52c948e268a19b58f87f3d47861ad', status, err.toString());
-       }.bind(this)
-     });
+      var tracks = oTracksIds.map(function(id) { return { id: id }; });
+      SC.put(playlist[0].uri, { playlist: { tracks: tracks } }, function(response, error){
+        if(error){
+          console.log("Some error occured: " + error.message);
+        }else{
+          console.log("track removed from playlist!");
+        }
+      });
+    });
   },
   render: function() {
     return (
