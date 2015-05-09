@@ -110,6 +110,7 @@ var Track = React.createClass({
         }
       });
     });
+    debugger;
   },
   deleteTrack: function() {
     id = event.target.getAttribute("data-id");
@@ -206,6 +207,9 @@ var MusicTable = React.createClass({
 // https://api-v2.soundcloud.com/explore/metal?limit=5&offset=0
 
 var GenreList = React.createClass({
+  getInitialState: function() {
+    return {songs: []}
+  },
   getTracks: function(genre) {
     SC.get('/tracks', { genres: genre, limit: 5, order: 'created_at' }, function(tracks) {
       songs = [];
@@ -218,9 +222,6 @@ var GenreList = React.createClass({
     var genre = event.target.getAttribute("data-genre");
     this.getTracks(genre);
     this.setState({songs: songs});
-  },
-  getInitialState: function() {
-    return {songs: []}
   },
   render: function() {
     return (
@@ -283,7 +284,7 @@ var Song = React.createClass({
   },
   addTrackToPlaylist: function() {
     id = event.target.getAttribute("data-id");
-    SC.connect(function() {
+    if(isLoggedIn) {
       SC.get('/me/playlists', { limit: 1 }, function(playlist) {
         var oTracksIds = [];
         var oTracks = playlist[0].tracks;
@@ -301,11 +302,13 @@ var Song = React.createClass({
           }
         });
       });
-    });
+    } else {
+      login();
+    }
   },
   favoriteTrack: function() {
     id = event.target.getAttribute("data-id");
-    SC.connect(function() {
+    if(isLoggedIn) {
       SC.put('/me/favorites/'+id, function(status, error) {
         if (error) {
           alert("Error: " + error.message);
@@ -313,7 +316,9 @@ var Song = React.createClass({
           alert("Favorite:  " + id);
         }
       });
-    });
+    } else {
+      login();
+    }
   },
   render: function() {
     return (
