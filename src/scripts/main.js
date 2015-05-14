@@ -16,6 +16,16 @@ $('button.connect').click(function() {
   login();
 });
 
+var titleNames = [];
+var getUsersPlaylists = function() {
+  SC.get('/me/playlists', function(playlists) {
+
+    playlists.forEach(function(playlist){
+      var title = playlist.title;
+      titleNames.push(title);
+    });
+  });
+};
 
 var player;
 playerReady = function() {
@@ -27,12 +37,13 @@ var MyTracksButton = React.createClass({
     return {tracks:[]};
   },
   handleClick: function() {
+    getUsersPlaylists();
     $.ajax({
       // url: this.props.url,
       url: 'https://api.soundcloud.com/users/143543661/playlists.json?client_id=51b52c948e268a19b58f87f3d47861ad',
       dataType: 'json',
-      success: function(tracks) {
-        this.setState({tracks: tracks[0].tracks});
+      success: function(playlists) {
+        this.setState({tracks: playlists[0].tracks});
       }.bind(this),
       error: function(xhr, status, err) {
         // console.error(this.props.url, status, err.toString());
@@ -76,7 +87,6 @@ var Track = React.createClass({
     var player   = SC.Widget(iframe);
     var player2  = SC.Widget(iframeID);
     // widget1 === widget2
-    // debugger;
     player.load(url, {
       auto_play: true
     });
@@ -110,7 +120,6 @@ var Track = React.createClass({
         }
       });
     });
-    debugger;
   },
   deleteTrack: function() {
     id = event.target.getAttribute("data-id");
@@ -247,7 +256,7 @@ TrackList = React.createClass({
       <div>
         {this.props.songs.map(function(song){
           return (
-            <Song title={song.title} artwork={song.artwork_url} id={song.id} />
+            <Song title={song.title} artwork={song.artwork_url} id={song.id} key={song.id}/>
           )
         })}
       </div>
@@ -265,7 +274,6 @@ var Song = React.createClass({
     var player   = SC.Widget(iframe);
     var player2  = SC.Widget(iframeID);
     // widget1 === widget2
-    // debugger;
     player.load(url, {
       auto_play: true
     });
@@ -290,13 +298,21 @@ var Song = React.createClass({
   addTrackToPlaylist: function() {
     id = event.target.getAttribute("data-id");
     if(isLoggedIn) {
-      SC.get('/me/playlists', { limit: 1 }, function(playlist) {
+      SC.get('/me/playlists', function(playlist) {
         var oTracksIds = [];
+        var titleNames = [];
+
+        // playlists.forEach(function(playlist){
+        //   var title = playlist.title;
+        //   titleNames.push(title);
+        // });
+
         var oTracks = playlist[0].tracks;
         oTracks.forEach(function (track){
           var stringifyIDs = JSON.stringify(track.id)
           oTracksIds.push(stringifyIDs);
         });
+
         oTracksIds.push(id);
         var tracks = oTracksIds.map(function(id) { return { id: id }; });
         SC.put(playlist[0].uri, { playlist: { tracks: tracks } }, function(response, error){
@@ -306,6 +322,7 @@ var Song = React.createClass({
             console.log("tracks added to playlist!");
           }
         });
+
       });
     } else {
       login();

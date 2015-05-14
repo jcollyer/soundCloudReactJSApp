@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SoundCloud ReactJS app</title>
+    <link rel="stylesheet" media="screen" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+  </head>
+  <body>
+
+    <div id="main" class="container"></div>
+
+    <div id="track-pop-up"></div>
+    <div class="row">
+      <div class="col-md-6">
+        <button class="connect">connect to soundcloud</button>
+        <div id="react-music-player"></div>
+      </div>
+      <div class="col-md-3">
+        <div id="track-button"></div>
+        <div id="username"></div>
+      </div>
+    </div>
+
+  </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.0/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.0/JSXTransformer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/jsx;harmony=true" src="scripts/main.js"></script>
+    <script src="http://w.soundcloud.com/player/api.js"></script>
+    <script src="//connect.soundcloud.com/sdk.js"></script>
+</html>
