@@ -1,3 +1,13 @@
+/** @jsx React.DOM */
+var APP = require('./components/app');
+var React = require('react');
+
+React.render(
+  <APP />,
+  document.getElementById('main'));
+
+
+
 SC.initialize({
   client_id: "51b52c948e268a19b58f87f3d47861ad",
   redirect_uri: "http://localhost:3000/callback.html"
