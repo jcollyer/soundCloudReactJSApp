@@ -57,6 +57,21 @@ function _login(){
   });
 }
 
+function _genreList(genre){
+  $.ajax({
+    // url: this.props.url,
+    url: 'http://api.soundcloud.com/tracks?'+genre+'&client_id=51b52c948e268a19b58f87f3d47861ad',
+    dataType: 'json',
+    success: function(songs) {
+      this.setState({songs: songs});
+    }.bind(this),
+    error: function(xhr, status, err) {
+      // console.error(this.props.url, status, err.toString());
+      console.error(xhr, status, err.toString());
+    }.bind(this)
+  });
+}
+
 
 var AppStore = assign({}, EventEmitter.prototype, {
   emitChange:function(){
@@ -100,6 +115,10 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
       case AppConstants.LOGIN:
         _login();
+        break;
+
+      case AppConstants.GENRE_LIST:
+        _genreList(payload.action.genre_list);
         break;
     }
     AppStore.emitChange();

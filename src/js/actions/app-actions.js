@@ -30,6 +30,12 @@ var AppActions = {
     AppDispatcher.handleViewAction({
       actionType: AppConstants.LOGIN
     })
+  },
+  genreList:function(genre_list){
+    AppDispatcher.handleViewAction({
+      actionType: AppConstants.GENRE_LIST,
+      genre_list: genre_list
+    })
   }
 }
 

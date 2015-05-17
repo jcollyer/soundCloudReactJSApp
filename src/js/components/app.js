@@ -3,6 +3,7 @@ var React = require('react');
 var Catalog = require('../components/app-catalog.js');
 var Cart = require('../components/app-cart');
 var Login = require('../components/app-login');
+var GenreList = require('../components/app-genrelist');
 var APP =
     React.createClass({
         render: function () {
@@ -13,6 +14,7 @@ var APP =
                     <h1>Cart</h1>
                     <Cart />
                     <Login />
+                    <GenreList />
                 </div>
             )
         }

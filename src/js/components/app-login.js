@@ -1,6 +1,7 @@
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
+
 var Login =
   React.createClass({
     handleClick:function(){

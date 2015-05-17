@@ -13,18 +13,6 @@ SC.initialize({
   redirect_uri: "http://localhost:3000/callback.html"
 });
 
-var isLoggedIn = false;
-var login = function() {
-  SC.connect(function() {
-    SC.get('/me', function(me) {
-      $('#username').html(me.username);
-    });
-  });
-  isLoggedIn = true;
-};
-$('button.connect').click(function() {
-  login();
-});
 
 var titleNames = [];
 var getUsersPlaylists = function() {
@@ -215,7 +203,6 @@ var MusicTable = React.createClass({
     return (
       <div className="MusicTable">
         <h3>Music Table</h3>
-        <GenreList />
       </div>
     );
   }
@@ -225,40 +212,40 @@ var MusicTable = React.createClass({
 // http://stackoverflow.com/questions/16394100/order-by-playbacks-when-fetching-tracks-from-soundcloud
 // https://api-v2.soundcloud.com/explore/metal?limit=5&offset=0
 
-var GenreList = React.createClass({
-  getInitialState: function() {
-    return {songs: []}
-  },
-  getTracks: function(genre) {
-    $.ajax({
-      // url: this.props.url,
-      url: 'http://api.soundcloud.com/tracks?'+genre+'&client_id=51b52c948e268a19b58f87f3d47861ad',
-      dataType: 'json',
-      success: function(songs) {
-        this.setState({songs: songs});
-      }.bind(this),
-      error: function(xhr, status, err) {
-        // console.error(this.props.url, status, err.toString());
-        console.error(xhr, status, err.toString());
-      }.bind(this)
-    });
-  },
-  handleClick: function(event) {
-    var genre = event.target.getAttribute("data-genre");
-    this.getTracks(genre);
-  },
-  render: function() {
-    return (
-      <div>
-        <button onClick={this.handleClick} data-genre="beats">Beats</button>
-        <button onClick={this.handleClick} data-genre="rnb">RnB</button>
-        <button onClick={this.handleClick} data-genre="house">House</button>
-        <button onClick={this.handleClick} data-genre="hip-hop">Hip-Hop</button>
-        <TrackList songs={this.state.songs} />
-      </div>
-    );
-  }
-});
+// var GenreList = React.createClass({
+//   getInitialState: function() {
+//     return {songs: []}
+//   },
+//   getTracks: function(genre) {
+//     $.ajax({
+//       // url: this.props.url,
+//       url: 'http://api.soundcloud.com/tracks?'+genre+'&client_id=51b52c948e268a19b58f87f3d47861ad',
+//       dataType: 'json',
+//       success: function(songs) {
+//         this.setState({songs: songs});
+//       }.bind(this),
+//       error: function(xhr, status, err) {
+//         // console.error(this.props.url, status, err.toString());
+//         console.error(xhr, status, err.toString());
+//       }.bind(this)
+//     });
+//   },
+//   handleClick: function(event) {
+//     var genre = event.target.getAttribute("data-genre");
+//     this.getTracks(genre);
+//   },
+//   render: function() {
+//     return (
+//       <div>
+//         <button onClick={this.handleClick} data-genre="beats">Beats</button>
+//         <button onClick={this.handleClick} data-genre="rnb">RnB</button>
+//         <button onClick={this.handleClick} data-genre="house">House</button>
+//         <button onClick={this.handleClick} data-genre="hip-hop">Hip-Hop</button>
+//         <TrackList songs={this.state.songs} />
+//       </div>
+//     );
+//   }
+// });
 
 TrackList = React.createClass({
   render: function() {
