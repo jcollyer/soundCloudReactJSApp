@@ -21101,13 +21101,18 @@ var AppActions = {
       actionType: AppConstants.INCREASE_ITEM,
       index: index
     })
+  },
+  login:function(){
+    AppDispatcher.handleViewAction({
+      actionType: AppConstants.LOGIN
+    })
   }
 }
 
 module.exports = AppActions;
 
 
-},{"../constants/app-constants.js":168,"../dispatchers/app-dispatcher.js":169}],161:[function(require,module,exports){
+},{"../constants/app-constants.js":169,"../dispatchers/app-dispatcher.js":170}],161:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
@@ -21192,7 +21197,7 @@ var Cart =
 module.exports = Cart;
 
 
-},{"../components/app-decrease.js":164,"../components/app-increase.js":165,"../components/app-removefromcart.js":166,"../stores/app-store.js":172,"react":159}],163:[function(require,module,exports){
+},{"../components/app-decrease.js":164,"../components/app-increase.js":165,"../components/app-removefromcart.js":167,"../stores/app-store.js":173,"react":159}],163:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppStore = require('../stores/app-store.js');
@@ -21221,7 +21226,7 @@ var Catalog =
 module.exports = Catalog;
 
 
-},{"../components/app-addtocart.js":161,"../stores/app-store.js":172,"react":159}],164:[function(require,module,exports){
+},{"../components/app-addtocart.js":161,"../stores/app-store.js":173,"react":159}],164:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
@@ -21257,6 +21262,22 @@ module.exports = Increase;
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
+var Login =
+  React.createClass({displayName: "Login",
+    handleClick:function(){
+      AppActions.login();
+    },
+    render:function(){
+      return React.createElement("button", {onClick: this.handleClick}, "Login to Soundclud")
+    }
+  });
+module.exports = Login;
+
+
+},{"../actions/app-actions.js":160,"react":159}],167:[function(require,module,exports){
+/** @jsx React.DOM */
+var React = require('react');
+var AppActions = require('../actions/app-actions.js');
 var RemoveFromCart =
   React.createClass({displayName: "RemoveFromCart",
     handleClick:function(){
@@ -21269,11 +21290,12 @@ var RemoveFromCart =
 module.exports = RemoveFromCart;
 
 
-},{"../actions/app-actions.js":160,"react":159}],167:[function(require,module,exports){
+},{"../actions/app-actions.js":160,"react":159}],168:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var Catalog = require('../components/app-catalog.js');
 var Cart = require('../components/app-cart');
+var Login = require('../components/app-login');
 var APP =
     React.createClass({displayName: "APP",
         render: function () {
@@ -21282,7 +21304,8 @@ var APP =
                     React.createElement("h1", null, "Lets shop"), 
                     React.createElement(Catalog, null), 
                     React.createElement("h1", null, "Cart"), 
-                    React.createElement(Cart, null)
+                    React.createElement(Cart, null), 
+                    React.createElement(Login, null)
                 )
             )
         }
@@ -21290,16 +21313,17 @@ var APP =
 module.exports = APP;
 
 
-},{"../components/app-cart":162,"../components/app-catalog.js":163,"react":159}],168:[function(require,module,exports){
+},{"../components/app-cart":162,"../components/app-catalog.js":163,"../components/app-login":166,"react":159}],169:[function(require,module,exports){
 module.exports = {
   ADD_ITEM: 'ADD_ITEM',
   REMOVE_ITEM: 'REMOVE_ITEM',
   INCREASE_ITEM: 'INCREASE_ITEM',
   DECREASE_ITEM: 'DECREASE_ITEM',
+  LOGIN: 'LOGIN'
 };
 
 
-},{}],169:[function(require,module,exports){
+},{}],170:[function(require,module,exports){
 var Dispatcher = require('./dispatcher.js');
 var assign = require('object-assign');
 
@@ -21315,7 +21339,7 @@ var AppDispatcher = assign({},Dispatcher.prototype, {
 module.exports = AppDispatcher;
 
 
-},{"./dispatcher.js":170,"object-assign":4}],170:[function(require,module,exports){
+},{"./dispatcher.js":171,"object-assign":4}],171:[function(require,module,exports){
 var Promise = require('es6-promise').Promise;
 var assign = require('object-assign');
 
@@ -21373,7 +21397,7 @@ Dispatcher.prototype = assign({}, Dispatcher.prototype, {
 module.exports = Dispatcher;
 
 
-},{"es6-promise":1,"object-assign":4}],171:[function(require,module,exports){
+},{"es6-promise":1,"object-assign":4}],172:[function(require,module,exports){
 /** @jsx React.DOM */
 var APP = require('./components/app');
 var React = require('react');
@@ -21751,7 +21775,7 @@ React.render(
 );
 
 
-},{"./components/app":167,"react":159}],172:[function(require,module,exports){
+},{"./components/app":168,"react":159}],173:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 var EventEmitter = require('events').EventEmitter;
@@ -21803,6 +21827,14 @@ function _addItem(item){
   }
 }
 
+function _login(){
+  SC.connect(function() {
+    SC.get('/me', function(me) {
+      $('#username').html(me.username);
+    });
+  });
+}
+
 
 var AppStore = assign({}, EventEmitter.prototype, {
   emitChange:function(){
@@ -21843,6 +21875,10 @@ var AppStore = assign({}, EventEmitter.prototype, {
       case AppConstants.DECREASE_ITEM:
         _decreaseItem(payload.action.index);
         break;
+
+      case AppConstants.LOGIN:
+        _login();
+        break;
     }
     AppStore.emitChange();
 
@@ -21853,4 +21889,4 @@ var AppStore = assign({}, EventEmitter.prototype, {
 module.exports = AppStore;
 
 
-},{"../constants/app-constants":168,"../dispatchers/app-dispatcher":169,"events":2,"object-assign":4}]},{},[171])
+},{"../constants/app-constants":169,"../dispatchers/app-dispatcher":170,"events":2,"object-assign":4}]},{},[172])

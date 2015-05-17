@@ -25,6 +25,11 @@ var AppActions = {
       actionType: AppConstants.INCREASE_ITEM,
       index: index
     })
+  },
+  login:function(){
+    AppDispatcher.handleViewAction({
+      actionType: AppConstants.LOGIN
+    })
   }
 }
 

@@ -49,6 +49,14 @@ function _addItem(item){
   }
 }
 
+function _login(){
+  SC.connect(function() {
+    SC.get('/me', function(me) {
+      $('#username').html(me.username);
+    });
+  });
+}
+
 
 var AppStore = assign({}, EventEmitter.prototype, {
   emitChange:function(){
@@ -88,6 +96,10 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
       case AppConstants.DECREASE_ITEM:
         _decreaseItem(payload.action.index);
+        break;
+
+      case AppConstants.LOGIN:
+        _login();
         break;
     }
     AppStore.emitChange();
