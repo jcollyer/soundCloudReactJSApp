@@ -1,19 +1,30 @@
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
+var AppStore = require('../stores/app-store.js');
+var TrackList = require('../components/tracklist');
 
-var GenreList =
+getGenre = function(){
+  return {genre: AppStore.getGenre()}
+};
+
+var getGenreTist =
   React.createClass({
     getInitialState: function() {
-      return {songs: []}
-    },
-    getTracks: function(genre) {
-      AppActions.genreList(genre);
+      return getGenre();
     },
     handleClick: function(event) {
       var genre = event.target.getAttribute("data-genre");
-      this.getTracks(genre);
+      AppActions.setGenre(genre);
+      this.setState(getGenre());
     },
+    // componentDidUpdate:function(){
+    //   debugger;
+    //   AppStore.addChangeListener(this._onChange)
+    // },
+    // _onChange:function(){
+    //   debugger;
+    // },
     render: function() {
       return (
         <div>
@@ -21,9 +32,11 @@ var GenreList =
           <button onClick={this.handleClick} data-genre="rnb">RnB</button>
           <button onClick={this.handleClick} data-genre="house">House</button>
           <button onClick={this.handleClick} data-genre="hip-hop">Hip-Hop</button>
-          <TrackList songs={this.state.songs} />
+          <h2>{this.state.genre}</h2>
+          <TrackList genre={this.state.genre}/>
         </div>
       );
     }
   });
-module.exports = GenreList;
+module.exports = getGenreTist;
+

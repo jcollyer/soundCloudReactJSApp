@@ -31,11 +31,14 @@ var AppActions = {
       actionType: AppConstants.LOGIN
     })
   },
-  genreList:function(genre_list){
+  setGenre:function(genre){
     AppDispatcher.handleViewAction({
-      actionType: AppConstants.GENRE_LIST,
-      genre_list: genre_list
+      actionType: AppConstants.SET_GENRE,
+      genre: genre
     })
+
+
+
   }
 }
 

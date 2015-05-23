@@ -21107,18 +21107,21 @@ var AppActions = {
       actionType: AppConstants.LOGIN
     })
   },
-  genreList:function(genre_list){
+  setGenre:function(genre){
     AppDispatcher.handleViewAction({
-      actionType: AppConstants.GENRE_LIST,
-      genre_list: genre_list
+      actionType: AppConstants.SET_GENRE,
+      genre: genre
     })
+
+
+
   }
 }
 
 module.exports = AppActions;
 
 
-},{"../constants/app-constants.js":170,"../dispatchers/app-dispatcher.js":171}],161:[function(require,module,exports){
+},{"../constants/app-constants.js":171,"../dispatchers/app-dispatcher.js":172}],161:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
@@ -21203,7 +21206,7 @@ var Cart =
 module.exports = Cart;
 
 
-},{"../components/app-decrease.js":164,"../components/app-increase.js":166,"../components/app-removefromcart.js":168,"../stores/app-store.js":174,"react":159}],163:[function(require,module,exports){
+},{"../components/app-decrease.js":164,"../components/app-increase.js":165,"../components/app-removefromcart.js":166,"../stores/app-store.js":175,"react":159}],163:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppStore = require('../stores/app-store.js');
@@ -21232,7 +21235,7 @@ var Catalog =
 module.exports = Catalog;
 
 
-},{"../components/app-addtocart.js":161,"../stores/app-store.js":174,"react":159}],164:[function(require,module,exports){
+},{"../components/app-addtocart.js":161,"../stores/app-store.js":175,"react":159}],164:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
@@ -21252,38 +21255,6 @@ module.exports = Decrease;
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
-
-var GenreList =
-  React.createClass({displayName: "GenreList",
-    getInitialState: function() {
-      return {songs: []}
-    },
-    getTracks: function(genre) {
-      AppActions.genreList(genre);
-    },
-    handleClick: function(event) {
-      var genre = event.target.getAttribute("data-genre");
-      this.getTracks(genre);
-    },
-    render: function() {
-      return (
-        React.createElement("div", null, 
-          React.createElement("button", {onClick: this.handleClick, "data-genre": "beats"}, "Beats"), 
-          React.createElement("button", {onClick: this.handleClick, "data-genre": "rnb"}, "RnB"), 
-          React.createElement("button", {onClick: this.handleClick, "data-genre": "house"}, "House"), 
-          React.createElement("button", {onClick: this.handleClick, "data-genre": "hip-hop"}, "Hip-Hop"), 
-          React.createElement(TrackList, {songs: this.state.songs})
-        )
-      );
-    }
-  });
-module.exports = GenreList;
-
-
-},{"../actions/app-actions.js":160,"react":159}],166:[function(require,module,exports){
-/** @jsx React.DOM */
-var React = require('react');
-var AppActions = require('../actions/app-actions.js');
 var Increase =
   React.createClass({displayName: "Increase",
     handleClick:function(){
@@ -21296,24 +21267,7 @@ var Increase =
 module.exports = Increase;
 
 
-},{"../actions/app-actions.js":160,"react":159}],167:[function(require,module,exports){
-/** @jsx React.DOM */
-var React = require('react');
-var AppActions = require('../actions/app-actions.js');
-
-var Login =
-  React.createClass({displayName: "Login",
-    handleClick:function(){
-      AppActions.login();
-    },
-    render:function(){
-      return React.createElement("button", {onClick: this.handleClick}, "Login to Soundclud")
-    }
-  });
-module.exports = Login;
-
-
-},{"../actions/app-actions.js":160,"react":159}],168:[function(require,module,exports){
+},{"../actions/app-actions.js":160,"react":159}],166:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
@@ -21329,13 +21283,14 @@ var RemoveFromCart =
 module.exports = RemoveFromCart;
 
 
-},{"../actions/app-actions.js":160,"react":159}],169:[function(require,module,exports){
+},{"../actions/app-actions.js":160,"react":159}],167:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var Catalog = require('../components/app-catalog.js');
 var Cart = require('../components/app-cart');
-var Login = require('../components/app-login');
-var GenreList = require('../components/app-genrelist');
+var Login = require('../components/login');
+var GenreList = require('../components/getgenretracks');
+
 var APP =
     React.createClass({displayName: "APP",
         render: function () {
@@ -21354,18 +21309,127 @@ var APP =
 module.exports = APP;
 
 
-},{"../components/app-cart":162,"../components/app-catalog.js":163,"../components/app-genrelist":165,"../components/app-login":167,"react":159}],170:[function(require,module,exports){
+},{"../components/app-cart":162,"../components/app-catalog.js":163,"../components/getgenretracks":168,"../components/login":169,"react":159}],168:[function(require,module,exports){
+/** @jsx React.DOM */
+var React = require('react');
+var AppActions = require('../actions/app-actions.js');
+var AppStore = require('../stores/app-store.js');
+var TrackList = require('../components/tracklist');
+
+getGenre = function(){
+  return {genre: AppStore.getGenre()}
+};
+
+var getGenreTist =
+  React.createClass({displayName: "getGenreTist",
+    getInitialState: function() {
+      return getGenre();
+    },
+    handleClick: function(event) {
+      var genre = event.target.getAttribute("data-genre");
+      AppActions.setGenre(genre);
+      this.setState(getGenre());
+    },
+    // componentDidUpdate:function(){
+    //   debugger;
+    //   AppStore.addChangeListener(this._onChange)
+    // },
+    // _onChange:function(){
+    //   debugger;
+    // },
+    render: function() {
+      return (
+        React.createElement("div", null, 
+          React.createElement("button", {onClick: this.handleClick, "data-genre": "beats"}, "Beats"), 
+          React.createElement("button", {onClick: this.handleClick, "data-genre": "rnb"}, "RnB"), 
+          React.createElement("button", {onClick: this.handleClick, "data-genre": "house"}, "House"), 
+          React.createElement("button", {onClick: this.handleClick, "data-genre": "hip-hop"}, "Hip-Hop"), 
+          React.createElement("h2", null, this.state.genre), 
+          React.createElement(TrackList, {genre: this.state.genre})
+        )
+      );
+    }
+  });
+module.exports = getGenreTist;
+
+
+
+},{"../actions/app-actions.js":160,"../components/tracklist":170,"../stores/app-store.js":175,"react":159}],169:[function(require,module,exports){
+/** @jsx React.DOM */
+var React = require('react');
+var AppActions = require('../actions/app-actions.js');
+
+var Login =
+  React.createClass({displayName: "Login",
+    handleClick:function(){
+      AppActions.login();
+    },
+    render:function(){
+      return React.createElement("button", {onClick: this.handleClick}, "Login to Soundclud")
+    }
+  });
+module.exports = Login;
+
+
+},{"../actions/app-actions.js":160,"react":159}],170:[function(require,module,exports){
+/** @jsx React.DOM */
+var React = require('react');
+var AppStore = require('../stores/app-store.js');
+var AppActions = require('../actions/app-actions.js');
+
+TrackList =
+  React.createClass({displayName: "TrackList",
+    getInitialState: function() {
+      return {tracks: []};
+    },
+    getTracks: function(genre) {
+      var url = 'http://api.soundcloud.com/tracks?'+genre+'&client_id=51b52c948e268a19b58f87f3d47861ad';
+      debugger;
+      $.ajax({
+        // url: this.props.url,
+        url: url,
+        dataType: 'json',
+        success: function(tracks) {
+          debugger;
+          this.setState({tracks: tracks});
+          console.log("success! tracks: ",tracks);
+        }.bind(this),
+        error: function(xhr, status, err) {
+          // console.error(this.props.url, status, err.toString());
+          console.error(xhr, status, err.toString());
+        }.bind(this)
+      });
+    },
+    componentWillReceiveProps: function(object, newProps){
+      this.getTracks(AppStore.getGenre());
+    },
+    render: function() {
+      // debugger;
+      var tracks = this.state.tracks.map(function(track){
+        return React.createElement("tr", null, React.createElement("td", null, track.title), React.createElement("td", null, "$", track.artwork_url))
+      })
+      return (
+          React.createElement("table", {className: "table table-hover"}, 
+          tracks
+          )
+        )
+    }
+  });
+module.exports = TrackList;
+
+
+},{"../actions/app-actions.js":160,"../stores/app-store.js":175,"react":159}],171:[function(require,module,exports){
 module.exports = {
   ADD_ITEM: 'ADD_ITEM',
   REMOVE_ITEM: 'REMOVE_ITEM',
   INCREASE_ITEM: 'INCREASE_ITEM',
   DECREASE_ITEM: 'DECREASE_ITEM',
   LOGIN: 'LOGIN',
-  GENRE_LIST: 'GENRE_LIST'
+  GENRE: 'GENRE'
 };
 
 
-},{}],171:[function(require,module,exports){
+},{}],172:[function(require,module,exports){
 var Dispatcher = require('./dispatcher.js');
 var assign = require('object-assign');
 
@@ -21381,7 +21445,7 @@ var AppDispatcher = assign({},Dispatcher.prototype, {
 module.exports = AppDispatcher;
 
 
-},{"./dispatcher.js":172,"object-assign":4}],172:[function(require,module,exports){
+},{"./dispatcher.js":173,"object-assign":4}],173:[function(require,module,exports){
 var Promise = require('es6-promise').Promise;
 var assign = require('object-assign');
 
@@ -21439,7 +21503,7 @@ Dispatcher.prototype = assign({}, Dispatcher.prototype, {
 module.exports = Dispatcher;
 
 
-},{"es6-promise":1,"object-assign":4}],173:[function(require,module,exports){
+},{"es6-promise":1,"object-assign":4}],174:[function(require,module,exports){
 /** @jsx React.DOM */
 var APP = require('./components/app');
 var React = require('react');
@@ -21689,19 +21753,19 @@ var MusicTable = React.createClass({displayName: "MusicTable",
 //   }
 // });
 
-TrackList = React.createClass({displayName: "TrackList",
-  render: function() {
-    return (
-      React.createElement("div", null, 
-        this.props.songs.map(function(song){
-          return (
-            React.createElement(Song, {title: song.title, artwork: song.artwork_url, id: song.id, key: song.id})
-          )
-        })
-      )
-    );
-  }
-});
+// TrackList = React.createClass({
+//   render: function() {
+//     return (
+//       <div>
+//         {this.props.songs.map(function(song){
+//           return (
+//             <Song title={song.title} artwork={song.artwork_url} id={song.id} key={song.id}/>
+//           )
+//         })}
+//       </div>
+//     );
+//   }
+// });
 
 var Song = React.createClass({displayName: "Song",
   handleClick: function(event) {
@@ -21804,7 +21868,7 @@ React.render(
 );
 
 
-},{"./components/app":169,"react":159}],174:[function(require,module,exports){
+},{"./components/app":167,"react":159}],175:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 var EventEmitter = require('events').EventEmitter;
@@ -21820,6 +21884,8 @@ var _catalog = [
   ];
 
 var _cartItems = [];
+
+var _genre = [];
 
 
 function _removeItem(index){
@@ -21864,19 +21930,8 @@ function _login(){
   });
 }
 
-function _genreList(genre){
-  $.ajax({
-    // url: this.props.url,
-    url: 'http://api.soundcloud.com/tracks?'+genre+'&client_id=51b52c948e268a19b58f87f3d47861ad',
-    dataType: 'json',
-    success: function(songs) {
-      this.setState({songs: songs});
-    }.bind(this),
-    error: function(xhr, status, err) {
-      // console.error(this.props.url, status, err.toString());
-      console.error(xhr, status, err.toString());
-    }.bind(this)
-  });
+function _setGenre(genre){
+  _genre = genre;
 }
 
 
@@ -21899,6 +21954,11 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
   getCatalog:function(){
     return _catalog
+  },
+
+  getGenre:function(){
+    // debugger;
+    return _genre
   },
 
   dispatcherIndex:AppDispatcher.register(function(payload){
@@ -21924,9 +21984,9 @@ var AppStore = assign({}, EventEmitter.prototype, {
         _login();
         break;
 
-      case AppConstants.GENRE_LIST:
-        _genreList(payload.action.genre_list);
-        break;
+      case AppConstants.SET_GENRE:
+        _setGenre(payload.action.genre);
+        break
     }
     AppStore.emitChange();
 
@@ -21937,4 +21997,4 @@ var AppStore = assign({}, EventEmitter.prototype, {
 module.exports = AppStore;
 
 
-},{"../constants/app-constants":170,"../dispatchers/app-dispatcher":171,"events":2,"object-assign":4}]},{},[173])
+},{"../constants/app-constants":171,"../dispatchers/app-dispatcher":172,"events":2,"object-assign":4}]},{},[174])

@@ -2,8 +2,9 @@
 var React = require('react');
 var Catalog = require('../components/app-catalog.js');
 var Cart = require('../components/app-cart');
-var Login = require('../components/app-login');
-var GenreList = require('../components/app-genrelist');
+var Login = require('../components/login');
+var GenreList = require('../components/getgenretracks');
+
 var APP =
     React.createClass({
         render: function () {

@@ -14,6 +14,8 @@ var _catalog = [
 
 var _cartItems = [];
 
+var _genre = [];
+
 
 function _removeItem(index){
   _cartItems[index].inCart = false;
@@ -57,19 +59,8 @@ function _login(){
   });
 }
 
-function _genreList(genre){
-  $.ajax({
-    // url: this.props.url,
-    url: 'http://api.soundcloud.com/tracks?'+genre+'&client_id=51b52c948e268a19b58f87f3d47861ad',
-    dataType: 'json',
-    success: function(songs) {
-      this.setState({songs: songs});
-    }.bind(this),
-    error: function(xhr, status, err) {
-      // console.error(this.props.url, status, err.toString());
-      console.error(xhr, status, err.toString());
-    }.bind(this)
-  });
+function _setGenre(genre){
+  _genre = genre;
 }
 
 
@@ -92,6 +83,11 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
   getCatalog:function(){
     return _catalog
+  },
+
+  getGenre:function(){
+    // debugger;
+    return _genre
   },
 
   dispatcherIndex:AppDispatcher.register(function(payload){
@@ -117,9 +113,9 @@ var AppStore = assign({}, EventEmitter.prototype, {
         _login();
         break;
 
-      case AppConstants.GENRE_LIST:
-        _genreList(payload.action.genre_list);
-        break;
+      case AppConstants.SET_GENRE:
+        _setGenre(payload.action.genre);
+        break
     }
     AppStore.emitChange();
 

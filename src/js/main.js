@@ -247,19 +247,19 @@ var MusicTable = React.createClass({
 //   }
 // });
 
-TrackList = React.createClass({
-  render: function() {
-    return (
-      <div>
-        {this.props.songs.map(function(song){
-          return (
-            <Song title={song.title} artwork={song.artwork_url} id={song.id} key={song.id}/>
-          )
-        })}
-      </div>
-    );
-  }
-});
+// TrackList = React.createClass({
+//   render: function() {
+//     return (
+//       <div>
+//         {this.props.songs.map(function(song){
+//           return (
+//             <Song title={song.title} artwork={song.artwork_url} id={song.id} key={song.id}/>
+//           )
+//         })}
+//       </div>
+//     );
+//   }
+// });
 
 var Song = React.createClass({
   handleClick: function(event) {
