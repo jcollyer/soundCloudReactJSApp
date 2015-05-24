@@ -3,16 +3,18 @@ var React = require('react');
 var AppActions = require('../actions/app-actions.js');
 var AppStore = require('../stores/app-store.js');
 
-getTrack = function(){
-  return {track: AppStore.getTrack(), duration: AppStore.getTrackDuration()};
-};
 var Player =
   React.createClass({
     player: '',
     widgetIframe: '',
     trackDuration: '',
+
     getInitialState: function() {
-      return getTrack();
+      return {
+        track: AppStore.getTrack(),
+        duration: AppStore.getTrackDuration(),
+        time: ''
+      };
     },
     toggleTrack: function() {
       player.toggle();
@@ -39,7 +41,8 @@ var Player =
       widgetIframe = document.getElementById('soundcloud_widget');
       player = SC.Widget(widgetIframe);
     },
-    updateTrack:function(){
+    updateTrack:function() {
+      that = this;
       this.setState({track: AppStore.getTrack(), duration: AppStore.getTrackDuration()});
       this.getPlayer();
 
@@ -47,7 +50,11 @@ var Player =
 
       player.bind(SC.Widget.Events.PLAY_PROGRESS, function() {
         player.getPosition(function(time){
-          console.log("---------postion: ",time)
+          var totalDuration = this.store.duration;
+          var currentTime = time;
+          var time = totalDuration/currentTimel;
+          that.setState({time: time});
+
         })
       });
 
@@ -75,13 +82,12 @@ var Player =
     },
     render: function() {
       return (
-        <div>
-          <div id="current_time"></div>
+        <div className="player">
+          <div className="progress" style={{width: this.state.time + '%'}}></div>
           <button id="toggle" onClick={this.toggleTrack}>toggle</button>
           <button id="next" onClick={this.nextTrack}>Next</button>
           <button id="prev" onClick={this.prevTrack}>Prev</button>
           <button id="mute" onClick={this.muteToggleTrack}>Mute</button>
-
 
           <iframe id="soundcloud_widget" width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F1848538&show_artwork=true"></iframe>
         </div>

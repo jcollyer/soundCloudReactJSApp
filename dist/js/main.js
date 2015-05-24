@@ -21389,16 +21389,18 @@ var React = require('react');
 var AppActions = require('../actions/app-actions.js');
 var AppStore = require('../stores/app-store.js');
 
-getTrack = function(){
-  return {track: AppStore.getTrack(), duration: AppStore.getTrackDuration()};
-};
 var Player =
   React.createClass({displayName: "Player",
     player: '',
     widgetIframe: '',
     trackDuration: '',
+
     getInitialState: function() {
-      return getTrack();
+      return {
+        track: AppStore.getTrack(),
+        duration: AppStore.getTrackDuration(),
+        time: ''
+      };
     },
     toggleTrack: function() {
       player.toggle();
@@ -21425,7 +21427,8 @@ var Player =
       widgetIframe = document.getElementById('soundcloud_widget');
       player = SC.Widget(widgetIframe);
     },
-    updateTrack:function(){
+    updateTrack:function() {
+      that = this;
       this.setState({track: AppStore.getTrack(), duration: AppStore.getTrackDuration()});
       this.getPlayer();
 
@@ -21433,7 +21436,11 @@ var Player =
 
       player.bind(SC.Widget.Events.PLAY_PROGRESS, function() {
         player.getPosition(function(time){
-          console.log("---------postion: ",time)
+          var totalDuration = this.store.duration;
+          var currentTime = time;
+          var time = totalDuration/currentTimel;
+          that.setState({time: time});
+
         })
       });
 
@@ -21461,13 +21468,12 @@ var Player =
     },
     render: function() {
       return (
-        React.createElement("div", null, 
-          React.createElement("div", {id: "current_time"}), 
+        React.createElement("div", {className: "player"}, 
+          React.createElement("div", {className: "progress", style: {width: this.state.time + '%'}}), 
           React.createElement("button", {id: "toggle", onClick: this.toggleTrack}, "toggle"), 
           React.createElement("button", {id: "next", onClick: this.nextTrack}, "Next"), 
           React.createElement("button", {id: "prev", onClick: this.prevTrack}, "Prev"), 
           React.createElement("button", {id: "mute", onClick: this.muteToggleTrack}, "Mute"), 
-
 
           React.createElement("iframe", {id: "soundcloud_widget", width: "100%", height: "166", scrolling: "no", frameborder: "no", src: "https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F1848538&show_artwork=true"})
         )
