@@ -21118,6 +21118,12 @@ var AppActions = {
       actionType: AppConstants.SET_TRACK,
       trackId: trackId
     })
+  },
+  setTrackDuration:function(duration){
+    AppDispatcher.handleViewAction({
+      actionType: AppConstants.SET_TRACK_DURATION,
+      duration: duration
+    })
   }
 }
 
@@ -21384,12 +21390,13 @@ var AppActions = require('../actions/app-actions.js');
 var AppStore = require('../stores/app-store.js');
 
 getTrack = function(){
-  return {track: AppStore.getTrack()}
+  return {track: AppStore.getTrack(), duration: AppStore.getTrackDuration()};
 };
 var Player =
   React.createClass({displayName: "Player",
     player: '',
     widgetIframe: '',
+    trackDuration: '',
     getInitialState: function() {
       return getTrack();
     },
@@ -21419,11 +21426,22 @@ var Player =
       player = SC.Widget(widgetIframe);
     },
     updateTrack:function(){
-      this.setState({track: AppStore.getTrack()});
+      this.setState({track: AppStore.getTrack(), duration: AppStore.getTrackDuration()});
       this.getPlayer();
 
+      var druation = this.state.duration;
+
+      player.bind(SC.Widget.Events.PLAY_PROGRESS, function() {
+        player.getPosition(function(time){
+          console.log("---------postion: ",time)
+        })
+      });
+
       player.bind(SC.Widget.Events.READY, function() {
-        player.load(AppStore.getTrack());
+        player.load(AppStore.getTrack(), {
+          auto_play: true
+
+        });
 
         player.bind(SC.Widget.Events.FINISH, function() {
           console.log("track finished");
@@ -21476,6 +21494,7 @@ var Track =
   React.createClass({displayName: "Track",
     handleClick: function() {
       AppActions.setTrack(this.props.id);
+      AppActions.setTrackDuration(this.props.duration);
     },
     removeTrack: function(id) {
       SC.get('/me/playlists', { limit: 1 }, function(playlist) {
@@ -21536,15 +21555,12 @@ TrackList =
     getTracks: function(genre) {
       var url = 'http://api.soundcloud.com/tracks?'+genre+'&client_id=51b52c948e268a19b58f87f3d47861ad';
       $.ajax({
-        // url: this.props.url,
         url: url,
         dataType: 'json',
         success: function(tracks) {
           this.setState({tracks: tracks});
-          console.log("success! tracks: ",tracks);
         }.bind(this),
         error: function(xhr, status, err) {
-          // console.error(this.props.url, status, err.toString());
           console.error(xhr, status, err.toString());
         }.bind(this)
       });
@@ -21558,7 +21574,7 @@ TrackList =
           this.state.tracks.map(function(track){
             return (
               React.createElement("div", null, 
-                React.createElement(Track, {title: track.title, artwork: track.artwork_url, id: track.id})
+                React.createElement(Track, {title: track.title, artwork: track.artwork_url, id: track.id, duration: track.duration})
               )
             )
           })
@@ -21577,7 +21593,8 @@ module.exports = {
   DECREASE_ITEM: 'DECREASE_ITEM',
   LOGIN: 'LOGIN',
   GENRE: 'GENRE',
-  SET_TRACK: 'SET_TRACK'
+  SET_TRACK: 'SET_TRACK',
+  SET_TRACK_DURATION: 'SET_TRACK_DURATION'
 };
 
 
@@ -21981,6 +21998,7 @@ var _cartItems = [];
 var _genre = [];
 var _track = [];
 var _trackURL = "";
+var _trackDuration = "";
 
 
 function _removeItem(index){
@@ -22025,35 +22043,17 @@ function _login(){
   });
 };
 
-function _setGenre(genre){
+function _setGenre(genre) {
   _genre = genre;
 };
 
 function _setTrack(trackId) {
-
   _trackURL = "https://api.soundcloud.com/tracks/"+trackId+"";
-
-  // url = "https://api.soundcloud.com/tracks/"+trackId+"";
-  // // according to docs: https://developers.soundcloud.com/docs/api/html5-widget
-  // var iframe   = document.getElementById('soundcloud_widget');
-  // // var iframeID = iframe.id;
-
-  // var player   = SC.Widget(iframe);
-  // // var player2  = SC.Widget(iframeID);
-  // // widget1 === widget2
-  // player.load(url, {
-  //   auto_play: true
-  // });
-
-  // player.bind(SC.Widget.Events.READY, function() {
-  //   debugger;
-  // });
-
-  // player.bind(SC.Widget.Events.FINISH, function() {
-  //   console.log("track finished!");
-  // });
-
 };
+
+function _setTrackDuration(duration) {
+  _trackDuration = duration;
+}
 
 
 var AppStore = assign({}, EventEmitter.prototype, {
@@ -22089,6 +22089,10 @@ var AppStore = assign({}, EventEmitter.prototype, {
     return _trackURL;
   },
 
+  getTrackDuration:function(){
+    return _trackDuration;
+  },
+
 
   dispatcherIndex:AppDispatcher.register(function(payload){
     var action = payload.action; // this is our action from handleViewAction
@@ -22121,6 +22125,12 @@ var AppStore = assign({}, EventEmitter.prototype, {
         _setTrack(payload.action.trackId);
         AppStore.emitChange();
         break
+
+      case AppConstants.SET_TRACK_DURATION:
+        _setTrackDuration(payload.action.duration);
+        AppStore.emitChange();
+        break
+
 
     }
     // AppStore.emitChange();

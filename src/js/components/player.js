@@ -4,12 +4,13 @@ var AppActions = require('../actions/app-actions.js');
 var AppStore = require('../stores/app-store.js');
 
 getTrack = function(){
-  return {track: AppStore.getTrack()}
+  return {track: AppStore.getTrack(), duration: AppStore.getTrackDuration()};
 };
 var Player =
   React.createClass({
     player: '',
     widgetIframe: '',
+    trackDuration: '',
     getInitialState: function() {
       return getTrack();
     },
@@ -39,11 +40,22 @@ var Player =
       player = SC.Widget(widgetIframe);
     },
     updateTrack:function(){
-      this.setState({track: AppStore.getTrack()});
+      this.setState({track: AppStore.getTrack(), duration: AppStore.getTrackDuration()});
       this.getPlayer();
 
+      var druation = this.state.duration;
+
+      player.bind(SC.Widget.Events.PLAY_PROGRESS, function() {
+        player.getPosition(function(time){
+          console.log("---------postion: ",time)
+        })
+      });
+
       player.bind(SC.Widget.Events.READY, function() {
-        player.load(AppStore.getTrack());
+        player.load(AppStore.getTrack(), {
+          auto_play: true
+
+        });
 
         player.bind(SC.Widget.Events.FINISH, function() {
           console.log("track finished");

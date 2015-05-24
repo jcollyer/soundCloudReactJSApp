@@ -7,6 +7,7 @@ var Track =
   React.createClass({
     handleClick: function() {
       AppActions.setTrack(this.props.id);
+      AppActions.setTrackDuration(this.props.duration);
     },
     removeTrack: function(id) {
       SC.get('/me/playlists', { limit: 1 }, function(playlist) {

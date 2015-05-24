@@ -42,6 +42,12 @@ var AppActions = {
       actionType: AppConstants.SET_TRACK,
       trackId: trackId
     })
+  },
+  setTrackDuration:function(duration){
+    AppDispatcher.handleViewAction({
+      actionType: AppConstants.SET_TRACK_DURATION,
+      duration: duration
+    })
   }
 }
 

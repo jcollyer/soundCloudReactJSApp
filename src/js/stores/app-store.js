@@ -17,6 +17,7 @@ var _cartItems = [];
 var _genre = [];
 var _track = [];
 var _trackURL = "";
+var _trackDuration = "";
 
 
 function _removeItem(index){
@@ -61,35 +62,17 @@ function _login(){
   });
 };
 
-function _setGenre(genre){
+function _setGenre(genre) {
   _genre = genre;
 };
 
 function _setTrack(trackId) {
-
   _trackURL = "https://api.soundcloud.com/tracks/"+trackId+"";
-
-  // url = "https://api.soundcloud.com/tracks/"+trackId+"";
-  // // according to docs: https://developers.soundcloud.com/docs/api/html5-widget
-  // var iframe   = document.getElementById('soundcloud_widget');
-  // // var iframeID = iframe.id;
-
-  // var player   = SC.Widget(iframe);
-  // // var player2  = SC.Widget(iframeID);
-  // // widget1 === widget2
-  // player.load(url, {
-  //   auto_play: true
-  // });
-
-  // player.bind(SC.Widget.Events.READY, function() {
-  //   debugger;
-  // });
-
-  // player.bind(SC.Widget.Events.FINISH, function() {
-  //   console.log("track finished!");
-  // });
-
 };
+
+function _setTrackDuration(duration) {
+  _trackDuration = duration;
+}
 
 
 var AppStore = assign({}, EventEmitter.prototype, {
@@ -125,6 +108,10 @@ var AppStore = assign({}, EventEmitter.prototype, {
     return _trackURL;
   },
 
+  getTrackDuration:function(){
+    return _trackDuration;
+  },
+
 
   dispatcherIndex:AppDispatcher.register(function(payload){
     var action = payload.action; // this is our action from handleViewAction
@@ -157,6 +144,12 @@ var AppStore = assign({}, EventEmitter.prototype, {
         _setTrack(payload.action.trackId);
         AppStore.emitChange();
         break
+
+      case AppConstants.SET_TRACK_DURATION:
+        _setTrackDuration(payload.action.duration);
+        AppStore.emitChange();
+        break
+
 
     }
     // AppStore.emitChange();
