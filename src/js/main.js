@@ -75,76 +75,14 @@ var MyTracks = React.createClass({
   }
 });
 
-var Track = React.createClass({
-  handleClick: function(event) {
-    id = event.target.getAttribute("data-id");
-    url = "https://api.soundcloud.com/tracks/"+id+"";
-    // according to docs: https://developers.soundcloud.com/docs/api/html5-widget
-    var iframe   = document.querySelector('iframe');
-    var iframeID = iframe.id;
-    var player   = SC.Widget(iframe);
-    var player2  = SC.Widget(iframeID);
-    // widget1 === widget2
-    player.load(url, {
-      auto_play: true
-    });
 
-    player.bind(SC.Widget.Events.READY, function() {
-      playerReady();
-    });
-
-    player.bind(SC.Widget.Events.FINISH, function() {
-      console.log("track finished!");
-    });
-  },
-  removeTrack: function(id) {
-    SC.get('/me/playlists', { limit: 1 }, function(playlist) {
-      var oTracksIds = [];
-      var oTracks = playlist[0].tracks;
-      oTracks.forEach(function (track){
-        var stringifyIDs = JSON.stringify(track.id)
-        oTracksIds.push(stringifyIDs);
-      });
-
-      var i = oTracksIds.indexOf(id);
-      if (i > -1) oTracksIds.splice(i, 1);
-
-      var tracks = oTracksIds.map(function(id) { return { id: id }; });
-      SC.put(playlist[0].uri, { playlist: { tracks: tracks } }, function(response, error){
-        if(error){
-          console.log("Some error occured: " + error.message);
-        }else{
-          console.log("track removed from playlist!");
-        }
-      });
-    });
-  },
-  deleteTrack: function() {
-    id = event.target.getAttribute("data-id");
-    if(isLoggedIn) {
-      this.removeTrack(id);
-    } else {
-      login();
-    }
-  },
-  render: function() {
-    return (
-      <div className="track" key={this.props.id}>
-        <p>{this.props.title}</p>
-        <img src={this.props.artwork} data-id={this.props.id} onClick={this.handleClick} />
-        <br />
-        <button data-id={this.props.id} onClick={this.deleteTrack}>Delete Track</button>
-      </div>
-    );
-  }
-});
 
 
 var MusicPlayerBox = React.createClass({
   render: function() {
     return (
       <div className="MusicPlayerBox">
-        <Player />
+
         <MusicTable />
       </div>
     );
@@ -266,10 +204,13 @@ var Song = React.createClass({
     id = event.target.getAttribute("data-id");
     url = "https://api.soundcloud.com/tracks/"+id+"";
     // according to docs: https://developers.soundcloud.com/docs/api/html5-widget
-    var iframe   = document.querySelector('iframe');
-    var iframeID = iframe.id;
+
+    var iframe   = document.creatElement('iframe');
+    // var iframeID = iframe.id;
+
     var player   = SC.Widget(iframe);
-    var player2  = SC.Widget(iframeID);
+    debugger;
+    // var player2  = SC.Widget(iframeID);
     // widget1 === widget2
     player.load(url, {
       auto_play: true
@@ -351,12 +292,12 @@ var Song = React.createClass({
   }
 });
 
-React.render(
-  <MusicPlayerBox />,
-  document.getElementById('react-music-player')
-);
+// React.render(
+//   <MusicPlayerBox />,
+//   document.getElementById('react-music-player')
+// );
 
-React.render(
-  <MyTracksButton />,
-  document.getElementById('track-button')
-);
+// React.render(
+//   <MyTracksButton />,
+//   document.getElementById('track-button')
+// );

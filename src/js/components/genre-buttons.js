@@ -8,8 +8,9 @@ getGenre = function(){
   return {genre: AppStore.getGenre()}
 };
 
-var getGenreTist =
+var Genre =
   React.createClass({
+
     getInitialState: function() {
       return getGenre();
     },
@@ -38,5 +39,5 @@ var getGenreTist =
       );
     }
   });
-module.exports = getGenreTist;
+module.exports = Genre;
 

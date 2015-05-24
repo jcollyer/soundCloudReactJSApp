@@ -36,9 +36,12 @@ var AppActions = {
       actionType: AppConstants.SET_GENRE,
       genre: genre
     })
-
-
-
+  },
+  setTrack:function(trackId){
+    AppDispatcher.handleViewAction({
+      actionType: AppConstants.SET_TRACK,
+      trackId: trackId
+    })
   }
 }
 

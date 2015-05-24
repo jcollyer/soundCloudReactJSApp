@@ -21112,16 +21112,19 @@ var AppActions = {
       actionType: AppConstants.SET_GENRE,
       genre: genre
     })
-
-
-
+  },
+  setTrack:function(trackId){
+    AppDispatcher.handleViewAction({
+      actionType: AppConstants.SET_TRACK,
+      trackId: trackId
+    })
   }
 }
 
 module.exports = AppActions;
 
 
-},{"../constants/app-constants.js":171,"../dispatchers/app-dispatcher.js":172}],161:[function(require,module,exports){
+},{"../constants/app-constants.js":173,"../dispatchers/app-dispatcher.js":174}],161:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
@@ -21206,7 +21209,7 @@ var Cart =
 module.exports = Cart;
 
 
-},{"../components/app-decrease.js":164,"../components/app-increase.js":165,"../components/app-removefromcart.js":166,"../stores/app-store.js":175,"react":159}],163:[function(require,module,exports){
+},{"../components/app-decrease.js":164,"../components/app-increase.js":165,"../components/app-removefromcart.js":166,"../stores/app-store.js":177,"react":159}],163:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppStore = require('../stores/app-store.js');
@@ -21235,7 +21238,7 @@ var Catalog =
 module.exports = Catalog;
 
 
-},{"../components/app-addtocart.js":161,"../stores/app-store.js":175,"react":159}],164:[function(require,module,exports){
+},{"../components/app-addtocart.js":161,"../stores/app-store.js":177,"react":159}],164:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
@@ -21289,7 +21292,8 @@ var React = require('react');
 var Catalog = require('../components/app-catalog.js');
 var Cart = require('../components/app-cart');
 var Login = require('../components/login');
-var GenreList = require('../components/getgenretracks');
+var Genre = require('../components/genre-buttons');
+var Player = require('../components/player');
 
 var APP =
     React.createClass({displayName: "APP",
@@ -21301,7 +21305,8 @@ var APP =
                     React.createElement("h1", null, "Cart"), 
                     React.createElement(Cart, null), 
                     React.createElement(Login, null), 
-                    React.createElement(GenreList, null)
+                    React.createElement(Player, null), 
+                    React.createElement(Genre, null)
                 )
             )
         }
@@ -21309,7 +21314,7 @@ var APP =
 module.exports = APP;
 
 
-},{"../components/app-cart":162,"../components/app-catalog.js":163,"../components/getgenretracks":168,"../components/login":169,"react":159}],168:[function(require,module,exports){
+},{"../components/app-cart":162,"../components/app-catalog.js":163,"../components/genre-buttons":168,"../components/login":169,"../components/player":170,"react":159}],168:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
@@ -21320,8 +21325,9 @@ getGenre = function(){
   return {genre: AppStore.getGenre()}
 };
 
-var getGenreTist =
-  React.createClass({displayName: "getGenreTist",
+var Genre =
+  React.createClass({displayName: "Genre",
+
     getInitialState: function() {
       return getGenre();
     },
@@ -21350,11 +21356,11 @@ var getGenreTist =
       );
     }
   });
-module.exports = getGenreTist;
+module.exports = Genre;
 
 
 
-},{"../actions/app-actions.js":160,"../components/tracklist":170,"../stores/app-store.js":175,"react":159}],169:[function(require,module,exports){
+},{"../actions/app-actions.js":160,"../components/tracklist":172,"../stores/app-store.js":177,"react":159}],169:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
@@ -21374,8 +21380,155 @@ module.exports = Login;
 },{"../actions/app-actions.js":160,"react":159}],170:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
+var AppActions = require('../actions/app-actions.js');
+var AppStore = require('../stores/app-store.js');
+
+getTrack = function(){
+  return {track: AppStore.getTrack()}
+};
+var Player =
+  React.createClass({displayName: "Player",
+    getInitialState: function() {
+      return getTrack();
+    },
+    toggleTrack: function() {
+      var player = player || this.getPlayer();
+      player.toggle();
+    },
+    nextTrack: function() {
+      var player = player || this.getPlayer();
+      player.next();
+    },
+    prevTrack: function() {
+      var player = player || this.getPlayer();
+      player.prev();
+    },
+    muteToggleTrack: function() {
+      var player = player || this.getPlayer();
+      player.getVolume(function(vol){
+        if(vol == 0 ) {
+          player.setVolume(1);
+        } else {
+          player.setVolume(0);
+        }
+      });
+    },
+    getPlayer: function() {
+      iframe   = document.querySelector('iframe');
+      iframeID = iframe.id;
+      return SC.Widget(iframe);
+    },
+    updateTrack:function(){
+      this.setState({track: AppStore.getTrack()})
+      var widgetIframe = document.getElementById('soundcloud_widget');
+      var player = SC.Widget(widgetIframe);
+
+      player.bind(SC.Widget.Events.READY, function() {
+        player.load(AppStore.getTrack());
+
+        player.bind(SC.Widget.Events.FINISH, function() {
+          console.log("track finished");
+          // player.load(newSoundUrl, {
+          //    how_artwork: false
+          // });
+        });
+      });
+
+    },
+    componentDidMount: function(){
+      AppStore.on('change', this.updateTrack);
+      // this.getTrack(AppStore.getTrack());
+    },
+    componentWillUnmount: function() {
+      AppStore.removeListener('change', this.updateTrack);
+    },
+    render: function() {
+      return (
+        React.createElement("div", null, 
+          React.createElement("h2", null, this.state.track), 
+          React.createElement("div", {id: "current_time"}), 
+          React.createElement("button", {id: "toggle", onClick: this.toggleTrack}, "toggle"), 
+          React.createElement("button", {id: "next", onClick: this.nextTrack}, "Next"), 
+          React.createElement("button", {id: "prev", onClick: this.prevTrack}, "Prev"), 
+          React.createElement("button", {id: "mute", onClick: this.muteToggleTrack}, "Mute"), 
+
+
+          React.createElement("iframe", {id: "soundcloud_widget", width: "100%", height: "166", scrolling: "no", frameborder: "no", src: "https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F1848538&show_artwork=true"})
+        )
+      );
+    }
+  });
+module.exports = Player;
+
+
+
+
+
+
+
+
+
+},{"../actions/app-actions.js":160,"../stores/app-store.js":177,"react":159}],171:[function(require,module,exports){
+/** @jsx React.DOM */
+var React = require('react');
 var AppStore = require('../stores/app-store.js');
 var AppActions = require('../actions/app-actions.js');
+
+var Track =
+  React.createClass({displayName: "Track",
+    handleClick: function() {
+      AppActions.setTrack(this.props.id);
+    },
+    removeTrack: function(id) {
+      SC.get('/me/playlists', { limit: 1 }, function(playlist) {
+        var oTracksIds = [];
+        var oTracks = playlist[0].tracks;
+        oTracks.forEach(function (track){
+          var stringifyIDs = JSON.stringify(track.id)
+          oTracksIds.push(stringifyIDs);
+        });
+
+        var i = oTracksIds.indexOf(id);
+        if (i > -1) oTracksIds.splice(i, 1);
+
+        var tracks = oTracksIds.map(function(id) { return { id: id }; });
+        SC.put(playlist[0].uri, { playlist: { tracks: tracks } }, function(response, error){
+          if(error){
+            console.log("Some error occured: " + error.message);
+          }else{
+            console.log("track removed from playlist!");
+          }
+        });
+      });
+    },
+    deleteTrack: function() {
+      id = event.target.getAttribute("data-id");
+      if(isLoggedIn) {
+        this.removeTrack(id);
+      } else {
+        login();
+      }
+    },
+    render: function() {
+      return (
+        React.createElement("div", {className: "track", key: this.props.id}, 
+          React.createElement("p", null, this.props.title), 
+          React.createElement("img", {src: this.props.artwork, "data-id": this.props.id, onClick: this.handleClick}), 
+          React.createElement("br", null), 
+          React.createElement("button", {"data-id": this.props.id, onClick: this.deleteTrack}, "Delete Track")
+        )
+      );
+    }
+  });
+module.exports = Track;
+
+
+},{"../actions/app-actions.js":160,"../stores/app-store.js":177,"react":159}],172:[function(require,module,exports){
+/** @jsx React.DOM */
+var React = require('react');
+var AppStore = require('../stores/app-store.js');
+var AppActions = require('../actions/app-actions.js');
+var Track = require('./track.js');
 
 TrackList =
   React.createClass({displayName: "TrackList",
@@ -21384,13 +21537,11 @@ TrackList =
     },
     getTracks: function(genre) {
       var url = 'http://api.soundcloud.com/tracks?'+genre+'&client_id=51b52c948e268a19b58f87f3d47861ad';
-      debugger;
       $.ajax({
         // url: this.props.url,
         url: url,
         dataType: 'json',
         success: function(tracks) {
-          debugger;
           this.setState({tracks: tracks});
           console.log("success! tracks: ",tracks);
         }.bind(this),
@@ -21400,36 +21551,39 @@ TrackList =
         }.bind(this)
       });
     },
-    componentWillReceiveProps: function(object, newProps){
+    componentWillReceiveProps: function(){
       this.getTracks(AppStore.getGenre());
     },
     render: function() {
-      // debugger;
-      var tracks = this.state.tracks.map(function(track){
-        return React.createElement("tr", null, React.createElement("td", null, track.title), React.createElement("td", null, "$", track.artwork_url))
-      })
       return (
-          React.createElement("table", {className: "table table-hover"}, 
-          tracks
-          )
+        React.createElement("div", null, 
+          this.state.tracks.map(function(track){
+            return (
+              React.createElement("div", null, 
+                React.createElement(Track, {title: track.title, artwork: track.artwork_url, id: track.id})
+              )
+            )
+          })
         )
+      );
     }
   });
 module.exports = TrackList;
 
 
-},{"../actions/app-actions.js":160,"../stores/app-store.js":175,"react":159}],171:[function(require,module,exports){
+},{"../actions/app-actions.js":160,"../stores/app-store.js":177,"./track.js":171,"react":159}],173:[function(require,module,exports){
 module.exports = {
   ADD_ITEM: 'ADD_ITEM',
   REMOVE_ITEM: 'REMOVE_ITEM',
   INCREASE_ITEM: 'INCREASE_ITEM',
   DECREASE_ITEM: 'DECREASE_ITEM',
   LOGIN: 'LOGIN',
-  GENRE: 'GENRE'
+  GENRE: 'GENRE',
+  SET_TRACK: 'SET_TRACK'
 };
 
 
-},{}],172:[function(require,module,exports){
+},{}],174:[function(require,module,exports){
 var Dispatcher = require('./dispatcher.js');
 var assign = require('object-assign');
 
@@ -21445,7 +21599,7 @@ var AppDispatcher = assign({},Dispatcher.prototype, {
 module.exports = AppDispatcher;
 
 
-},{"./dispatcher.js":173,"object-assign":4}],173:[function(require,module,exports){
+},{"./dispatcher.js":175,"object-assign":4}],175:[function(require,module,exports){
 var Promise = require('es6-promise').Promise;
 var assign = require('object-assign');
 
@@ -21503,7 +21657,7 @@ Dispatcher.prototype = assign({}, Dispatcher.prototype, {
 module.exports = Dispatcher;
 
 
-},{"es6-promise":1,"object-assign":4}],174:[function(require,module,exports){
+},{"es6-promise":1,"object-assign":4}],176:[function(require,module,exports){
 /** @jsx React.DOM */
 var APP = require('./components/app');
 var React = require('react');
@@ -21581,76 +21735,14 @@ var MyTracks = React.createClass({displayName: "MyTracks",
   }
 });
 
-var Track = React.createClass({displayName: "Track",
-  handleClick: function(event) {
-    id = event.target.getAttribute("data-id");
-    url = "https://api.soundcloud.com/tracks/"+id+"";
-    // according to docs: https://developers.soundcloud.com/docs/api/html5-widget
-    var iframe   = document.querySelector('iframe');
-    var iframeID = iframe.id;
-    var player   = SC.Widget(iframe);
-    var player2  = SC.Widget(iframeID);
-    // widget1 === widget2
-    player.load(url, {
-      auto_play: true
-    });
 
-    player.bind(SC.Widget.Events.READY, function() {
-      playerReady();
-    });
-
-    player.bind(SC.Widget.Events.FINISH, function() {
-      console.log("track finished!");
-    });
-  },
-  removeTrack: function(id) {
-    SC.get('/me/playlists', { limit: 1 }, function(playlist) {
-      var oTracksIds = [];
-      var oTracks = playlist[0].tracks;
-      oTracks.forEach(function (track){
-        var stringifyIDs = JSON.stringify(track.id)
-        oTracksIds.push(stringifyIDs);
-      });
-
-      var i = oTracksIds.indexOf(id);
-      if (i > -1) oTracksIds.splice(i, 1);
-
-      var tracks = oTracksIds.map(function(id) { return { id: id }; });
-      SC.put(playlist[0].uri, { playlist: { tracks: tracks } }, function(response, error){
-        if(error){
-          console.log("Some error occured: " + error.message);
-        }else{
-          console.log("track removed from playlist!");
-        }
-      });
-    });
-  },
-  deleteTrack: function() {
-    id = event.target.getAttribute("data-id");
-    if(isLoggedIn) {
-      this.removeTrack(id);
-    } else {
-      login();
-    }
-  },
-  render: function() {
-    return (
-      React.createElement("div", {className: "track", key: this.props.id}, 
-        React.createElement("p", null, this.props.title), 
-        React.createElement("img", {src: this.props.artwork, "data-id": this.props.id, onClick: this.handleClick}), 
-        React.createElement("br", null), 
-        React.createElement("button", {"data-id": this.props.id, onClick: this.deleteTrack}, "Delete Track")
-      )
-    );
-  }
-});
 
 
 var MusicPlayerBox = React.createClass({displayName: "MusicPlayerBox",
   render: function() {
     return (
       React.createElement("div", {className: "MusicPlayerBox"}, 
-        React.createElement(Player, null), 
+
         React.createElement(MusicTable, null)
       )
     );
@@ -21772,10 +21864,13 @@ var Song = React.createClass({displayName: "Song",
     id = event.target.getAttribute("data-id");
     url = "https://api.soundcloud.com/tracks/"+id+"";
     // according to docs: https://developers.soundcloud.com/docs/api/html5-widget
-    var iframe   = document.querySelector('iframe');
-    var iframeID = iframe.id;
+
+    var iframe   = document.creatElement('iframe');
+    // var iframeID = iframe.id;
+
     var player   = SC.Widget(iframe);
-    var player2  = SC.Widget(iframeID);
+    debugger;
+    // var player2  = SC.Widget(iframeID);
     // widget1 === widget2
     player.load(url, {
       auto_play: true
@@ -21857,18 +21952,18 @@ var Song = React.createClass({displayName: "Song",
   }
 });
 
-React.render(
-  React.createElement(MusicPlayerBox, null),
-  document.getElementById('react-music-player')
-);
+// React.render(
+//   <MusicPlayerBox />,
+//   document.getElementById('react-music-player')
+// );
 
-React.render(
-  React.createElement(MyTracksButton, null),
-  document.getElementById('track-button')
-);
+// React.render(
+//   <MyTracksButton />,
+//   document.getElementById('track-button')
+// );
 
 
-},{"./components/app":167,"react":159}],175:[function(require,module,exports){
+},{"./components/app":167,"react":159}],177:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 var EventEmitter = require('events').EventEmitter;
@@ -21886,6 +21981,8 @@ var _catalog = [
 var _cartItems = [];
 
 var _genre = [];
+var _track = [];
+var _trackURL = "";
 
 
 function _removeItem(index){
@@ -21920,7 +22017,7 @@ function _addItem(item){
       }
     });
   }
-}
+};
 
 function _login(){
   SC.connect(function() {
@@ -21928,17 +22025,47 @@ function _login(){
       $('#username').html(me.username);
     });
   });
-}
+};
 
 function _setGenre(genre){
   _genre = genre;
-}
+};
+
+function _setTrack(trackId) {
+
+  _trackURL = "https://api.soundcloud.com/tracks/"+trackId+"";
+
+  // url = "https://api.soundcloud.com/tracks/"+trackId+"";
+  // // according to docs: https://developers.soundcloud.com/docs/api/html5-widget
+  // var iframe   = document.getElementById('soundcloud_widget');
+  // // var iframeID = iframe.id;
+
+  // var player   = SC.Widget(iframe);
+  // // var player2  = SC.Widget(iframeID);
+  // // widget1 === widget2
+  // player.load(url, {
+  //   auto_play: true
+  // });
+
+  // player.bind(SC.Widget.Events.READY, function() {
+  //   debugger;
+  // });
+
+  // player.bind(SC.Widget.Events.FINISH, function() {
+  //   console.log("track finished!");
+  // });
+
+};
 
 
 var AppStore = assign({}, EventEmitter.prototype, {
   emitChange:function(){
     this.emit(CHANGE_EVENT)
   },
+
+  // emitTrackChange:function(){
+  //   this.emit(CHANGE_EVENT)
+  // },
 
   addChangeListener:function(callback){
     this.on(CHANGE_EVENT, callback)
@@ -21949,17 +22076,21 @@ var AppStore = assign({}, EventEmitter.prototype, {
   },
 
   getCart:function(){
-    return _cartItems
+    return _cartItems;
   },
 
   getCatalog:function(){
-    return _catalog
+    return _catalog;
   },
 
   getGenre:function(){
-    // debugger;
-    return _genre
+    return _genre;
   },
+
+  getTrack:function(){
+    return _trackURL;
+  },
+
 
   dispatcherIndex:AppDispatcher.register(function(payload){
     var action = payload.action; // this is our action from handleViewAction
@@ -21987,8 +22118,14 @@ var AppStore = assign({}, EventEmitter.prototype, {
       case AppConstants.SET_GENRE:
         _setGenre(payload.action.genre);
         break
+
+      case AppConstants.SET_TRACK:
+        _setTrack(payload.action.trackId);
+        AppStore.emitChange();
+        break
+
     }
-    AppStore.emitChange();
+    // AppStore.emitChange();
 
     return true;
   })
@@ -21997,4 +22134,4 @@ var AppStore = assign({}, EventEmitter.prototype, {
 module.exports = AppStore;
 
 
-},{"../constants/app-constants":171,"../dispatchers/app-dispatcher":172,"events":2,"object-assign":4}]},{},[174])
+},{"../constants/app-constants":173,"../dispatchers/app-dispatcher":174,"events":2,"object-assign":4}]},{},[176])

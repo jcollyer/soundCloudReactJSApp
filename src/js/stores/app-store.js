@@ -15,6 +15,8 @@ var _catalog = [
 var _cartItems = [];
 
 var _genre = [];
+var _track = [];
+var _trackURL = "";
 
 
 function _removeItem(index){
@@ -49,7 +51,7 @@ function _addItem(item){
       }
     });
   }
-}
+};
 
 function _login(){
   SC.connect(function() {
@@ -57,17 +59,47 @@ function _login(){
       $('#username').html(me.username);
     });
   });
-}
+};
 
 function _setGenre(genre){
   _genre = genre;
-}
+};
+
+function _setTrack(trackId) {
+
+  _trackURL = "https://api.soundcloud.com/tracks/"+trackId+"";
+
+  // url = "https://api.soundcloud.com/tracks/"+trackId+"";
+  // // according to docs: https://developers.soundcloud.com/docs/api/html5-widget
+  // var iframe   = document.getElementById('soundcloud_widget');
+  // // var iframeID = iframe.id;
+
+  // var player   = SC.Widget(iframe);
+  // // var player2  = SC.Widget(iframeID);
+  // // widget1 === widget2
+  // player.load(url, {
+  //   auto_play: true
+  // });
+
+  // player.bind(SC.Widget.Events.READY, function() {
+  //   debugger;
+  // });
+
+  // player.bind(SC.Widget.Events.FINISH, function() {
+  //   console.log("track finished!");
+  // });
+
+};
 
 
 var AppStore = assign({}, EventEmitter.prototype, {
   emitChange:function(){
     this.emit(CHANGE_EVENT)
   },
+
+  // emitTrackChange:function(){
+  //   this.emit(CHANGE_EVENT)
+  // },
 
   addChangeListener:function(callback){
     this.on(CHANGE_EVENT, callback)
@@ -78,17 +110,21 @@ var AppStore = assign({}, EventEmitter.prototype, {
   },
 
   getCart:function(){
-    return _cartItems
+    return _cartItems;
   },
 
   getCatalog:function(){
-    return _catalog
+    return _catalog;
   },
 
   getGenre:function(){
-    // debugger;
-    return _genre
+    return _genre;
   },
+
+  getTrack:function(){
+    return _trackURL;
+  },
+
 
   dispatcherIndex:AppDispatcher.register(function(payload){
     var action = payload.action; // this is our action from handleViewAction
@@ -116,8 +152,14 @@ var AppStore = assign({}, EventEmitter.prototype, {
       case AppConstants.SET_GENRE:
         _setGenre(payload.action.genre);
         break
+
+      case AppConstants.SET_TRACK:
+        _setTrack(payload.action.trackId);
+        AppStore.emitChange();
+        break
+
     }
-    AppStore.emitChange();
+    // AppStore.emitChange();
 
     return true;
   })
