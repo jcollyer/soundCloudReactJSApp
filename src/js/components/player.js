@@ -8,11 +8,12 @@ getTrack = function(){
 };
 var Player =
   React.createClass({
+    player: '',
+    widgetIframe: '',
     getInitialState: function() {
       return getTrack();
     },
     toggleTrack: function() {
-      var player = player || this.getPlayer();
       player.toggle();
     },
     nextTrack: function() {
@@ -24,24 +25,22 @@ var Player =
       player.prev();
     },
     muteToggleTrack: function() {
-      var player = player || this.getPlayer();
       player.getVolume(function(vol){
-        if(vol == 0 ) {
-          player.setVolume(1);
-        } else {
+        if(vol == 1 ) {
           player.setVolume(0);
+        } else {
+          player.setVolume(1);
         }
       });
     },
     getPlayer: function() {
-      iframe   = document.querySelector('iframe');
-      iframeID = iframe.id;
-      return SC.Widget(iframe);
+      // debugger;
+      widgetIframe = document.getElementById('soundcloud_widget');
+      player = SC.Widget(widgetIframe);
     },
     updateTrack:function(){
-      this.setState({track: AppStore.getTrack()})
-      var widgetIframe = document.getElementById('soundcloud_widget');
-      var player = SC.Widget(widgetIframe);
+      this.setState({track: AppStore.getTrack()});
+      this.getPlayer();
 
       player.bind(SC.Widget.Events.READY, function() {
         player.load(AppStore.getTrack());
@@ -65,7 +64,6 @@ var Player =
     render: function() {
       return (
         <div>
-          <h2>{this.state.track}</h2>
           <div id="current_time"></div>
           <button id="toggle" onClick={this.toggleTrack}>toggle</button>
           <button id="next" onClick={this.nextTrack}>Next</button>

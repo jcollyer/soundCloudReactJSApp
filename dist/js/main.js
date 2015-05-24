@@ -21388,11 +21388,12 @@ getTrack = function(){
 };
 var Player =
   React.createClass({displayName: "Player",
+    player: '',
+    widgetIframe: '',
     getInitialState: function() {
       return getTrack();
     },
     toggleTrack: function() {
-      var player = player || this.getPlayer();
       player.toggle();
     },
     nextTrack: function() {
@@ -21404,24 +21405,22 @@ var Player =
       player.prev();
     },
     muteToggleTrack: function() {
-      var player = player || this.getPlayer();
       player.getVolume(function(vol){
-        if(vol == 0 ) {
-          player.setVolume(1);
-        } else {
+        if(vol == 1 ) {
           player.setVolume(0);
+        } else {
+          player.setVolume(1);
         }
       });
     },
     getPlayer: function() {
-      iframe   = document.querySelector('iframe');
-      iframeID = iframe.id;
-      return SC.Widget(iframe);
+      // debugger;
+      widgetIframe = document.getElementById('soundcloud_widget');
+      player = SC.Widget(widgetIframe);
     },
     updateTrack:function(){
-      this.setState({track: AppStore.getTrack()})
-      var widgetIframe = document.getElementById('soundcloud_widget');
-      var player = SC.Widget(widgetIframe);
+      this.setState({track: AppStore.getTrack()});
+      this.getPlayer();
 
       player.bind(SC.Widget.Events.READY, function() {
         player.load(AppStore.getTrack());
@@ -21445,7 +21444,6 @@ var Player =
     render: function() {
       return (
         React.createElement("div", null, 
-          React.createElement("h2", null, this.state.track), 
           React.createElement("div", {id: "current_time"}), 
           React.createElement("button", {id: "toggle", onClick: this.toggleTrack}, "toggle"), 
           React.createElement("button", {id: "next", onClick: this.nextTrack}, "Next"), 
