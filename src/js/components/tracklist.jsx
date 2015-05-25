@@ -1,8 +1,6 @@
-/** @jsx React.DOM */
 var React = require('react');
 var AppStore = require('../stores/app-store.js');
-var AppActions = require('../actions/app-actions.js');
-var Track = require('./track.js');
+var Track = require('./track.jsx');
 
 TrackList =
   React.createClass({

@@ -1,8 +1,7 @@
-/** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
 var AppStore = require('../stores/app-store.js');
-var TrackList = require('../components/tracklist');
+var TrackList = require('./tracklist.jsx');
 
 getGenre = function(){
   return {genre: AppStore.getGenre()}

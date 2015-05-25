@@ -1,6 +1,4 @@
-/** @jsx React.DOM */
 var React = require('react');
-var AppActions = require('../actions/app-actions.js');
 var AppStore = require('../stores/app-store.js');
 
 var Player =
@@ -46,13 +44,12 @@ var Player =
       this.setState({track: AppStore.getTrack(), duration: AppStore.getTrackDuration()});
       this.getPlayer();
 
-      var druation = this.state.duration;
-
       player.bind(SC.Widget.Events.PLAY_PROGRESS, function() {
+        var duration = that.state.duration;
+
         player.getPosition(function(time){
-          var totalDuration = this.store.duration;
           var currentTime = time;
-          var time = totalDuration/currentTimel;
+          var time = (currentTime / (duration/10))*10;
           that.setState({time: time});
 
         })
@@ -95,10 +92,3 @@ var Player =
     }
   });
 module.exports = Player;
-
-
-
-
-
-
-
