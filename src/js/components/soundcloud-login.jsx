@@ -1,13 +1,13 @@
-/** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
-var Decrease =
+
+var Login =
   React.createClass({
     handleClick:function(){
-      AppActions.decreaseItem(this.props.index);
+      AppActions.login();
     },
     render:function(){
-      return <button onClick={this.handleClick}>-</button>
+      return <button onClick={this.handleClick}>Login to Soundclud</button>
     }
   });
-module.exports = Decrease;
+module.exports = Login;
