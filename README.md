@@ -4,5 +4,5 @@ $ npm install
 ```
 ## run
 ```
-$ gulp dev
+$ npm run dev
 ```
