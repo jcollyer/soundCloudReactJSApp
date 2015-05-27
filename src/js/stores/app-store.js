@@ -9,7 +9,8 @@ var _genre = [];
 var _track = [];
 var _trackURL = "";
 var _trackDuration = "";
-
+var _trackTitle = "";
+var _trackAuthor = "";
 
 function _login(){
   SC.connect(function() {
@@ -27,10 +28,17 @@ function _setTrack(trackId) {
   _trackURL = "https://api.soundcloud.com/tracks/"+trackId+"";
 };
 
+function _setTrackTitle(title) {
+  _trackTitle = title;
+}
+
+function _setTrackAuthor(author) {
+  _trackAuthor = author;
+}
+
 function _setTrackDuration(duration) {
   _trackDuration = duration;
 }
-
 
 var AppStore = assign({}, EventEmitter.prototype, {
   emitChange:function(){
@@ -53,10 +61,17 @@ var AppStore = assign({}, EventEmitter.prototype, {
     return _trackURL;
   },
 
+  getTrackTitle:function(){
+    return _trackTitle;
+  },
+
+   getTrackAuthor:function(){
+    return _trackAuthor;
+  },
+
   getTrackDuration:function(){
     return _trackDuration;
   },
-
 
   dispatcherIndex:AppDispatcher.register(function(payload){
     var action = payload.action; // this is our action from handleViewAction
@@ -76,11 +91,19 @@ var AppStore = assign({}, EventEmitter.prototype, {
         break
 
       case AppConstants.SET_TRACK_DURATION:
-      debugger;
         _setTrackDuration(payload.action.duration);
         AppStore.emitChange();
         break
 
+      case AppConstants.SET_TRACK_TITLE:
+        _setTrackTitle(payload.action.title);
+        AppStore.emitChange();
+        break
+
+      case AppConstants.SET_TRACK_AUTHOR:
+        _setTrackAuthor(payload.action.author);
+        AppStore.emitChange();
+        break
     }
 
     return true;

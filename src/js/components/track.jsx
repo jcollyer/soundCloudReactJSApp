@@ -6,6 +6,8 @@ var Track =
     handleClick: function() {
       AppActions.setTrack(this.props.id);
       AppActions.setTrackDuration(this.props.duration);
+      AppActions.setTrackTitle(this.props.title);
+      AppActions.setTrackAuthor(this.props.author);
     },
     removeTrack: function(id) {
       SC.get('/me/playlists', { limit: 1 }, function(playlist) {

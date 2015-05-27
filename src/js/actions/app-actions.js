@@ -19,6 +19,18 @@ var AppActions = {
       trackId: trackId
     })
   },
+  setTrackTitle:function(title){
+    AppDispatcher.handleViewAction({
+      actionType: AppConstants.SET_TRACK_TITLE,
+      title: title
+    })
+  },
+  setTrackAuthor:function(author){
+    AppDispatcher.handleViewAction({
+      actionType: AppConstants.SET_TRACK_AUTHOR,
+      author: author
+    })
+  },
   setTrackDuration:function(duration){
     AppDispatcher.handleViewAction({
       actionType: AppConstants.SET_TRACK_DURATION,

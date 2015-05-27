@@ -11,6 +11,8 @@ var Player =
       return {
         track: AppStore.getTrack(),
         duration: AppStore.getTrackDuration(),
+        title: AppStore.getTrackTitle(),
+        author: AppStore.getTrackAuthor(),
         time: ''
       };
     },
@@ -35,13 +37,12 @@ var Player =
       });
     },
     getPlayer: function() {
-      // debugger;
       widgetIframe = document.getElementById('soundcloud_widget');
       player = SC.Widget(widgetIframe);
     },
     updateTrack:function() {
       that = this;
-      this.setState({track: AppStore.getTrack(), duration: AppStore.getTrackDuration()});
+      this.setState({track: AppStore.getTrack(), title: AppStore.getTrackTitle(), author: AppStore.getTrackAuthor(), duration: AppStore.getTrackDuration() });
       this.getPlayer();
 
       player.bind(SC.Widget.Events.PLAY_PROGRESS, function() {
@@ -80,6 +81,8 @@ var Player =
     render: function() {
       return (
         <div className="player">
+          <h1>{this.state.title}</h1> -
+          <h1>{this.state.author}</h1>
           <div className="progress" style={{width: this.state.time + '%'}}></div>
           <button id="toggle" onClick={this.toggleTrack}>toggle</button>
           <button id="next" onClick={this.nextTrack}>Next</button>
