@@ -3,7 +3,8 @@ var Login = require('./js/components/soundcloud-login.jsx');
 var Genre = require('./js/components/genre.jsx');
 var Player = require('./js/components/player.jsx');
 
-require('./home.less');
+require('./style/grid.min.less');
+require('./style/home.less');
 
 
 var Home = React.createClass({
@@ -12,7 +13,6 @@ var Home = React.createClass({
     return (
             <div>
               <Login />
-              <Player />
               <Genre />
             </div>
     );
