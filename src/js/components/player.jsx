@@ -14,7 +14,8 @@ var Player =
         author: AppStore.getTrackAuthor(),
         artwork: AppStore.getTrackArtwork(),
         time: '',
-        playing: false
+        playing: false,
+        mute: false
       };
     },
     toggleTrack: function() {
@@ -29,11 +30,14 @@ var Player =
       player.prev();
     },
     muteToggleTrack: function() {
+      that = this;
       player.getVolume(function(vol){
         if(vol == 1 ) {
           player.setVolume(0);
+          that.setState({mute: true});
         } else {
           player.setVolume(1);
+          that.setState({mute: false});
         }
       });
     },
@@ -49,7 +53,8 @@ var Player =
         author: AppStore.getTrackAuthor(),
         artwork: AppStore.getTrackArtwork(),
         duration: AppStore.getTrackDuration(),
-        playing: false
+        playing: false,
+        mute: false
       });
       this.getPlayer();
 
@@ -60,7 +65,6 @@ var Player =
           var currentTime = time;
           var time = (currentTime / (duration/10))*10;
           that.setState({time: time});
-
         })
       });
 
@@ -83,7 +87,6 @@ var Player =
 
         });
 
-
         player.bind(SC.Widget.Events.FINISH, function() {
           console.log("track finished");
           // player.load(newSoundUrl, {
@@ -91,6 +94,7 @@ var Player =
           // });
         });
       });
+
 
     },
     componentDidMount: function(){
@@ -111,7 +115,7 @@ var Player =
           <button id="toggle" onClick={this.toggleTrack} className={this.state.playing ? 'fa fa-pause' : 'fa fa-play'}></button>
           <button id="next" onClick={this.nextTrack}>Next</button>
           <button id="prev" onClick={this.prevTrack}>Prev</button>
-          <button id="mute" onClick={this.muteToggleTrack}>Mute</button>
+          <button id="mute" onClick={this.muteToggleTrack} className={this.state.mute ? 'fa fa-volume-up' : 'fa fa-volume-off'}>Mute</button>
 
           <iframe id="soundcloud_widget" width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F1848538&show_artwork=true"></iframe>
         </div>
