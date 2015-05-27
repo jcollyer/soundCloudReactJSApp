@@ -4,7 +4,8 @@
   "description": "soundCloud ReactJS app",
   "dependencies": {
     "jsx-loader": "^0.13.2",
-    "less-loader": "^2.2.0"
+    "less-loader": "^2.2.0",
+    "url-loader": "^0.5.6"
   },
   "devDependencies": {
     "webpack": "^1.9.9",

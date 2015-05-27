@@ -36,6 +36,12 @@ var AppActions = {
       actionType: AppConstants.SET_TRACK_DURATION,
       duration: duration
     })
+  },
+  setTrackArtwork:function(artwork){
+    AppDispatcher.handleViewAction({
+      actionType: AppConstants.SET_TRACK_ARTWORK,
+      artwork: artwork
+    })
   }
 }
 

@@ -5,7 +5,6 @@ var Player =
   React.createClass({
     player: '',
     widgetIframe: '',
-    trackDuration: '',
 
     getInitialState: function() {
       return {
@@ -13,7 +12,9 @@ var Player =
         duration: AppStore.getTrackDuration(),
         title: AppStore.getTrackTitle(),
         author: AppStore.getTrackAuthor(),
-        time: ''
+        artwork: AppStore.getTrackArtwork(),
+        time: '',
+        playing: false
       };
     },
     toggleTrack: function() {
@@ -42,7 +43,14 @@ var Player =
     },
     updateTrack:function() {
       that = this;
-      this.setState({track: AppStore.getTrack(), title: AppStore.getTrackTitle(), author: AppStore.getTrackAuthor(), duration: AppStore.getTrackDuration() });
+      this.setState({
+        track: AppStore.getTrack(),
+        title: AppStore.getTrackTitle(),
+        author: AppStore.getTrackAuthor(),
+        artwork: AppStore.getTrackArtwork(),
+        duration: AppStore.getTrackDuration(),
+        playing: false
+      });
       this.getPlayer();
 
       player.bind(SC.Widget.Events.PLAY_PROGRESS, function() {
@@ -57,10 +65,24 @@ var Player =
       });
 
       player.bind(SC.Widget.Events.READY, function() {
+        that.setState({playing: false});
         player.load(AppStore.getTrack(), {
           auto_play: true
+        });
+
+        player.bind(SC.Widget.Events.PLAY, function() {
+          that.setState({playing: true});
+        });
+
+        player.bind(SC.Widget.Events.PAUSE, function() {
+          that.setState({playing: false});
+        });
+
+
+        player.bind(SC.Widget.Events.SEEK, function() {
 
         });
+
 
         player.bind(SC.Widget.Events.FINISH, function() {
           console.log("track finished");
@@ -81,10 +103,12 @@ var Player =
     render: function() {
       return (
         <div className="player">
-          <h1>{this.state.title}</h1> -
+          <h2>{this.props.playing}</h2>
+          <h1>{this.state.title}</h1>
           <h1>{this.state.author}</h1>
+          <img src={this.state.artwork} />
           <div className="progress" style={{width: this.state.time + '%'}}></div>
-          <button id="toggle" onClick={this.toggleTrack}>toggle</button>
+          <button id="toggle" onClick={this.toggleTrack} className={this.state.playing ? 'fa fa-pause' : 'fa fa-play'}></button>
           <button id="next" onClick={this.nextTrack}>Next</button>
           <button id="prev" onClick={this.prevTrack}>Prev</button>
           <button id="mute" onClick={this.muteToggleTrack}>Mute</button>

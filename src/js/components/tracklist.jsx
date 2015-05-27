@@ -28,8 +28,14 @@ TrackList =
         <div>
           {this.state.tracks.map(function(track){
             return (
-              <div>
-                <Track title={track.title} artwork={track.artwork_url} id={track.id} duration={track.duration} author={track.user.username}/>
+              <div className='col-md-3'>
+                <Track
+                      title={track.title}
+                      artwork={track.artwork_url}
+                      id={track.id}
+                      duration={track.duration}
+                      author={track.user.username}
+                />
               </div>
             )
           })}

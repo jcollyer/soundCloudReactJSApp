@@ -8,9 +8,10 @@ var CHANGE_EVENT = "change";
 var _genre = [];
 var _track = [];
 var _trackURL = "";
-var _trackDuration = "";
 var _trackTitle = "";
 var _trackAuthor = "";
+var _trackArtwork = "";
+var _trackDuration = "";
 
 function _login(){
   SC.connect(function() {
@@ -40,6 +41,10 @@ function _setTrackDuration(duration) {
   _trackDuration = duration;
 }
 
+function _setTrackArtwork(artwork) {
+  _trackArtwork = artwork;
+}
+
 var AppStore = assign({}, EventEmitter.prototype, {
   emitChange:function(){
     this.emit(CHANGE_EVENT)
@@ -67,6 +72,10 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
    getTrackAuthor:function(){
     return _trackAuthor;
+  },
+
+  getTrackArtwork:function(){
+    return _trackArtwork;
   },
 
   getTrackDuration:function(){
@@ -102,6 +111,11 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
       case AppConstants.SET_TRACK_AUTHOR:
         _setTrackAuthor(payload.action.author);
+        AppStore.emitChange();
+        break
+
+      case AppConstants.SET_TRACK_ARTWORK:
+        _setTrackArtwork(payload.action.artwork);
         AppStore.emitChange();
         break
     }
