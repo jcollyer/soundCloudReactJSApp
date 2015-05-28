@@ -28,7 +28,7 @@ var Genre =
     render: function() {
       return (
         <div>
-          <button onClick={this.handleClick} data-genre="beats">Beats</button>
+          <button onClick={this.handleClick} data-genre="HipHop">HipHop</button>
           <button onClick={this.handleClick} data-genre="rnb">RnB</button>
           <button onClick={this.handleClick} data-genre="house">House</button>
           <button onClick={this.handleClick} data-genre="hip-hop">Hip-Hop</button>

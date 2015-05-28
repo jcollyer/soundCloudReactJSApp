@@ -1,5 +1,6 @@
 var React = require('react');
 var AppStore = require('../stores/app-store.js');
+require('../../style/player.less');
 
 var Player =
   React.createClass({
@@ -107,7 +108,6 @@ var Player =
     render: function() {
       return (
         <div className="player">
-          <h2>{this.props.playing}</h2>
           <h1>{this.state.title}</h1>
           <h1>{this.state.author}</h1>
           <img src={this.state.artwork} />
