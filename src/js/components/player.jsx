@@ -1,36 +1,49 @@
 var React = require('react');
-var AppStore = require('../stores/app-store.js');
+var PlayerStore = require('../stores/player-store.js');
 require('../../style/player.less');
 
 var Player =
   React.createClass({
     player: '',
     widgetIframe: '',
+    interval: 0,
 
     getInitialState: function() {
       return {
-        track: AppStore.getTrack(),
-        duration: AppStore.getTrackDuration(),
-        title: AppStore.getTrackTitle(),
-        author: AppStore.getTrackAuthor(),
-        artwork: AppStore.getTrackArtwork(),
-        time: '',
+        track: PlayerStore.getTrack(),
+        duration: PlayerStore.getTrackDuration(),
+        title: PlayerStore.getTrackTitle(),
+        author: PlayerStore.getTrackAuthor(),
+        artwork: PlayerStore.getTrackArtwork(),
+        currentTime: 0,
         playing: false,
         mute: false
       };
     },
     toggleTrack: function() {
-      player.toggle();
+      that = this;
+      player.isPaused(function(paused){
+        if(paused == true ) {
+          that.playTrack();
+        } else {
+          that.pauseTrack();
+        }
+      });
     },
-    nextTrack: function() {
-      var player = player || this.getPlayer();
-      player.next();
+    playTrack: function() {
+      player.play();
+      that.setState({playing: true});
+      that.interval = setInterval(function(){
+        console.log("hi");
+        that.getCurrentTime();
+      }, 500);
     },
-    prevTrack: function() {
-      var player = player || this.getPlayer();
-      player.prev();
+    pauseTrack: function() {
+      if (that.interval > 0) clearInterval(that.interval);
+      player.pause();
+      that.setState({playing: false});
     },
-    muteToggleTrack: function() {
+    muteToggle: function() {
       that = this;
       player.getVolume(function(vol){
         if(vol == 1 ) {
@@ -46,76 +59,87 @@ var Player =
       widgetIframe = document.getElementById('soundcloud_widget');
       player = SC.Widget(widgetIframe);
     },
+    getCurrentTime: function() {
+      var duration = that.state.duration;
+      player.getPosition(function(time){
+        var currentTime = 100 * (time / duration);
+        that.setState({currentTime: currentTime});
+      })
+    },
     updateTrack:function() {
       that = this;
       this.setState({
-        track: AppStore.getTrack(),
-        title: AppStore.getTrackTitle(),
-        author: AppStore.getTrackAuthor(),
-        artwork: AppStore.getTrackArtwork(),
-        duration: AppStore.getTrackDuration(),
+        track: PlayerStore.getTrack(),
+        title: PlayerStore.getTrackTitle(),
+        author: PlayerStore.getTrackAuthor(),
+        artwork: PlayerStore.getTrackArtwork(),
+        duration: PlayerStore.getTrackDuration(),
+        currentTime: 0,
         playing: false,
         mute: false
       });
+
       this.getPlayer();
-
-      player.bind(SC.Widget.Events.PLAY_PROGRESS, function() {
-        var duration = that.state.duration;
-
-        player.getPosition(function(time){
-          var currentTime = time;
-          var time = (currentTime / (duration/10))*10;
-          that.setState({time: time});
-        })
-      });
-
-      player.bind(SC.Widget.Events.READY, function() {
-        that.setState({playing: false});
-        player.load(AppStore.getTrack(), {
-          auto_play: true
-        });
-
-        player.bind(SC.Widget.Events.PLAY, function() {
-          that.setState({playing: true});
-        });
-
-        player.bind(SC.Widget.Events.PAUSE, function() {
-          that.setState({playing: false});
-        });
-
-
-        player.bind(SC.Widget.Events.SEEK, function() {
-
-        });
-
-        player.bind(SC.Widget.Events.FINISH, function() {
-          console.log("track finished");
-          // player.load(newSoundUrl, {
-          //    how_artwork: false
-          // });
-        });
+      player.load(PlayerStore.getTrack(), {
+        auto_play: false
       });
 
 
+
+
+      // player.bind(SC.Widget.Events.READY, function() {
+      // });
+
+
+      // var currentTimeInterval = setInterval(function(){
+      //   console.log("hi");
+      //   getCurrentTime();
+      // }, 500);
+
+
+      // player.bind(SC.Widget.Events.PAUSE, function() {
+      //   that.setState({playing: false});
+      //   // debugger;
+      //   clearInterval(currentTimeInterval);
+      // });
+
+
+    },
+    updateTrackTime: function() {
+      var width = window.innerWidth;
+      var xoffset = event.clientX;
+      var duration = this.state.duration;
+      currentTime = (xoffset / width) * duration;
+      console.log(currentTime)
+      debugger;
+      // player.seekTo(currentTime);
+      // seconds = (xoffset / width) * (duration/1000);
+      // this.setState({currentTime:currentTime});
     },
     componentDidMount: function(){
-      AppStore.on('change', this.updateTrack);
-      // this.getTrack(AppStore.getTrack());
+      PlayerStore.on('change', this.updateTrack);
+      // this.getTrack(PlayerStore.getTrack());
     },
     componentWillUnmount: function() {
-      AppStore.removeListener('change', this.updateTrack);
+      PlayerStore.removeListener('change', this.updateTrack);
     },
     render: function() {
       return (
         <div className="player">
-          <h1>{this.state.title}</h1>
-          <h1>{this.state.author}</h1>
-          <img src={this.state.artwork} />
-          <div className="progress" style={{width: this.state.time + '%'}}></div>
-          <button id="toggle" onClick={this.toggleTrack} className={this.state.playing ? 'fa fa-pause' : 'fa fa-play'}></button>
-          <button id="next" onClick={this.nextTrack}>Next</button>
-          <button id="prev" onClick={this.prevTrack}>Prev</button>
-          <button id="mute" onClick={this.muteToggleTrack} className={this.state.mute ? 'fa fa-volume-up' : 'fa fa-volume-off'}>Mute</button>
+          <div className="progress" style={{width: this.state.currentTime + '%'}} onClick={this.updateTrackTime}></div>
+          <div className="player-box">
+            <div className="player-image">
+              <img className="track-artwork" src={this.state.artwork} />
+            </div>
+            <div className="player-info">
+              <h1>{this.state.title}</h1>
+              <h1>{this.state.author}</h1>
+              <button id="toggle" onClick={this.toggleTrack} className={this.state.playing ? 'fa fa-pause' : 'fa fa-play'}></button>
+              <button id="next" onClick={this.nextTrack}>Next</button>
+              <button id="prev" onClick={this.prevTrack}>Prev</button>
+              <button id="mute" onClick={this.muteToggle} className={this.state.mute ? 'fa fa-volume-up' : 'fa fa-volume-off'}>Mute</button>
+            </div>
+          </div>
 
           <iframe id="soundcloud_widget" width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F1848538&show_artwork=true"></iframe>
         </div>

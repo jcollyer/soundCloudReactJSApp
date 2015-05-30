@@ -1,14 +1,14 @@
 var React = require('react');
-var AppActions = require('../actions/app-actions.js');
+var PlayerActions = require('../actions/player-actions.js');
 
 var Track =
   React.createClass({
     handleClick: function() {
-      AppActions.setTrack(this.props.id);
-      AppActions.setTrackDuration(this.props.duration);
-      AppActions.setTrackTitle(this.props.title);
-      AppActions.setTrackAuthor(this.props.author);
-      AppActions.setTrackArtwork(this.props.artwork);
+      PlayerActions.setTrack(this.props.id);
+      PlayerActions.setTrackDuration(this.props.duration);
+      PlayerActions.setTrackTitle(this.props.title);
+      PlayerActions.setTrackAuthor(this.props.author);
+      PlayerActions.setTrackArtwork(this.props.artwork);
     },
     removeTrack: function(id) {
       SC.get('/me/playlists', { limit: 1 }, function(playlist) {
@@ -42,7 +42,7 @@ var Track =
     },
     render: function() {
       return (
-        <div className="track" key={this.props.id}>
+        <div className="track">
           <p>{this.props.title}</p>
           <img src={this.props.artwork} data-id={this.props.id} onClick={this.handleClick} />
           <br />

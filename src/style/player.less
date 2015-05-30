@@ -1,12 +1,29 @@
 #soundcloud_widget {
   // display:none;
+  position: absolute;
+  left: -99999px;
 }
 
 .player{
-  text-align: center;
-  text-shadow: 1px 0px 1px #eee;
   .progress{
     background: #444;
     height: 20px;
+  }
+  .player-box {
+    width: 600px;
+    margin: 10px auto;
+    .player-image {
+      float: left;
+      margin-top: 10px;
+      width: 35%;
+      .track-artwork {
+        border-radius: 50%;
+      }
+    }
+    .player-info {
+      text-shadow: 1px 0px 1px #eee;
+      float: left;
+      width: 65%;
+    }
   }
 }

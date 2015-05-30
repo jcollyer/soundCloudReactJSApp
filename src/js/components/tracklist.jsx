@@ -37,7 +37,7 @@ TrackList =
           {this.state.tracks.map(function(track){
             var bigImage = track.artwork_url? track.artwork_url.replace('large', 't200x200') : "";
             return (
-              <div className='col-md-3'>
+              <div className='col-md-3' key={track.id}>
                 <Track
                       title={track.title}
                       artwork={bigImage}
