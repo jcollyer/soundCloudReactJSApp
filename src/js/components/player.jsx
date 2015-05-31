@@ -80,16 +80,16 @@ var Player =
       });
 
       this.getPlayer();
-      player.load(PlayerStore.getTrack(), {
-        auto_play: false
+      player.load(this.state.track, {
+        auto_play: true
       });
 
 
-
-
-      // player.bind(SC.Widget.Events.READY, function() {
+      //   debugger;
+      // SC.stream("/tracks/"+this.state.track, function(sound){
       // });
 
+      // that.toggleTrack()
 
       // var currentTimeInterval = setInterval(function(){
       //   console.log("hi");

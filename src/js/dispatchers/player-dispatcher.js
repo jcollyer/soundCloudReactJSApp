@@ -2,7 +2,7 @@ var Dispatcher = require('./dispatcher.js');
 var assign = require('object-assign');
 
 var PlayerDispatcher = assign({},Dispatcher.prototype, {
-  handleViewAction: function(action){
+  handlePlayerAction: function(action){
     this.dispatch({
       source: 'VIEW_ACTION',
       action:action
