@@ -11,6 +11,7 @@ var Genre =
   React.createClass({
 
     getInitialState: function() {
+      AppActions.setGenre("rock");
       return getGenre();
     },
     handleClick: function(event) {
@@ -33,7 +34,7 @@ var Genre =
           <button onClick={this.handleClick} data-genre="house">House</button>
           <button onClick={this.handleClick} data-genre="hip-hop">Hip-Hop</button>
           <h2>{this.state.genre}</h2>
-          <TrackList genre={this.state.genre}/>
+          <TrackList genre={this.state.genre} />
         </div>
       );
     }

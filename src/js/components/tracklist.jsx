@@ -28,6 +28,9 @@ TrackList =
         }.bind(this)
       });
     },
+    componentDidMount: function() {
+      this.getTracks(AppStore.getGenre());
+    },
     componentWillReceiveProps: function(){
       this.getTracks(AppStore.getGenre());
     },
