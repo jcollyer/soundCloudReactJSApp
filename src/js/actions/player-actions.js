@@ -4,7 +4,7 @@ var PlayerDispatcher = require('../dispatchers/player-dispatcher.js');
 var PlayerActions = {
   setTrack:function(trackId){
     PlayerDispatcher.handlePlayerAction({
-      actionType: PlayerConstants.SET_TRACK,
+      actionType: PlayerConstants.SET_TRACK_ID,
       trackId: trackId
     })
   },

@@ -5,6 +5,7 @@ var assign = require('object-assign');
 
 var CHANGE_EVENT = "change";
 
+var _trackId = "";
 var _trackURL = "";
 var _trackTitle = "";
 var _trackAuthor = "";
@@ -12,7 +13,8 @@ var _trackArtwork = "";
 var _trackDuration = "";
 
 function _setTrack(trackId) {
-  _trackURL = "https://api.soundcloud.com/tracks/"+trackId+"";
+  _trackId = trackId;
+  // _trackURL = "https://api.soundcloud.com/tracks/"+trackId+"";
 };
 
 function _setTrackTitle(title) {
@@ -46,7 +48,8 @@ var PlayerStore = assign({}, EventEmitter.prototype, {
 
 
   getTrack:function(){
-    return _trackURL;
+    // return _trackURL;
+    return _trackId;
   },
 
   getTrackTitle:function(){
@@ -69,7 +72,7 @@ var PlayerStore = assign({}, EventEmitter.prototype, {
     var action = payload.action; // this is our action from handleViewAction
     switch(action.actionType){
 
-      case PlayerConstants.SET_TRACK:
+      case PlayerConstants.SET_TRACK_ID:
         _setTrack(payload.action.trackId);
         PlayerStore.emitChange();
         break
@@ -88,8 +91,10 @@ var PlayerStore = assign({}, EventEmitter.prototype, {
 
       case PlayerConstants.SET_TRACK_ARTWORK:
         _setTrackArtwork(payload.action.artwork);
+        // PlayerStore.emitChange();
         break
     }
+
 
     return true;
   })

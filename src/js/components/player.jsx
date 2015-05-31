@@ -68,6 +68,7 @@ var Player =
     },
     updateTrack:function() {
       that = this;
+      console.log(PlayerStore.getTrackTitle())
       this.setState({
         track: PlayerStore.getTrack(),
         title: PlayerStore.getTrackTitle(),
@@ -80,10 +81,14 @@ var Player =
       });
 
       this.getPlayer();
-      player.load(this.state.track, {
-        auto_play: true
-      });
+      console.log(this.state)
 
+      // player.bind(SC.Widget.Events.READY, function(){
+      //   player.load(this.state.track, {
+      //     auto_play: true
+      //   });
+
+      // });
 
       //   debugger;
       // SC.stream("/tracks/"+this.state.track, function(sound){
