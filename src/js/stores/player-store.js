@@ -74,24 +74,28 @@ var PlayerStore = assign({}, EventEmitter.prototype, {
 
       case PlayerConstants.SET_TRACK_ID:
         _setTrack(payload.action.trackId);
-        PlayerStore.emitChange();
+        PlayerStore.emit('change');
         break
 
       case PlayerConstants.SET_TRACK_DURATION:
         _setTrackDuration(payload.action.duration);
+        PlayerStore.emit('change');
         break
 
       case PlayerConstants.SET_TRACK_TITLE:
         _setTrackTitle(payload.action.title);
+        // PlayerStore.emitChange();
+        PlayerStore.emit('change');
         break
 
       case PlayerConstants.SET_TRACK_AUTHOR:
         _setTrackAuthor(payload.action.author);
+        PlayerStore.emit('change');
         break
 
       case PlayerConstants.SET_TRACK_ARTWORK:
         _setTrackArtwork(payload.action.artwork);
-        // PlayerStore.emitChange();
+        PlayerStore.emit('change');
         break
     }
 

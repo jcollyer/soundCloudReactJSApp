@@ -36,7 +36,7 @@ var Player =
       that.interval = setInterval(function(){
         console.log("hi");
         that.getCurrentTime();
-      }, 500);
+      }, 100);
     },
     pauseTrack: function() {
       if (that.interval > 0) clearInterval(that.interval);
@@ -56,8 +56,26 @@ var Player =
       });
     },
     getPlayer: function() {
+      if (that.interval) clearInterval(that.interval);
+
+      that = this;
+
       widgetIframe = document.getElementById('soundcloud_widget');
       player = SC.Widget(widgetIframe);
+
+      player.bind(SC.Widget.Events.READY, function(){
+        player.load("http://api.soundcloud.com/tracks/"+that.state.track, {
+          auto_play: true
+        });
+      });
+
+      that.setState({playing: true});
+
+      that.interval = setInterval(function(){
+        console.log("hi");
+        that.getCurrentTime();
+      }, 100);
+
     },
     getCurrentTime: function() {
       var duration = that.state.duration;
@@ -80,34 +98,10 @@ var Player =
         mute: false
       });
 
-      this.getPlayer();
-      console.log(this.state)
-
-      // player.bind(SC.Widget.Events.READY, function(){
-      //   player.load(this.state.track, {
-      //     auto_play: true
-      //   });
-
-      // });
-
-      //   debugger;
-      // SC.stream("/tracks/"+this.state.track, function(sound){
-      // });
-
-      // that.toggleTrack()
-
-      // var currentTimeInterval = setInterval(function(){
-      //   console.log("hi");
-      //   getCurrentTime();
-      // }, 500);
-
-
-      // player.bind(SC.Widget.Events.PAUSE, function() {
-      //   that.setState({playing: false});
-      //   // debugger;
-      //   clearInterval(currentTimeInterval);
-      // });
-
+      //hack - i need to figure out my syncronys situation
+      window.setTimeout(function(){
+        that.getPlayer();
+      }, 1);
 
     },
     updateTrackTime: function() {
@@ -115,15 +109,11 @@ var Player =
       var xoffset = event.clientX;
       var duration = this.state.duration;
       currentTime = (xoffset / width) * duration;
-      console.log(currentTime)
-      debugger;
-      // player.seekTo(currentTime);
-      // seconds = (xoffset / width) * (duration/1000);
-      // this.setState({currentTime:currentTime});
+      time = Math.floor(currentTime);
+      player.seekTo(time);
     },
     componentDidMount: function(){
       PlayerStore.on('change', this.updateTrack);
-      // this.getTrack(PlayerStore.getTrack());
     },
     componentWillUnmount: function() {
       PlayerStore.removeListener('change', this.updateTrack);
@@ -131,7 +121,9 @@ var Player =
     render: function() {
       return (
         <div className="player">
-          <div className="progress" style={{width: this.state.currentTime + '%'}} onClick={this.updateTrackTime}></div>
+          <div className="progress-container" onClick={this.updateTrackTime}>
+            <div className="progress" style={{width: this.state.currentTime + '%'}} onClick={this.updateTrackTime}></div>
+          </div>
           <div className="player-box">
             <div className="player-image">
               <img className="track-artwork" src={this.state.artwork} />
