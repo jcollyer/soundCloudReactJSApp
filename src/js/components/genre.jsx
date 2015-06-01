@@ -29,11 +29,14 @@ var Genre =
     render: function() {
       return (
         <div>
-          <button onClick={this.handleClick} data-genre="HipHop">HipHop</button>
+          <button onClick={this.handleClick} data-genre="rino">rino</button>
           <button onClick={this.handleClick} data-genre="rnb">RnB</button>
           <button onClick={this.handleClick} data-genre="house">House</button>
           <button onClick={this.handleClick} data-genre="hip-hop">Hip-Hop</button>
-          <h2>{this.state.genre}</h2>
+          <button onClick={this.handleClick} data-genre="beats">beats</button>
+          <button onClick={this.handleClick} data-genre="rap">rap</button>
+          <button onClick={this.handleClick} data-genre="lofi">lofi</button>
+          <button onClick={this.handleClick} data-genre="juciy">juciy</button>
           <TrackList genre={this.state.genre} />
         </div>
       );

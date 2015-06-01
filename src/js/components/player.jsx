@@ -129,7 +129,7 @@ var Player =
               <img className="track-artwork" src={this.state.artwork} />
             </div>
             <div className="player-info">
-              <h1>{this.state.title}</h1>
+              <p>{this.state.title}</p>
               <h1>{this.state.author}</h1>
               <button id="toggle" onClick={this.toggleTrack} className={this.state.playing ? 'fa fa-pause' : 'fa fa-play'}></button>
               <button id="next" onClick={this.nextTrack}>Next</button>
