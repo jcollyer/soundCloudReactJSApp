@@ -7,25 +7,28 @@ TrackList =
     getInitialState: function() {
       return {tracks: []};
     },
+    displayTracks: function(trackArr) {
+      var goodTracks = [];
+      that = this;
+      trackArr.forEach(function(track){
+        if (track.artwork_url != null){
+          goodTracks.push(track);
+        }
+        that.setState({tracks: goodTracks});
+      });
+    },
     getTracks: function(genre) {
       that = this;
-      var goodTracks = [];
       var url = 'http://api.soundcloud.com/tracks?'+genre+'&client_id=b5e21578d92314bc753b90ea7c971c1e';
-      $.ajax({
-        url: url,
-        dataType: 'json',
-        success: function(tracks) {
-          tracks.forEach(function(track){
-            if (track.artwork_url != null){
-              goodTracks.push(track);
-            }
-            that.setState({tracks: goodTracks});
-          });
-        }.bind(this),
-        error: function(xhr, status, err) {
-          console.error(xhr, status, err.toString());
-        }.bind(this)
-      });
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+          var trackArr = JSON.parse(xmlhttp.responseText);
+          that.displayTracks(trackArr);
+        }
+      };
+      xmlhttp.open("GET", url, true);
+      xmlhttp.send();
     },
     componentDidMount: function() {
       this.getTracks(AppStore.getGenre());

@@ -3,17 +3,26 @@
   "version": "0.0.0",
   "description": "soundCloud ReactJS app",
   "dependencies": {
+    "css-loader": "^0.14.4",
+    "es6-promise": "^2.1.1",
+    "express": "^4.12.4",
+    "http-proxy": "^1.11.1",
     "jsx-loader": "^0.13.2",
     "less-loader": "^2.2.0",
-    "url-loader": "^0.5.6"
-  },
-  "devDependencies": {
-    "webpack": "^1.9.9",
+    "node-libs-browser": "^0.5.2",
+    "object-assign": "^2.0.0",
+    "react": "^0.13.3",
+    "soundcloud": "^0.2.0",
+    "style-loader": "^0.12.3",
+    "url-loader": "^0.5.6",
+    "webpack": "^1.9.10",
     "webpack-dev-server": "^1.9.0"
   },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --devtool eval --progress --colors --content-base build"
+    "dev": "webpack-dev-server --devtool eval --progress --colors --content-base build",
+    "start": "node server"
   },
   "repository": {
     "type": "git",
