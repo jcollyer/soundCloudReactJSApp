@@ -9,8 +9,8 @@ var React = require('react');
 
 
 SC.initialize({
-  client_id: "51b52c948e268a19b58f87f3d47861ad",
-  redirect_uri: "http://localhost:3000/callback.html"
+  client_id: "b5e21578d92314bc753b90ea7c971c1e",
+  redirect_uri: "http://localhost:8080/build/callback.html"
 });
 
 
@@ -38,14 +38,14 @@ var MyTracksButton = React.createClass({
     getUsersPlaylists();
     $.ajax({
       // url: this.props.url,
-      url: 'https://api.soundcloud.com/users/143543661/playlists.json?client_id=51b52c948e268a19b58f87f3d47861ad',
+      url: 'https://api.soundcloud.com/users/143543661/playlists.json?client_id=b5e21578d92314bc753b90ea7c971c1e',
       dataType: 'json',
       success: function(playlists) {
         this.setState({tracks: playlists[0].tracks});
       }.bind(this),
       error: function(xhr, status, err) {
         // console.error(this.props.url, status, err.toString());
-        console.error('http://api.soundcloud.com/playlists/405726.json?client_id=51b52c948e268a19b58f87f3d47861ad', status, err.toString());
+        console.error('http://api.soundcloud.com/playlists/405726.json?client_id=b5e21578d92314bc753b90ea7c971c1e', status, err.toString());
       }.bind(this)
     });
   },

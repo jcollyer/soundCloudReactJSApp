@@ -10,8 +10,7 @@ TrackList =
     getTracks: function(genre) {
       that = this;
       var goodTracks = [];
-      var url = 'http://api.soundcloud.com/tracks?'+genre+'&client_id=51b52c948e268a19b58f87f3d47861ad';
-      // var url = 'https://api.soundcloud.com/explore/sounds/category?rock&limit=L&client_id=51b52c948e268a19b58f87f3d47861ad';
+      var url = 'http://api.soundcloud.com/tracks?'+genre+'&client_id=b5e21578d92314bc753b90ea7c971c1e';
       $.ajax({
         url: url,
         dataType: 'json',

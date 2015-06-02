@@ -7,19 +7,17 @@ var CHANGE_EVENT = "change";
 
 var _genre = [];
 
-
-debugger;
 SC.initialize({
-  client_id: "51b52c948e268a19b58f87f3d47861ad",
+  client_id: "b5e21578d92314bc753b90ea7c971c1e",
   redirect_uri: "http://localhost:3000/callback.html"
 });
 
 
 function _login(){
-  debugger;
   SC.connect(function() {
     SC.get('/me', function(me) {
-      $('#username').html(me.username);
+      // $('#username').html(me.username);
+      console.log(me.username);
     });
   });
 };
