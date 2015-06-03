@@ -7,11 +7,6 @@ var CHANGE_EVENT = "change";
 
 var _genre = [];
 
-SC.initialize({
-  client_id: "b5e21578d92314bc753b90ea7c971c1e",
-  redirect_uri: "http://localhost:3000/callback.html"
-});
-
 
 function _login(){
   SC.connect(function() {

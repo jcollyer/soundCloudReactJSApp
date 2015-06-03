@@ -7,13 +7,6 @@ var React = require('react');
 //   document.getElementById('main'));
 
 
-
-SC.initialize({
-  client_id: "b5e21578d92314bc753b90ea7c971c1e",
-  redirect_uri: "http://localhost:8080/build/callback.html"
-});
-
-
 var titleNames = [];
 var getUsersPlaylists = function() {
   SC.get('/me/playlists', function(playlists) {

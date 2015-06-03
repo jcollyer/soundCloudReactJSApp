@@ -16,9 +16,19 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.0/react.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.0/JSXTransformer.js"></script>
   <script src="http://w.soundcloud.com/player/api.js"></script>
-  <script src="//connect.soundcloud.com/sdk.js"></script>
+  <script src="http://connect.soundcloud.com/sdk.js"></script>
+
 
 
   <script src="bundle.js"></script>
+
+
+  <script>
+    SC.initialize({
+      client_id: "b5e21578d92314bc753b90ea7c971c1e",
+      redirect_uri: "http://localhost:3000/callback.html"
+    });
+  </script>
+
 </html>
 
