@@ -1,5 +1,6 @@
 var React = require('react');
 var PlayerActions = require('../actions/player-actions.js');
+var AppActions = require('../actions/app-actions.js');
 
 require('../../style/track.less');
 
@@ -21,11 +22,6 @@ var Track =
           var oTracksIds = [];
           var titleNames = [];
 
-          // playlists.forEach(function(playlist){
-          //   var title = playlist.title;
-          //   titleNames.push(title);
-          // });
-
           var oTracks = playlist[0].tracks;
           oTracks.forEach(function (track){
             var stringifyIDs = JSON.stringify(track.id)
@@ -44,7 +40,8 @@ var Track =
 
         });
       } else {
-        login();
+        isLoggedIn = true;
+        AppActions.login();
       }
     },
     favoriteTrack: function() {
@@ -58,7 +55,8 @@ var Track =
           }
         });
       } else {
-        login();
+        isLoggedIn = true;
+        AppActions.login();
       }
     },
     removeTrack: function(id) {
