@@ -47,9 +47,9 @@ var Webpack = require('webpack');
 module.exports = {
   devtool: 'eval',
   entry: [
-    'webpack/hot/dev-server',
+    // 'webpack/hot/dev-server',
     // The script refreshing the browser on none hot updates
-    'webpack-dev-server/client?http://localhost:8080',
+    // 'webpack-dev-server/client?http://localhost:8080',
     './src/main.jsx'
   ],
   output: {
@@ -63,7 +63,10 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.jsx$/, loader: 'jsx-loader'
+        test: /\.jsx$/,
+        loaders: [
+        'react-hot', 'jsx-loader'
+        ]
       }, {
         test: /\.less$/, loader: 'style-loader!css-loader!less-loader'
       }, {
