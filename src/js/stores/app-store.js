@@ -6,12 +6,12 @@ var assign = require('object-assign');
 var CHANGE_EVENT = "change";
 
 var _genre = [];
+var _userId = "";
 
-
-function _login(){
+function _setUserId(){
   SC.connect(function() {
     SC.get('/me', function(me) {
-      // $('#username').html(me.username);
+      _userId = me.id;
       console.log(me.username);
     });
   });
@@ -38,8 +38,8 @@ var AppStore = assign({}, EventEmitter.prototype, {
     return _genre;
   },
 
-  getTrack:function(){
-    return _trackURL;
+  getUserId:function(){
+    return _userId;
   },
 
   dispatcherIndex:AppDispatcher.register(function(payload){
@@ -47,13 +47,12 @@ var AppStore = assign({}, EventEmitter.prototype, {
     switch(action.actionType){
 
       case AppConstants.LOGIN:
-        _login();
+        _setUserId();
         break;
 
       case AppConstants.SET_GENRE:
         _setGenre(payload.action.genre);
         break
-
     }
 
     return true;
