@@ -12,17 +12,13 @@ var Track =
       if (oldActiveTrack != null) oldActiveTrack.classList.remove("_active-track");
       event.target.classList.add("_active-track");
 
-
-
-
-
       PlayerActions.setTrack(this.props.id);
       PlayerActions.setTrackDuration(this.props.duration);
       PlayerActions.setTrackTitle(this.props.title);
       PlayerActions.setTrackAuthor(this.props.author);
       PlayerActions.setTrackArtwork(this.props.artwork);
     },
-    add: function(id, e) {
+    addTrack: function(id, e) {
       id = id;
       SC.get('/me/playlists', function(playlist) {
 
@@ -54,11 +50,9 @@ var Track =
     },
     addTrackToPlaylist: function(id, e) {
       if(window.isLoggedIn) {
-        this.add(id, e);
+        this.addTrack(id, e);
       } else {
-        window.isLoggedIn = true;
         AppActions.login();
-        this.add(id, e);
       }
     },
     favoriteTrack: function(id, e) {
@@ -72,8 +66,8 @@ var Track =
           }
         });
       } else {
-        window.isLoggedIn = true;
         AppActions.login();
+
       }
     },
     removeTrack: function(id, e) {
