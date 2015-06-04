@@ -8,6 +8,14 @@ require('../../style/track.less');
 var Track =
   React.createClass({
     handleClick: function() {
+      oldActiveTrack = document.querySelector("._active-track");
+      if (oldActiveTrack != null) oldActiveTrack.classList.remove("_active-track");
+      event.target.classList.add("_active-track");
+
+
+
+
+
       PlayerActions.setTrack(this.props.id);
       PlayerActions.setTrackDuration(this.props.duration);
       PlayerActions.setTrackTitle(this.props.title);
@@ -15,9 +23,9 @@ var Track =
       PlayerActions.setTrackArtwork(this.props.artwork);
     },
     add: function(id, e) {
-
       id = id;
       SC.get('/me/playlists', function(playlist) {
+
         var oTracksIds = [];
         var titleNames = [];
 
@@ -101,7 +109,7 @@ var Track =
     render: function() {
       return (
         <div className="track">
-          <img src={this.props.artwork} onClick={this.handleClick} />
+          <img src={this.props.artwork} onClick={this.handleClick} className="track-image" />
           <p>{this.props.title}</p>
           <p><b>{this.props.author}</b></p>
           <button onClick={this.deleteTrack.bind(null, this.props.id)}>Delete</button>
