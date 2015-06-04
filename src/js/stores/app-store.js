@@ -8,10 +8,13 @@ var CHANGE_EVENT = "change";
 var _genre = [];
 var _userId = "";
 
+window.isLoggedIn = false;
+
 function _setUserId(){
   SC.connect(function() {
     SC.get('/me', function(me) {
       _userId = me.id;
+      window.isLoggedIn = true;
       console.log(me.username);
     });
   });

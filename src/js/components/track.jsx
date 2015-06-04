@@ -4,7 +4,6 @@ var AppActions = require('../actions/app-actions.js');
 
 require('../../style/track.less');
 
-var isLoggedIn = false;
 
 var Track =
   React.createClass({
@@ -17,7 +16,8 @@ var Track =
     },
     addTrackToPlaylist: function() {
       id = event.target.getAttribute("data-id");
-      if(isLoggedIn) {
+      debugger;
+      if(window.isLoggedIn) {
         SC.get('/me/playlists', function(playlist) {
           var oTracksIds = [];
           var titleNames = [];
@@ -40,13 +40,13 @@ var Track =
 
         });
       } else {
-        isLoggedIn = true;
+        window.isLoggedIn = true;
         AppActions.login();
       }
     },
     favoriteTrack: function() {
       id = event.target.getAttribute("data-id");
-      if(isLoggedIn) {
+      if(window.isLoggedIn) {
         SC.put('/me/favorites/'+id, function(status, error) {
           if (error) {
             alert("Error: " + error.message);
@@ -55,7 +55,7 @@ var Track =
           }
         });
       } else {
-        isLoggedIn = true;
+        window.isLoggedIn = true;
         AppActions.login();
       }
     },
