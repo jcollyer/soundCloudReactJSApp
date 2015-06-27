@@ -64,7 +64,7 @@ var Player =
       player = SC.Widget(widgetIframe);
 
       player.bind(SC.Widget.Events.READY, function(){
-        player.load("http://api.soundcloud.com/tracks/"+that.state.track, {
+        player.load("https://api.soundcloud.com/tracks/"+that.state.track, {
           auto_play: true
         });
       });
