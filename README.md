@@ -1,8 +1,8 @@
-## install
+## install/run
 ```
-$ npm install
+$ make
 ```
-## run
+## view
 ```
-$ npm run dev
+localhost:3000
 ```
