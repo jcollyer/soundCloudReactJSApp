@@ -3,9 +3,6 @@ var Webpack = require('webpack');
 module.exports = {
   devtool: 'eval',
   entry: [
-    // 'webpack/hot/dev-server',
-    // The script refreshing the browser on none hot updates
-    // 'webpack-dev-server/client?http://localhost:8080',
     './src/main.jsx'
   ],
   output: {
