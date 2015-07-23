@@ -16,6 +16,7 @@ function _setUserId(){
       _userId = me.id;
       window.isLoggedIn = true;
       console.log(me.username);
+      document.cookie = "userId="+me.id;
     });
   });
 };
@@ -42,7 +43,15 @@ var AppStore = assign({}, EventEmitter.prototype, {
   },
 
   getUserId:function(){
-    return _userId;
+    // return _userId;
+
+    function getCookie(name) {
+      var value = "; " + document.cookie;
+      var parts = value.split("; " + name + "=");
+      if (parts.length == 2) return parts.pop().split(";").shift();
+    }
+
+    return getCookie("userId");
   },
 
   dispatcherIndex:AppDispatcher.register(function(payload){
