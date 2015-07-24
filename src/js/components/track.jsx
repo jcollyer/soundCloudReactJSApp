@@ -80,7 +80,6 @@ var Track =
         });
 
         var i = oTracksIds.indexOf(id);
-        debugger;
         if (i > -1) oTracksIds.splice(i, 1);
 
         var tracks = oTracksIds.map(function(id) { return { id: id }; });
