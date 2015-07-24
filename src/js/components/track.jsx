@@ -75,11 +75,12 @@ var Track =
         var oTracksIds = [];
         var oTracks = playlist[0].tracks;
         oTracks.forEach(function (track){
-          var stringifyIDs = JSON.stringify(track.id)
-          oTracksIds.push(stringifyIDs);
+          // var stringifyIDs = JSON.stringify(track.id)
+          oTracksIds.push(track.id);
         });
 
         var i = oTracksIds.indexOf(id);
+        debugger;
         if (i > -1) oTracksIds.splice(i, 1);
 
         var tracks = oTracksIds.map(function(id) { return { id: id }; });
@@ -103,12 +104,18 @@ var Track =
     render: function() {
       return (
         <div className="track">
-          <img src={this.props.artwork} onClick={this.handleClick} className="track-image" />
-          <p>{this.props.title}</p>
-          <p><b>{this.props.author}</b></p>
-          <button onClick={this.deleteTrack.bind(null, this.props.id)}>Delete</button>
-          <button onClick={this.favoriteTrack.bind(null, this.props.id)}>Favorite</button>
-          <button onClick={this.addTrackToPlaylist.bind(null, this.props.id)}>+Playlist</button>
+          <div className="track-image">
+            <img src={this.props.artwork} onClick={this.handleClick} />
+          </div>
+          <div className="track-info">
+            <p className="title">{this.props.title}</p>
+            <p className="author">{this.props.author}</p>
+          </div>
+          <div className="track-actions">
+            <button className="track-delete" onClick={this.deleteTrack.bind(null, this.props.id)}>Delete</button>
+            <button className="track-favorite-add" onClick={this.favoriteTrack.bind(null, this.props.id)}>Favorite</button>
+            <button className="track-playlist-add" onClick={this.addTrackToPlaylist.bind(null, this.props.id)}>+Playlist</button>
+          </div>
         </div>
       );
     }

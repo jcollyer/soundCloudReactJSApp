@@ -2,6 +2,7 @@ var React = require('react');
 var AppActions = require('../actions/app-actions.js');
 var AppStore = require('../stores/app-store.js');
 var Track = require('./track.jsx');
+require('../../style/playlist.less');
 
 
 var isLoggedIn = false;
@@ -49,29 +50,32 @@ var Playlist =
       return (
         <div>
           <button onClick={this.handleClick}>My playlists</button>
-          {this.state.playlists.map(function(playlist){
-            // var bigImage = playlist.artwork_url? playlist.artwork_url.replace('large', 't200x200') : "";
-            return (
-              <div className="row playlist" key={playlist.id}>
 
-                <h1>{playlist.title}</h1>
-                {playlist.tracks.map(function(track){
+          <div className="playlist-wrapper">
+            {this.state.playlists.map(function(playlist){
+              // var bigImage = playlist.artwork_url? playlist.artwork_url.replace('large', 't200x200') : "";
+              return (
+                <div className="row playlist" key={playlist.id}>
 
-                  return (
-                    <div className='col-md-3' key={track.id}>
-                      <Track
-                            title={track.title}
-                            artwork={track.artwork_url}
-                            id={track.id}
-                            duration={track.duration}
-                            author={track.user.username}
-                      />
-                    </div>
-                  )
-                })}
-              </div>
-            )
-          })}
+                  <h1>{playlist.title}</h1>
+                  {playlist.tracks.map(function(track){
+
+                    return (
+                      <div className='col-md-12' key={track.id}>
+                        <Track
+                              title={track.title}
+                              artwork={track.artwork_url}
+                              id={track.id}
+                              duration={track.duration}
+                              author={track.user.username}
+                        />
+                      </div>
+                    )
+                  })}
+                </div>
+              )
+            })}
+          </div>
         </div>
       );
     }
