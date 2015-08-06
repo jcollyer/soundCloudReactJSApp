@@ -71,26 +71,25 @@ var Track =
       }
     },
     removeTrack: function(id, e) {
-      SC.get('/me/playlists', { limit: 1 }, function(playlist) {
-        var oTracksIds = [];
-        var oTracks = playlist[0].tracks;
-        oTracks.forEach(function (track){
-          // var stringifyIDs = JSON.stringify(track.id)
-          oTracksIds.push(track.id);
+      that = this;
+      playlistID = this.props.playlist;
+
+      SC.get('http://api.soundcloud.com/playlists/'+playlistID+'?client_id=b5e21578d92314bc753b90ea7c971c1e', function(playlist) {
+        var newTrackList = [];
+        playlist.tracks.forEach(function(track) {
+          if(that.props.id !== track.id) {
+            newTrackList.push({id:track.id});
+          };
         });
-
-        var i = oTracksIds.indexOf(id);
-        if (i > -1) oTracksIds.splice(i, 1);
-
-        var tracks = oTracksIds.map(function(id) { return { id: id }; });
-        SC.put(playlist[0].uri, { playlist: { tracks: tracks } }, function(response, error){
+        SC.put(playlist.uri, { playlist: { tracks: newTrackList } }, function(response, error){
           if(error){
             console.log("Some error occured: " + error.message);
           }else{
-            console.log("track removed from playlist!");
+            alert("track removed from playlist!");
           }
         });
       });
+
     },
     deleteTrack: function(id, e) {
       id = id;

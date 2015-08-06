@@ -59,7 +59,6 @@ var Playlist =
 
                   <h1>{playlist.title}</h1>
                   {playlist.tracks.map(function(track){
-
                     return (
                       <div className='col-md-12' key={track.id}>
                         <Track
@@ -68,6 +67,7 @@ var Playlist =
                               id={track.id}
                               duration={track.duration}
                               author={track.user.username}
+                              playlist={playlist.id}
                         />
                       </div>
                     )
@@ -81,4 +81,3 @@ var Playlist =
     }
   });
 module.exports = Playlist;
-
