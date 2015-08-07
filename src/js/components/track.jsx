@@ -72,20 +72,24 @@ var Track =
     },
     removeTrack: function(id, e) {
       that = this;
-      playlistID = this.props.playlist;
+      trackID = id;
+      var playlistID = this.props.playlist;
+      var trackToRemove;
 
       SC.get('http://api.soundcloud.com/playlists/'+playlistID+'?client_id=b5e21578d92314bc753b90ea7c971c1e', function(playlist) {
         var newTrackList = [];
         playlist.tracks.forEach(function(track) {
-          if(that.props.id !== track.id) {
+          if(trackID !== track.id) {
             newTrackList.push({id:track.id});
-          };
+          }
         });
+        // Update playlist with tracks minus deleted track
         SC.put(playlist.uri, { playlist: { tracks: newTrackList } }, function(response, error){
           if(error){
             console.log("Some error occured: " + error.message);
           }else{
-            alert("track removed from playlist!");
+            var track = document.getElementById(trackID);
+            track.className = track.className + " remove_track";
           }
         });
       });
@@ -101,7 +105,7 @@ var Track =
     },
     render: function() {
       return (
-        <div className="track">
+        <div className="track" id={this.props.id}>
           <div className="track-image">
             <img src={this.props.artwork} onClick={this.handleClick} />
           </div>
