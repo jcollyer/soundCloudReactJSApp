@@ -15,10 +15,26 @@ function _setUserId(){
     SC.get('/me', function(me) {
       _userId = me.id;
       window.isLoggedIn = true;
-      console.log(me.username);
+
+      // Set User ID Cookie
       document.cookie = "userId="+me.id;
+
+      // Set User Playlists Cookie
+      SC.get('/users/'+_userId+'/playlists', function(playlists) {
+        var playlistArray = [];
+        playlists.forEach(function(playlist) {
+          playlistArray.push(playlist.title);
+        });
+        document.cookie = "userPlaylists="+playlistArray;
+      });
     });
   });
+};
+
+function getCookie(name) {
+  var value = "; " + document.cookie;
+  var parts = value.split("; " + name + "=");
+  if (parts.length == 2) return parts.pop().split(";").shift();
 };
 
 function _setGenre(genre) {
@@ -43,15 +59,17 @@ var AppStore = assign({}, EventEmitter.prototype, {
   },
 
   getUserId:function(){
-    // return _userId;
-
-    function getCookie(name) {
-      var value = "; " + document.cookie;
-      var parts = value.split("; " + name + "=");
-      if (parts.length == 2) return parts.pop().split(";").shift();
-    }
-
+    debugger;
     return getCookie("userId");
+  },
+
+  getUserPlaylists:function(){
+    var userPlaylistsCookie = getCookie('userPlaylists');
+    if (userPlaylistsCookie){
+      return userPlaylistsCookie.split(",");
+    } else {
+      return ["red","blue"];
+    }
   },
 
   dispatcherIndex:AppDispatcher.register(function(payload){
