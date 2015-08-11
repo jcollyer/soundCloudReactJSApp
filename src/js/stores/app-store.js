@@ -8,13 +8,10 @@ var CHANGE_EVENT = "change";
 var _genre = [];
 var _userId = "";
 
-window.isLoggedIn = false;
-
 function _setUserId(){
   SC.connect(function() {
     SC.get('/me', function(me) {
       _userId = me.id;
-      window.isLoggedIn = true;
 
       // Set User ID Cookie
       document.cookie = "userId="+me.id;
@@ -69,6 +66,14 @@ var AppStore = assign({}, EventEmitter.prototype, {
       return userPlaylistsCookie.split(",");
     } else {
       return ["red","blue"];
+    }
+  },
+
+  isLoggedIn:function(){
+    if (getCookie('userId')){
+      return true;
+    } else {
+      return false;
     }
   },
 

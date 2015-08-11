@@ -1,5 +1,6 @@
 var React = require('react');
 var PlayerActions = require('../actions/player-actions.js');
+var AppStore = require('../stores/app-store.js');
 var AppActions = require('../actions/app-actions.js');
 
 require('../../style/track.less');
@@ -49,7 +50,8 @@ var Track =
       });
     },
     addTrackToPlaylist: function(id, e) {
-      if(window.isLoggedIn) {
+      var isLoggedIn = AppStore.isLoggedIn();
+      if(isLoggedIn) {
         this.addTrack(id, e);
       } else {
         AppActions.login();
