@@ -7,11 +7,13 @@ var CHANGE_EVENT = "change";
 
 var _genre = [];
 var _userId = "";
+var isLoggedIn = false;
 
 function _setUserId(){
   SC.connect(function() {
     SC.get('/me', function(me) {
       _userId = me.id;
+      isLoggedIn = true;
 
       // Set User ID Cookie
       document.cookie = "userId="+me.id;
@@ -56,7 +58,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
   },
 
   getUserId:function(){
-    debugger;
     return getCookie("userId");
   },
 
@@ -70,7 +71,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
   },
 
   isLoggedIn:function(){
-    if (getCookie('userId')){
+    if (getCookie('userId') && isLoggedIn){
       return true;
     } else {
       return false;

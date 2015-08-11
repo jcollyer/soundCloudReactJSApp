@@ -20,33 +20,36 @@ var Track =
       PlayerActions.setTrackArtwork(this.props.artwork);
     },
     addTrack: function(id, e) {
-      id = id;
-      SC.get('/me/playlists', function(playlist) {
+      var trackId = id;
+      var trackIdsArray = [];
+      selectedPlaylist = this.props.playlist;
+      userId = AppStore.getUserId();
 
-        var oTracksIds = [];
-        var titleNames = [];
+      SC.get('/users/'+userId+'/playlists', function(playlists) {
 
-        //hardcoding first playlist tracks
-        var oTracks = playlist[0].tracks;
+        playlists.forEach(function(playlist) {
+          // Get selected playlist
+          if (selectedPlaylist === playlist.title) {
 
-        //get all the tracks from selected playlist
-        oTracks.forEach(function (track){
-          oTracksIds.push(track.id);
+            playlist.tracks.forEach(function (track){
+              // Add existing tracks to array
+              trackIdsArray.push(track.id);
+            });
+            // Add new track to array
+            trackIdsArray.push(trackId);
+            // Turn track array into objects
+            var tracks = trackIdsArray.map(function(id) { return { id: id }; });
+            // Add tracks to playlist
+            SC.put(playlist.uri, { playlist: { tracks: tracks } }, function(response, error){
+              if(error){
+                console.log("Some error occured: " + error.message);
+              }else{
+                console.log("tracks added to playlist!");
+              }
+            });
+          } // end if
+
         });
-
-        //add new track to selected playlist
-        oTracksIds.push(id);
-
-        //i don't know how to add to playlist, so i'm setting the tracks equal to all the existing tracks, plus the new track.
-        var tracks = oTracksIds.map(function(id) { return { id: id }; });
-        SC.put(playlist[0].uri, { playlist: { tracks: tracks } }, function(response, error){
-          if(error){
-            console.log("Some error occured: " + error.message);
-          }else{
-            console.log("tracks added to playlist!");
-          }
-        });
-
       });
     },
     addTrackToPlaylist: function(id, e) {
