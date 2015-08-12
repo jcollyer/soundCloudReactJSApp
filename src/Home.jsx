@@ -2,7 +2,7 @@ var React = require('react');
 var Login = require('./js/components/login.jsx');
 var Genre = require('./js/components/genre.jsx');
 var Playlist = require('./js/components/playlist.jsx');
-var PlaylistsMenu = require('./js/components/playlists-menu.jsx');
+var PlaylistMenu = require('./js/components/playlists-menu.jsx');
 require('./style/grid.min.less');
 require('./style/home.less');
 
@@ -11,7 +11,7 @@ var Home =
     render: function() {
       return (
         <div>
-          <PlaylistsMenu />
+          <PlaylistMenu />
           <Playlist />
           <Login />
           <Genre />

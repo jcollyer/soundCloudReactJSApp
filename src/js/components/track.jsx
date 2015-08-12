@@ -5,10 +5,9 @@ var AppActions = require('../actions/app-actions.js');
 
 require('../../style/track.less');
 
-
 var Track =
   React.createClass({
-    handleClick: function() {
+    handleClick: function () {
       oldActiveTrack = document.querySelector("._active-track");
       if (oldActiveTrack != null) oldActiveTrack.classList.remove("_active-track");
       event.target.classList.add("_active-track");
@@ -19,11 +18,18 @@ var Track =
       PlayerActions.setTrackAuthor(this.props.author);
       PlayerActions.setTrackArtwork(this.props.artwork);
     },
-    addTrack: function(id, e) {
+    addTrack: function() {
+      var menu = document.getElementById("playlist-select-menu");
+      menu.className = menu.className + "show";
+      // this.addTrackToPlaylist();
+    },
+    addTrackToPlaylist: function(id, e) {
       var trackId = id;
       var trackIdsArray = [];
-      selectedPlaylist = this.props.playlist;
-      userId = AppStore.getUserId();
+      var userId = AppStore.getUserId();
+
+      // change!!!!
+      var selectedPlaylist = "soma";
 
       SC.get('/users/'+userId+'/playlists', function(playlists) {
 
@@ -52,7 +58,7 @@ var Track =
         });
       });
     },
-    addTrackToPlaylist: function(id, e) {
+    clickAddToPlaylist: function(id, e) {
       var isLoggedIn = AppStore.isLoggedIn();
       if(isLoggedIn) {
         this.addTrack(id, e);
@@ -121,7 +127,7 @@ var Track =
           <div className="track-actions">
             <button className="track-delete" onClick={this.deleteTrack.bind(null, this.props.id)}>Delete</button>
             <button className="track-favorite-add" onClick={this.favoriteTrack.bind(null, this.props.id)}>Favorite</button>
-            <button className="track-playlist-add" onClick={this.addTrackToPlaylist.bind(null, this.props.id)}>+Playlist</button>
+            <button className="track-playlist-add" onClick={this.clickAddToPlaylist.bind(null, this.props.id)}>+Playlist</button>
           </div>
         </div>
       );
