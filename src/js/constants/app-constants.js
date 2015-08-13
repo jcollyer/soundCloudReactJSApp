@@ -1,4 +1,5 @@
 module.exports = {
   LOGIN: 'LOGIN',
-  GENRE: 'GENRE'
+  GENRE: 'GENRE',
+  SET_TRACK: 'SET_TRACK'
 };

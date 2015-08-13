@@ -6,6 +6,7 @@ var assign = require('object-assign');
 var CHANGE_EVENT = "change";
 
 var _genre = [];
+var _track;
 var _userId = "";
 var isLoggedIn = false;
 
@@ -40,6 +41,10 @@ function _setGenre(genre) {
   _genre = genre;
 };
 
+function  _setTrack(track) {
+  _track = track;
+};
+
 var AppStore = assign({}, EventEmitter.prototype, {
   emitChange:function(){
     this.emit(CHANGE_EVENT)
@@ -55,6 +60,10 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
   getGenre:function(){
     return _genre;
+  },
+
+  getTrack:function(){
+    return _track;
   },
 
   getUserId:function(){
@@ -88,6 +97,10 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
       case AppConstants.SET_GENRE:
         _setGenre(payload.action.genre);
+        break
+
+      case AppConstants.SET_TRACK:
+        _setTrack(payload.action.track);
         break
     }
 

@@ -18,45 +18,10 @@ var Track =
       PlayerActions.setTrackAuthor(this.props.author);
       PlayerActions.setTrackArtwork(this.props.artwork);
     },
-    addTrack: function() {
+    addTrack: function(id) {
+      AppActions.setTrack(id);
       var menu = document.getElementById("playlist-select-menu");
       menu.className = menu.className + "show";
-      // this.addTrackToPlaylist();
-    },
-    addTrackToPlaylist: function(id, e) {
-      var trackId = id;
-      var trackIdsArray = [];
-      var userId = AppStore.getUserId();
-
-      // change!!!!
-      var selectedPlaylist = "soma";
-
-      SC.get('/users/'+userId+'/playlists', function(playlists) {
-
-        playlists.forEach(function(playlist) {
-          // Get selected playlist
-          if (selectedPlaylist === playlist.title) {
-
-            playlist.tracks.forEach(function (track){
-              // Add existing tracks to array
-              trackIdsArray.push(track.id);
-            });
-            // Add new track to array
-            trackIdsArray.push(trackId);
-            // Turn track array into objects
-            var tracks = trackIdsArray.map(function(id) { return { id: id }; });
-            // Add tracks to playlist
-            SC.put(playlist.uri, { playlist: { tracks: tracks } }, function(response, error){
-              if(error){
-                console.log("Some error occured: " + error.message);
-              }else{
-                console.log("tracks added to playlist!");
-              }
-            });
-          } // end if
-
-        });
-      });
     },
     clickAddToPlaylist: function(id, e) {
       var isLoggedIn = AppStore.isLoggedIn();
