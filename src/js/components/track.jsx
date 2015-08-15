@@ -73,6 +73,7 @@ var Track =
     },
     deleteTrack: function(id, e) {
       id = id;
+      var isLoggedIn = AppStore.isLoggedIn();
       if(isLoggedIn) {
         this.removeTrack(id);
       } else {
