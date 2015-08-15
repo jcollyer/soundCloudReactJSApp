@@ -27,9 +27,6 @@ var Playlist =
         AppActions.login();
       }
     },
-    displayPlaylists: function(playlistArr) {
-      this.setState({playlists: playlistArr});
-    },
     handleClick: function() {
       that = this;
       this.getUsersPlaylists();
@@ -39,7 +36,8 @@ var Playlist =
       xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
           var playlistArr = JSON.parse(xmlhttp.responseText);
-          that.displayPlaylists(playlistArr);
+          debugger;
+          that.setState({playlists: playlistArr});
         }
       };
       xmlhttp.open("GET", url, true);
@@ -52,7 +50,6 @@ var Playlist =
 
           <div className="playlist-wrapper">
             {this.state.playlists.map(function(playlist){
-              // var bigImage = playlist.artwork_url? playlist.artwork_url.replace('large', 't200x200') : "";
               return (
                 <div className="row playlist" key={playlist.id}>
 
