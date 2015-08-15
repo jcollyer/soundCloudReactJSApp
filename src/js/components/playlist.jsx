@@ -14,6 +14,7 @@ var Playlist =
       return {playlists:[]};
     },
     getUsersPlaylists: function() {
+      var isLoggedIn = AppStore.isLoggedIn();
       if(isLoggedIn) {
         SC.get('/me/playlists', function(playlists) {
           playlists.forEach(function(playlist){
@@ -32,9 +33,7 @@ var Playlist =
     handleClick: function() {
       that = this;
       this.getUsersPlaylists();
-
       var userId = AppStore.getUserId();
-
       var url = 'https://api.soundcloud.com/users/'+userId+'/playlists.json?client_id=b5e21578d92314bc753b90ea7c971c1e';
       var xmlhttp = new XMLHttpRequest();
       xmlhttp.onreadystatechange = function () {
