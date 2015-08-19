@@ -14,6 +14,9 @@ var PlaylistsMenu =
       var track = AppStore.getTrack();
       this.addTrackToPlaylist(playlist, track);
     },
+    cancelAction: function() {
+      document.getElementById("playlist-select-menu").classList.remove('show');
+    },
     addTrackToPlaylist: function(playlist, track) {
       var trackId = track;
       var selectedPlaylist = playlist;
@@ -60,6 +63,7 @@ var PlaylistsMenu =
               )
             })
           }
+          <button onClick={that.cancelAction}>Cancel</button>
         </div>
       )
     }
