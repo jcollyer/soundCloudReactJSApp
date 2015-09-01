@@ -31,21 +31,7 @@ var Track =
         AppActions.login();
       }
     },
-    favoriteTrack: function(id, e) {
-      id = id;
-      if(window.isLoggedIn) {
-        SC.put('/me/favorites/'+id, function(status, error) {
-          if (error) {
-            alert("Error: " + error.message);
-          } else {
-            alert("Favorite:  " + id);
-          }
-        });
-      } else {
-        AppActions.login();
 
-      }
-    },
     removeTrack: function(id, e) {
       that = this;
       trackID = id;
@@ -92,7 +78,7 @@ var Track =
           </div>
           <div className="track-actions">
             <button className="track-delete" onClick={this.deleteTrack.bind(null, this.props.id)}>Delete</button>
-            <button className="track-favorite-add" onClick={this.favoriteTrack.bind(null, this.props.id)}>Favorite</button>
+
             <button className="track-playlist-add" onClick={this.clickAddToPlaylist.bind(null, this.props.id)}>+Playlist</button>
           </div>
         </div>

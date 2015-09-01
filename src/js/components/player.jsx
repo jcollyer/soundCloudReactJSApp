@@ -1,5 +1,6 @@
 var React = require('react');
 var PlayerStore = require('../stores/player-store.js');
+var AppActions = require('../actions/app-actions.js');
 require('../../style/player.less');
 
 var Player =
@@ -112,6 +113,20 @@ var Player =
       time = Math.floor(currentTime);
       player.seekTo(time);
     },
+    favoriteTrack: function(id, e) {
+      id = id;
+      if(window.isLoggedIn) {
+        SC.put('/me/favorites/'+id, function(status, error) {
+          if (error) {
+            alert("Error: " + error.message);
+          } else {
+            alert("Favorite:  " + id);
+          }
+        });
+      } else {
+        AppActions.login();
+      }
+    },
     componentDidMount: function(){
       PlayerStore.on('change', this.updateTrack);
     },
@@ -135,6 +150,9 @@ var Player =
               <button id="next" onClick={this.nextTrack}>Next</button>
               <button id="prev" onClick={this.prevTrack}>Prev</button>
               <button id="mute" onClick={this.muteToggle} className={this.state.mute ? 'fa fa-volume-up' : 'fa fa-volume-off'}>Mute</button>
+
+              <button className="track-favorite-add" onClick={this.favoriteTrack.bind(null, this.state.track)}>Favorite</button>
+
             </div>
           </div>
 
