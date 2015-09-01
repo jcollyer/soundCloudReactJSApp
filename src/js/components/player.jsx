@@ -116,7 +116,8 @@ var Player =
     },
     favoriteTrack: function(id, e) {
       id = id;
-      if(window.isLoggedIn) {
+      var isLoggedIn = AppStore.isLoggedIn();
+      if(isLoggedIn) {
         SC.put('/me/favorites/'+id, function(status, error) {
           if (error) {
             alert("Error: " + error.message);
