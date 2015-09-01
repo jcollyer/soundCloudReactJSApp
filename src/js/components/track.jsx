@@ -1,7 +1,6 @@
 var React = require('react');
 var PlayerActions = require('../actions/player-actions.js');
 var AppStore = require('../stores/app-store.js');
-var AppActions = require('../actions/app-actions.js');
 
 require('../../style/track.less');
 
@@ -18,20 +17,6 @@ var Track =
       PlayerActions.setTrackAuthor(this.props.author);
       PlayerActions.setTrackArtwork(this.props.artwork);
     },
-    addTrack: function(id) {
-      AppActions.setTrack(id);
-      var menu = document.getElementById("playlist-select-menu");
-      menu.className = menu.className + "show";
-    },
-    clickAddToPlaylist: function(id, e) {
-      var isLoggedIn = AppStore.isLoggedIn();
-      if(isLoggedIn) {
-        this.addTrack(id, e);
-      } else {
-        AppActions.login();
-      }
-    },
-
     removeTrack: function(id, e) {
       that = this;
       trackID = id;
@@ -78,8 +63,6 @@ var Track =
           </div>
           <div className="track-actions">
             <button className="track-delete" onClick={this.deleteTrack.bind(null, this.props.id)}>Delete</button>
-
-            <button className="track-playlist-add" onClick={this.clickAddToPlaylist.bind(null, this.props.id)}>+Playlist</button>
           </div>
         </div>
       );
