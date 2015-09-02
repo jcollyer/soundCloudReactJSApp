@@ -5,9 +5,6 @@ var Track = require('./track.jsx');
 require('../../style/playlist.less');
 require('../../style/playlists-menu.less');
 
-var isLoggedIn = false;
-var titleNames = [];
-
 var Playlist =
   React.createClass({
     getInitialState: function() {
@@ -16,14 +13,8 @@ var Playlist =
     getUsersPlaylists: function() {
       var isLoggedIn = AppStore.isLoggedIn();
       if(isLoggedIn) {
-        SC.get('/me/playlists', function(playlists) {
-          playlists.forEach(function(playlist){
-            var title = playlist.title;
-            titleNames.push(title);
-          });
-        });
+        AppStore.getUserPlaylists();
       } else {
-        isLoggedIn = true;
         AppActions.login();
       }
     },
