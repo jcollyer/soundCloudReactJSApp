@@ -129,19 +129,6 @@ var Player =
         AppActions.login();
       }
     },
-    addTrack: function(id) {
-      AppActions.setTrack(id);
-      var menu = document.getElementById("playlist-select-menu");
-      menu.className = menu.className + "show";
-    },
-    clickAddToPlaylist: function(id, e) {
-      var isLoggedIn = AppStore.isLoggedIn();
-      if(isLoggedIn) {
-        this.addTrack(id, e);
-      } else {
-        AppActions.login();
-      }
-    },
     componentDidMount: function(){
       PlayerStore.on('change', this.updateTrack);
     },
@@ -167,7 +154,7 @@ var Player =
               <button id="mute" onClick={this.muteToggle} className={this.state.mute ? 'fa fa-volume-up' : 'fa fa-volume-off'}>Mute</button>
 
               <button className="track-favorite-add" onClick={this.favoriteTrack.bind(null, this.state.track)}>Favorite</button>
-              <button className="track-playlist-add" onClick={this.clickAddToPlaylist.bind(null, this.state.track)}>+Playlist</button>
+
 
             </div>
           </div>

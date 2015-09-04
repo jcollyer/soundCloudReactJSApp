@@ -1,6 +1,7 @@
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
 var AppStore = require('../stores/app-store.js');
+var PlayerStore = require('../stores/player-store.js');
 var Track = require('./track.jsx');
 require('../../style/playlist.less');
 require('../../style/playlists-menu.less');
@@ -8,7 +9,7 @@ require('../../style/playlists-menu.less');
 var Playlist =
   React.createClass({
     getInitialState: function() {
-      return {playlists:[], newPlaylistName: 'Playlist'};
+      return {playlists:[], newPlaylistName: 'Playlist', track: "", uPlaylistNames: []};
     },
     getUsersPlaylists: function() {
       var isLoggedIn = AppStore.isLoggedIn();
@@ -36,7 +37,7 @@ var Playlist =
     },
     selectPlaylist: function(playlist) {
       that = this;
-      var trackId = AppStore.getTrack();
+      var trackId = PlayerStore.getTrack();
       var selectedPlaylist = playlist;
       var trackIdsArray = [];
       var userId = AppStore.getUserId();
@@ -73,9 +74,8 @@ var Playlist =
     },
     newPlaylist: function() {
       var playlistName = document.getElementById('playlist-name').value;
-      var track = AppStore.getTrack();
+      var track = PlayerStore.getTrack();
       var tracks = [track].map(function(id) { return { id: id }; });
-
       SC.post('/playlists', { playlist: { title: playlistName, tracks: tracks } }, function(response, error){
         if(error){
           console.log("Some error occured: " + error.message);
@@ -90,11 +90,26 @@ var Playlist =
     cancelSelectPlaylist: function() {
       document.getElementById("playlist-select-menu").classList.remove('show');
     },
+    addTrack: function(id) {
+      AppActions.setTrack(id);
+      var menu = document.getElementById("playlist-select-menu");
+      menu.className = menu.className + "show";
+    },
+    clickAddToPlaylist: function(id, e) {
+      this.setState({uPlaylistNames:AppStore.getUserPlaylists()});
+      var isLoggedIn = AppStore.isLoggedIn();
+      if(isLoggedIn) {
+        this.addTrack(id, e);
+      } else {
+        AppActions.login();
+      }
+    },
     render: function() {
       that = this;
       return (
         <div>
           <button onClick={this.getPlaylists}>My playlists</button>
+          <button className="track-playlist-add" onClick={this.clickAddToPlaylist}>+Playlist</button>
 
           <div className="playlist-wrapper">
             {this.state.playlists.map(function(playlist){
@@ -121,9 +136,9 @@ var Playlist =
           </div>
 
           <div id="playlist-select-menu">
-            {this.state.playlists.map(function(playlist){
+            {this.state.uPlaylistNames.map(function(playlist){
               return (
-                <button onClick={that.selectPlaylist.bind(null, playlist.title)}>{playlist.title}</button>
+                <button onClick={that.selectPlaylist.bind(null, playlist.name)}>{playlist.name}</button>
               )
             })}
             <div id="new-playlist">

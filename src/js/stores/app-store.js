@@ -41,7 +41,9 @@ function _setGenre(genre) {
   _genre = genre;
 };
 
+// why am i setting track in app??
 function  _setTrack(track) {
+  debugger;
   _track = track;
 };
 
@@ -62,6 +64,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
     return _genre;
   },
 
+  // why am i getting track in App??
   getTrack:function(){
     return _track;
   },
@@ -73,7 +76,12 @@ var AppStore = assign({}, EventEmitter.prototype, {
   getUserPlaylists:function(){
     var userPlaylistsCookie = getCookie('userPlaylists');
     if (userPlaylistsCookie){
-      return userPlaylistsCookie.split(",");
+      var objectArray = [];
+      var array = userPlaylistsCookie.split(",");
+      array.forEach(function(p){
+        objectArray.push({name:p});
+      })
+      return objectArray;
     } else {
       return ["red","blue"];
     }
