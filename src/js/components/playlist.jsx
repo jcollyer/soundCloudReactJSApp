@@ -91,7 +91,6 @@ var Playlist =
       document.getElementById("playlist-select-menu").classList.remove('show');
     },
     addTrack: function(id) {
-      AppActions.setTrack(id);
       var menu = document.getElementById("playlist-select-menu");
       menu.className = menu.className + "show";
     },

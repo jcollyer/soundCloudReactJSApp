@@ -7,12 +7,6 @@ var AppActions = {
       actionType: AppConstants.LOGIN
     })
   },
-  setTrack:function(track){
-    AppDispatcher.handleViewAction({
-      actionType: AppConstants.SET_TRACK,
-      track: track
-    })
-  },
   setGenre:function(genre){
     AppDispatcher.handleViewAction({
       actionType: AppConstants.SET_GENRE,

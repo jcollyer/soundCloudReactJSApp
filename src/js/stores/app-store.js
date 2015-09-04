@@ -41,12 +41,6 @@ function _setGenre(genre) {
   _genre = genre;
 };
 
-// why am i setting track in app??
-function  _setTrack(track) {
-  debugger;
-  _track = track;
-};
-
 var AppStore = assign({}, EventEmitter.prototype, {
   emitChange:function(){
     this.emit(CHANGE_EVENT)
@@ -62,11 +56,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
   getGenre:function(){
     return _genre;
-  },
-
-  // why am i getting track in App??
-  getTrack:function(){
-    return _track;
   },
 
   getUserId:function(){
@@ -105,10 +94,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
       case AppConstants.SET_GENRE:
         _setGenre(payload.action.genre);
-        break
-
-      case AppConstants.SET_TRACK:
-        _setTrack(payload.action.track);
         break
     }
 
