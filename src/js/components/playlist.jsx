@@ -23,6 +23,8 @@ var Playlist =
       that = this;
       this.getUsersPlaylists();
 
+      document.getElementById('playlist-wrapper').classList.remove('close');
+
       var userId = AppStore.getUserId();
       var url = 'https://api.soundcloud.com/users/'+userId+'/playlists.json?client_id=b5e21578d92314bc753b90ea7c971c1e';
       var xmlhttp = new XMLHttpRequest();
@@ -70,7 +72,7 @@ var Playlist =
       });
     },
     namePlaylist: function() {
-      document.getElementById('new-playlist').classList.add('show');
+      document.getElementById('new-playlist').classList.add('close');
     },
     newPlaylist: function() {
       var playlistName = document.getElementById('playlist-name').value;
@@ -89,6 +91,9 @@ var Playlist =
     },
     cancelSelectPlaylist: function() {
       document.getElementById("playlist-select-menu").classList.remove('show');
+    },
+    closePlaylistPane: function(e) {
+      document.getElementById('playlist-wrapper').classList.add('close');
     },
     addTrack: function(id) {
       var menu = document.getElementById("playlist-select-menu");
@@ -110,7 +115,8 @@ var Playlist =
           <button onClick={this.getPlaylists}>My playlists</button>
           <button className="track-playlist-add" onClick={this.clickAddToPlaylist}>+Playlist</button>
 
-          <div className="playlist-wrapper">
+          <div id="playlist-wrapper" className="close">
+            <button onClick={this.closePlaylistPane}>X</button>
             {this.state.playlists.map(function(playlist){
               return (
                 <div className="row playlist" key={playlist.id}>
