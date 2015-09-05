@@ -13,9 +13,7 @@ var Playlist =
     },
     getUsersPlaylists: function() {
       var isLoggedIn = AppStore.isLoggedIn();
-      if(isLoggedIn) {
-        AppStore.getUserPlaylists();
-      } else {
+      if(!isLoggedIn) {
         AppActions.login();
       }
     },

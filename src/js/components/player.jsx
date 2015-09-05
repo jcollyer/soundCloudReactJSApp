@@ -35,6 +35,9 @@ var Player =
     playTrack: function() {
       player.play();
       that.setState({playing: true});
+      this.getCurrentTimeInterval();
+    },
+    getCurrentTimeInterval: function() {
       that.interval = setInterval(function(){
         console.log("hi");
         that.getCurrentTime();
@@ -72,11 +75,7 @@ var Player =
       });
 
       that.setState({playing: true});
-
-      that.interval = setInterval(function(){
-        console.log("hi");
-        that.getCurrentTime();
-      }, 100);
+      this.getCurrentTimeInterval();
 
     },
     getCurrentTime: function() {
