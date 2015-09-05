@@ -10,12 +10,8 @@ var Track =
       var oldActiveTrack = document.querySelector("._active-track");
       if (oldActiveTrack != null) oldActiveTrack.classList.remove("_active-track");
       event.target.classList.add("_active-track");
-
-      PlayerActions.setTrack(this.props.id);
-      PlayerActions.setTrackDuration(this.props.duration);
-      PlayerActions.setTrackTitle(this.props.title);
-      PlayerActions.setTrackAuthor(this.props.author);
-      PlayerActions.setTrackArtwork(this.props.artwork);
+      
+      PlayerActions.setTrack(this.props.id, this.props.duration, this.props.title, this.props.author, this.props.artwork);
     },
     removeTrack: function(id, e) {
       that = this;

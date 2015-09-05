@@ -12,18 +12,17 @@ var Player =
 
     getInitialState: function() {
       return {
-        track: PlayerStore.getTrack(),
-        duration: PlayerStore.getTrackDuration(),
-        title: PlayerStore.getTrackTitle(),
-        author: PlayerStore.getTrackAuthor(),
-        artwork: PlayerStore.getTrackArtwork(),
-        currentTime: 0,
+        title: "",
+        author: "",
+        artwork: "",
+        duration: "",
+        currentTime: "",
         playing: false,
         mute: false
       };
     },
     toggleTrack: function() {
-      that = this;
+      var that = this;
       player.isPaused(function(paused){
         if(paused == true ) {
           that.playTrack();
@@ -38,9 +37,9 @@ var Player =
       this.getCurrentTimeInterval();
     },
     getCurrentTimeInterval: function() {
-      that.interval = setInterval(function(){
+      this.interval = setInterval(function(){
         console.log("hi");
-        that.getCurrentTime();
+        // that.getCurrentTime();
       }, 100);
     },
     pauseTrack: function() {
@@ -49,7 +48,7 @@ var Player =
       that.setState({playing: false});
     },
     muteToggle: function() {
-      that = this;
+      var that = this;
       player.getVolume(function(vol){
         if(vol == 1 ) {
           player.setVolume(0);
@@ -61,15 +60,14 @@ var Player =
       });
     },
     getPlayer: function() {
+      var that = this;
       if (that.interval) clearInterval(that.interval);
 
-      that = this;
-
-      widgetIframe = document.getElementById('soundcloud_widget');
+      var widgetIframe = document.getElementById('soundcloud_widget');
+      var player;
       player = SC.Widget(widgetIframe);
-
       player.bind(SC.Widget.Events.READY, function(){
-        player.load("https://api.soundcloud.com/tracks/"+that.state.track, {
+        player.load("https://api.soundcloud.com/tracks/"+this.state.track.id, {
           auto_play: true
         });
       });
@@ -86,24 +84,18 @@ var Player =
       })
     },
     updateTrack:function() {
-      that = this;
-      console.log(PlayerStore.getTrackTitle())
+      var track = PlayerStore.getTrack();
       this.setState({
-        track: PlayerStore.getTrack(),
-        title: PlayerStore.getTrackTitle(),
-        author: PlayerStore.getTrackAuthor(),
-        artwork: PlayerStore.getTrackArtwork(),
-        duration: PlayerStore.getTrackDuration(),
+        title: track.title,
+        author: track.author,
+        artwork: track.artwork,
+        duration: track.duration,
         currentTime: 0,
         playing: false,
         mute: false
       });
 
-      //hack - i need to figure out my syncronys situation
-      window.setTimeout(function(){
-        that.getPlayer();
-      }, 1);
-
+      this.getPlayer();
     },
     updateTrackTime: function() {
       var width = window.innerWidth;
