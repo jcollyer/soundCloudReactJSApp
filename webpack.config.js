@@ -1,9 +1,10 @@
+var path = require('path');
 var Webpack = require('webpack');
 
 module.exports = {
   devtool: 'eval',
   entry: [
-    './src/main.jsx'
+    './src/main'
   ],
   output: {
     path: '/build',
@@ -16,9 +17,8 @@ module.exports = {
     loaders: [
       {
         test: /\.jsx$/,
-        loaders: [
-        'react-hot', 'jsx-loader'
-        ]
+        loader: 'babel',
+        include: path.join(__dirname, 'src')
       }, {
         test: /\.less$/, loader: 'style-loader!css-loader!less-loader'
       }, {
