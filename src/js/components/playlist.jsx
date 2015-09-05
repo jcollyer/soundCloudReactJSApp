@@ -107,7 +107,7 @@ var Playlist =
       }
     },
     render: function() {
-      that = this;
+      var that = this;
       return (
         <div>
           <button onClick={this.getPlaylists}>My playlists</button>

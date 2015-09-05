@@ -2,14 +2,14 @@ var React = require('react');
 var AppStore = require('../stores/app-store.js');
 var Track = require('./track.jsx');
 
-TrackList =
+var TrackList =
   React.createClass({
     getInitialState: function() {
       return {tracks: []};
     },
     displayTracks: function(trackArr) {
+      var that = this;
       var goodTracks = [];
-      that = this;
       trackArr.forEach(function(track){
         if (track.artwork_url != null){
           goodTracks.push(track);
@@ -18,7 +18,7 @@ TrackList =
       });
     },
     getTracks: function(genre) {
-      that = this;
+      var that = this;
 
       // var url = 'https://api.soundcloud.com/tracks?'+genre+'&client_id=b5e21578d92314bc753b90ea7c971c1e';
       var url = 'https://api.soundcloud.com/tracks.json?client_id=b5e21578d92314bc753b90ea7c971c1e&tags='+genre+'&order=hotness'

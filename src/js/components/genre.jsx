@@ -15,6 +15,7 @@ var Genre =
       this.setState({genre: genre});
     },
     render: function() {
+      var that = this;
       return (
         <div>
           <button onClick={this.handleClick} data-genre="chilltrap">chilltrap</button>
@@ -27,7 +28,7 @@ var Genre =
           <button onClick={this.handleClick} data-genre="FutureRnB">FutureRnB</button>
           {this.state.tags.forEach(function(tag){
             return (
-              <button onClick={this.handleClick} data-genre={tag}>sss{tag}</button>
+              <button onClick={that.handleClick} data-genre={tag}>sss{tag}</button>
             )
           })}
           <TrackList genre={this.state.genre} />

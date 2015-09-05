@@ -7,7 +7,7 @@ require('../../style/track.less');
 var Track =
   React.createClass({
     handleClick: function () {
-      oldActiveTrack = document.querySelector("._active-track");
+      var oldActiveTrack = document.querySelector("._active-track");
       if (oldActiveTrack != null) oldActiveTrack.classList.remove("_active-track");
       event.target.classList.add("_active-track");
 
