@@ -3,20 +3,21 @@ var PlayerStore = require('../stores/player-store.js');
 var AppStore = require('../stores/app-store.js');
 var AppActions = require('../actions/app-actions.js');
 require('../../style/player.less');
+var player = '';
 
 var Player =
   React.createClass({
-    player: '',
     widgetIframe: '',
     interval: 0,
 
     getInitialState: function() {
       return {
+        id: "",
         title: "",
         author: "",
         artwork: "",
-        duration: "",
-        currentTime: "",
+        duration: 0,
+        currentTime: 0,
         playing: false,
         mute: false
       };
@@ -33,19 +34,20 @@ var Player =
     },
     playTrack: function() {
       player.play();
-      that.setState({playing: true});
+      this.setState({playing: true});
       this.getCurrentTimeInterval();
     },
     getCurrentTimeInterval: function() {
+      var that = this;
       this.interval = setInterval(function(){
         console.log("hi");
-        // that.getCurrentTime();
+        that.getCurrentTime();
       }, 100);
     },
     pauseTrack: function() {
-      if (that.interval > 0) clearInterval(that.interval);
+      if (this.interval > 0) clearInterval(this.interval);
       player.pause();
-      that.setState({playing: false});
+      this.setState({playing: false});
     },
     muteToggle: function() {
       var that = this;
@@ -61,23 +63,23 @@ var Player =
     },
     getPlayer: function() {
       var that = this;
-      if (that.interval) clearInterval(that.interval);
+      if (this.interval) clearInterval(this.interval);
 
       var widgetIframe = document.getElementById('soundcloud_widget');
-      var player;
       player = SC.Widget(widgetIframe);
+
       player.bind(SC.Widget.Events.READY, function(){
-        player.load("https://api.soundcloud.com/tracks/"+this.state.track.id, {
+        player.load("https://api.soundcloud.com/tracks/"+that.state.id, {
           auto_play: true
         });
       });
 
       that.setState({playing: true});
       this.getCurrentTimeInterval();
-
     },
     getCurrentTime: function() {
-      var duration = that.state.duration;
+      var that = this;
+      var duration = this.state.duration;
       player.getPosition(function(time){
         var currentTime = 100 * (time / duration);
         that.setState({currentTime: currentTime});
@@ -86,6 +88,7 @@ var Player =
     updateTrack:function() {
       var track = PlayerStore.getTrack();
       this.setState({
+        id: track.id,
         title: track.title,
         author: track.author,
         artwork: track.artwork,
@@ -94,15 +97,14 @@ var Player =
         playing: false,
         mute: false
       });
-
       this.getPlayer();
     },
     updateTrackTime: function() {
       var width = window.innerWidth;
       var xoffset = event.clientX;
       var duration = this.state.duration;
-      currentTime = (xoffset / width) * duration;
-      time = Math.floor(currentTime);
+      var currentTime = (xoffset / width) * duration;
+      var time = Math.floor(currentTime);
       player.seekTo(time);
     },
     favoriteTrack: function(id, e) {
