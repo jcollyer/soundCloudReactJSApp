@@ -60,7 +60,7 @@ var Track =
           <div className="track-info">
             <p className="title">{this.props.title}</p>
             <p className="author">{this.props.author}</p>
-            <a className="tag">{this.props.tag}</a>
+            <button className="tag" >{this.props.tag}</button>
           </div>
           <div className="track-actions">
             <button className="track-delete" onClick={this.deleteTrack.bind(null, this.props.id)}>Delete</button>

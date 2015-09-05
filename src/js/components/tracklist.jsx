@@ -43,6 +43,7 @@ TrackList =
         <div id="tracklist">
           {this.state.tracks.map(function(track){
             var bigImage = track.artwork_url? track.artwork_url.replace('large', 't200x200') : "";
+            var trackTag = track.tag_list.replace(/['"]+/g, '').split(" ")[0];
             return (
               <div className='col-md-3' key={track.id}>
                 <Track
@@ -51,7 +52,7 @@ TrackList =
                       id={track.id}
                       duration={track.duration}
                       author={track.user.username}
-                      tag={track.tag_list}
+                      tag={trackTag}
                 />
               </div>
             )
