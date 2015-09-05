@@ -27,7 +27,7 @@ var Genre =
           <button onClick={this.handleClick} data-genre="FutureRnB">FutureRnB</button>
           {this.state.tags.forEach(function(tag){
             return (
-              <button onClick={this.handleClick} data-genre={tag}>{tag}</button>
+              <button onClick={this.handleClick} data-genre={tag}>sss{tag}</button>
             )
           })}
           <TrackList genre={this.state.genre} />
