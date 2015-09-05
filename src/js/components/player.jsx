@@ -4,12 +4,11 @@ var AppStore = require('../stores/app-store.js');
 var AppActions = require('../actions/app-actions.js');
 require('../../style/player.less');
 var player = '';
-var interval;
+var interval = 0;
 
 var Player =
   React.createClass({
     widgetIframe: '',
-    interval: 0,
 
     getInitialState: function() {
       return {
@@ -43,10 +42,10 @@ var Player =
       interval = setInterval(function(){
         console.log("hi");
         that.getCurrentTime();
-      }, 100);
+      }, 1000);
     },
     pauseTrack: function() {
-      if (this.interval > 0) clearInterval(this.interval);
+      if (interval > 0) clearInterval(interval);
       player.pause();
       this.setState({playing: false});
     },
@@ -64,7 +63,7 @@ var Player =
     },
     getPlayer: function() {
       var that = this;
-      if (this.interval) clearInterval(this.interval);
+      if (interval) clearInterval(interval);
 
       var widgetIframe = document.getElementById('soundcloud_widget');
       player = SC.Widget(widgetIframe);
@@ -73,6 +72,10 @@ var Player =
         player.load("https://api.soundcloud.com/tracks/"+that.state.id, {
           auto_play: true
         });
+      });
+
+      player.bind(SC.Widget.Events.FINISH, function() {
+        clearInterval(interval);
       });
 
       that.setState({playing: true});
