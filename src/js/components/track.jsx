@@ -6,11 +6,11 @@ require('../../style/track.less');
 
 var Track =
   React.createClass({
-    handleClick: function () {
+    handleClick: function (event) {
       var oldActiveTrack = document.querySelector("._active-track");
       if (oldActiveTrack != null) oldActiveTrack.classList.remove("_active-track");
       event.target.classList.add("_active-track");
-      
+
       PlayerActions.setTrack(this.props.id, this.props.duration, this.props.title, this.props.author, this.props.artwork);
     },
     removeTrack: function(id, e) {

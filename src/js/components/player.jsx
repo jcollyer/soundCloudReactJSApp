@@ -4,6 +4,7 @@ var AppStore = require('../stores/app-store.js');
 var AppActions = require('../actions/app-actions.js');
 require('../../style/player.less');
 var player = '';
+var interval;
 
 var Player =
   React.createClass({
@@ -39,7 +40,7 @@ var Player =
     },
     getCurrentTimeInterval: function() {
       var that = this;
-      this.interval = setInterval(function(){
+      interval = setInterval(function(){
         console.log("hi");
         that.getCurrentTime();
       }, 100);
@@ -99,7 +100,7 @@ var Player =
       });
       this.getPlayer();
     },
-    updateTrackTime: function() {
+    updateTrackTime: function(event) {
       var width = window.innerWidth;
       var xoffset = event.clientX;
       var duration = this.state.duration;
