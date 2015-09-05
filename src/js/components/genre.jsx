@@ -11,7 +11,7 @@ var Genre =
   React.createClass({
 
     getInitialState: function() {
-      AppActions.setGenre("rock");
+      AppActions.setGenre("chill%20trap");
       return getGenre();
     },
     handleClick: function(event) {
@@ -19,23 +19,16 @@ var Genre =
       AppActions.setGenre(genre);
       this.setState(getGenre());
     },
-    // componentDidUpdate:function(){
-    //   debugger;
-    //   AppStore.addChangeListener(this._onChange)
-    // },
-    // _onChange:function(){
-    //   debugger;
-    // },
     render: function() {
       return (
         <div>
-          <button onClick={this.handleClick} data-genre="rino">rino</button>
-          <button onClick={this.handleClick} data-genre="rnb">RnB</button>
-          <button onClick={this.handleClick} data-genre="house">House</button>
-          <button onClick={this.handleClick} data-genre="hip-hop">Hip-Hop</button>
-          <button onClick={this.handleClick} data-genre="beats">beats</button>
-          <button onClick={this.handleClick} data-genre="rap">rap</button>
-          <button onClick={this.handleClick} data-genre="lofi">lofi</button>
+          <button onClick={this.handleClick} data-genre="chilltrap">chilltrap</button>
+          <button onClick={this.handleClick} data-genre="hegemon">hegemon</button>
+          <button onClick={this.handleClick} data-genre="smallroom">smallroom</button>
+          <button onClick={this.handleClick} data-genre="pat%20lok">patlok</button>
+          <button onClick={this.handleClick} data-genre="disco">disco</button>
+          <button onClick={this.handleClick} data-genre="deephouse">deephouse</button>
+          <button onClick={this.handleClick} data-genre="acoustic">acoustic</button>
           <button onClick={this.handleClick} data-genre="juciy">juciy</button>
           <TrackList genre={this.state.genre} />
         </div>
@@ -43,4 +36,3 @@ var Genre =
     }
   });
 module.exports = Genre;
-
