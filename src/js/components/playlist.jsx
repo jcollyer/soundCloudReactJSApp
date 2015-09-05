@@ -18,7 +18,7 @@ var Playlist =
       }
     },
     getPlaylists: function() {
-      that = this;
+      var that = this;
       this.getUsersPlaylists();
 
       document.getElementById('playlist-wrapper').classList.remove('close');
@@ -36,7 +36,7 @@ var Playlist =
       xmlhttp.send();
     },
     selectPlaylist: function(playlist) {
-      that = this;
+      var that = this;
       var trackId = PlayerStore.getTrack();
       var selectedPlaylist = playlist;
       var trackIdsArray = [];
