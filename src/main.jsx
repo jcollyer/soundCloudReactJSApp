@@ -5,4 +5,3 @@ require('./sc-player.jsx');
 
 App = React.render(<Home />, document.getElementById('home'));
 App = React.render(<Player />, document.getElementById('player'));
-alert("hi");
