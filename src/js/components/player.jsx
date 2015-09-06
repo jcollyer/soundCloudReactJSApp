@@ -122,6 +122,11 @@ var Player =
         mute: false
       });
       this.getPlayer();
+
+      // this seems smelly
+      var oldActiveTrack = document.querySelector("._active-track");
+      if (oldActiveTrack != null) oldActiveTrack.classList.remove("_active-track");
+      document.getElementById(track.id).classList.add("_active-track");
     },
     updateTrackTime: function(event) {
       var width = window.innerWidth;

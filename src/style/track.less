@@ -5,9 +5,6 @@
   img {
     width: 100%;
   }
-  img._active-track {
-    outline: 2px solid #333;
-  }
   p {
     width: 100%;
     white-space: nowrap;
@@ -18,7 +15,12 @@
 }
 
 #tracklist {
-    .track-delete {
-      display: none;
+  div._active-track {
+    img {
+      outline: 3px solid #333;
     }
+  }
+  .track-delete {
+    display: none;
+  }
 }
