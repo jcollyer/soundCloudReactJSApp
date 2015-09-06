@@ -11,6 +11,12 @@ var PlayerActions = {
       author: author,
       artwork: artwork
     })
+  },
+  setTrackIds:function(ids){
+    PlayerDispatcher.handlePlayerAction({
+      actionType: PlayerConstants.SET_TRACK_IDS,
+      ids: ids
+    })
   }
 }
 

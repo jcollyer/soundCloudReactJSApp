@@ -1,5 +1,6 @@
 var React = require('react');
 var AppStore = require('../stores/app-store.js');
+var PlayerActions = require('../actions/player-actions.js');
 var Track = require('./track.jsx');
 
 var TrackList =
@@ -7,15 +8,22 @@ var TrackList =
     getInitialState: function() {
       return {tracks: []};
     },
-    displayTracks: function(trackArr) {
+    displayTracks: function(tracksArr) {
       var that = this;
       var goodTracks = [];
-      trackArr.forEach(function(track){
+      var trackIds = [];
+      tracksArr.forEach(function(track){
         if (track.artwork_url != null){
           goodTracks.push(track);
         }
+        //set tracks to display
         that.setState({tracks: goodTracks});
       });
+      goodTracks.forEach(function(track){
+        trackIds.push(track.id);
+      });
+      //set track ids for next/prev
+      PlayerActions.setTrackIds(trackIds);
     },
     getTracks: function(genre) {
       var that = this;
@@ -25,8 +33,8 @@ var TrackList =
       var xmlhttp = new XMLHttpRequest();
       xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-          var trackArr = JSON.parse(xmlhttp.responseText);
-          that.displayTracks(trackArr);
+          var tracksArr = JSON.parse(xmlhttp.responseText);
+          that.displayTracks(tracksArr);
         }
       };
       xmlhttp.open("GET", url, true);
@@ -47,11 +55,11 @@ var TrackList =
             return (
               <div className='col-md-3' key={track.id}>
                 <Track
-                      title={track.title}
-                      artwork={bigImage}
                       id={track.id}
-                      duration={track.duration}
+                      title={track.title}
                       author={track.user.username}
+                      artwork={bigImage}
+                      duration={track.duration}
                       tag={trackTag}
                 />
               </div>

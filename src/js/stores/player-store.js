@@ -6,9 +6,14 @@ var assign = require('object-assign');
 var CHANGE_EVENT = "change";
 
 var _track = {};
+var _ids = [];
 
 function _setTrack(track) {
   _track = track;
+};
+
+function _setTrackIds(ids) {
+  _ids = ids
 };
 
 var PlayerStore = assign({}, EventEmitter.prototype, {
@@ -28,6 +33,10 @@ var PlayerStore = assign({}, EventEmitter.prototype, {
     return _track;
   },
 
+  getTrackIds:function() {
+    return _ids;
+  },
+
   dispatcherIndex:PlayerDispatcher.register(function(payload){
     var action = payload.action; // this is our action from handleViewAction
     switch(action.actionType){
@@ -35,6 +44,10 @@ var PlayerStore = assign({}, EventEmitter.prototype, {
       case PlayerConstants.SET_TRACK:
         _setTrack(payload.action);
         PlayerStore.emit('change');
+        break
+
+      case PlayerConstants.SET_TRACK_IDS:
+        _setTrackIds(payload.action);
         break
     }
     return true;

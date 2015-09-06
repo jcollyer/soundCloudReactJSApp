@@ -1,3 +1,4 @@
 module.exports = {
-  SET_TRACK_ID: 'SET_TRACK'
+  SET_TRACK: 'SET_TRACK',
+  SET_TRACK_IDS: 'NEXT_TRACK_IDS'
 };

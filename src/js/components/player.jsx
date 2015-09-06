@@ -2,6 +2,7 @@ var React = require('react');
 var PlayerStore = require('../stores/player-store.js');
 var AppStore = require('../stores/app-store.js');
 var AppActions = require('../actions/app-actions.js');
+var PlayerActions = require('../actions/player-actions.js');
 require('../../style/player.less');
 var player = '';
 var interval = 0;
@@ -42,7 +43,7 @@ var Player =
       interval = setInterval(function(){
         console.log("hi");
         that.getCurrentTime();
-      }, 1000);
+      }, 300);
     },
     pauseTrack: function() {
       if (interval > 0) clearInterval(interval);
@@ -76,10 +77,29 @@ var Player =
 
       player.bind(SC.Widget.Events.FINISH, function() {
         clearInterval(interval);
+        that.playNextTrack();
       });
 
       that.setState({playing: true});
       this.getCurrentTimeInterval();
+    },
+    playNextTrack: function() {
+      var currentId = this.state.id;
+      var tracks = PlayerStore.getTrackIds().ids;
+      var index = tracks.indexOf(currentId)
+      var nextTrack = tracks[index + 1];
+
+      var url = 'http://api.soundcloud.com/tracks/'+nextTrack+'?client_id=b5e21578d92314bc753b90ea7c971c1e'
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+          var track = JSON.parse(xmlhttp.responseText);
+          var artwork = track.artwork_url? track.artwork_url.replace('large', 't200x200') : "";
+          PlayerActions.setTrack(nextTrack, track.duration, track.title, track.user.username, artwork);
+        }
+      };
+      xmlhttp.open("GET", url, true);
+      xmlhttp.send();
     },
     getCurrentTime: function() {
       var that = this;
@@ -146,7 +166,7 @@ var Player =
               <p>{this.state.title}</p>
               <h1>{this.state.author}</h1>
               <button id="toggle" onClick={this.toggleTrack} className={this.state.playing ? 'fa fa-pause' : 'fa fa-play'}></button>
-              <button id="next" onClick={this.nextTrack}>Next</button>
+              <button id="next" onClick={this.playNextTrack}>Next</button>
               <button id="prev" onClick={this.prevTrack}>Prev</button>
               <button id="mute" onClick={this.muteToggle} className={this.state.mute ? 'fa fa-volume-up' : 'fa fa-volume-off'}>Mute</button>
 
