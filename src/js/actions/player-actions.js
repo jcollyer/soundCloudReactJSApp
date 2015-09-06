@@ -17,6 +17,12 @@ var PlayerActions = {
       actionType: PlayerConstants.SET_TRACK_IDS,
       ids: ids
     })
+  },
+  setTags:function(tags){
+    PlayerDispatcher.handlePlayerAction({
+      actionType: PlayerConstants.SET_TAGS,
+      tags: tags
+    })
   }
 }
 

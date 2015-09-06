@@ -7,8 +7,7 @@ require('../../style/track.less');
 var Track =
   React.createClass({
     handleClick: function (event) {
-      
-
+      PlayerActions.setTags(this.props.tags);
       PlayerActions.setTrack(this.props.id, this.props.duration, this.props.title, this.props.author, this.props.artwork);
     },
     removeTrack: function(id, e) {
@@ -54,7 +53,6 @@ var Track =
           <div className="track-info">
             <p className="title">{this.props.title}</p>
             <p className="author">{this.props.author}</p>
-            <button className="tag" >{this.props.tag}</button>
           </div>
           <div className="track-actions">
             <button className="track-delete" onClick={this.deleteTrack.bind(null, this.props.id)}>Delete</button>

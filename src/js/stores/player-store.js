@@ -7,26 +7,31 @@ var CHANGE_EVENT = "change";
 
 var _track = {};
 var _ids = [];
+var _tags = ["rock","roll"];
 
 function _setTrack(track) {
   _track = track;
 };
 
 function _setTrackIds(ids) {
-  _ids = ids
+  _ids = ids;
+};
+
+function _setTags(tags) {
+  _tags = tags.tags;
 };
 
 var PlayerStore = assign({}, EventEmitter.prototype, {
   emitChange:function(){
-    this.emit(CHANGE_EVENT)
+    this.emit(CHANGE_EVENT);
   },
 
   addChangeListener:function(callback){
-    this.on(CHANGE_EVENT, callback)
+    this.on(CHANGE_EVENT, callback);
   },
 
   removeChangeListener:function(callback){
-    this.removeListener(CHANGE_EVENT, callback)
+    this.removeListener(CHANGE_EVENT, callback);
   },
 
   getTrack:function(){
@@ -35,6 +40,10 @@ var PlayerStore = assign({}, EventEmitter.prototype, {
 
   getTrackIds:function() {
     return _ids;
+  },
+
+  getTags:function() {
+    return _tags;
   },
 
   dispatcherIndex:PlayerDispatcher.register(function(payload){
@@ -48,6 +57,10 @@ var PlayerStore = assign({}, EventEmitter.prototype, {
 
       case PlayerConstants.SET_TRACK_IDS:
         _setTrackIds(payload.action);
+        break
+
+      case PlayerConstants.SET_TAGS:
+        _setTags(payload.action);
         break
     }
     return true;
