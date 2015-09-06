@@ -70,7 +70,7 @@ var Playlist =
       });
     },
     namePlaylist: function() {
-      document.getElementById('new-playlist').classList.add('close');
+      document.getElementById('new-playlist').classList.add('show');
     },
     newPlaylist: function() {
       var playlistName = document.getElementById('playlist-name').value;
