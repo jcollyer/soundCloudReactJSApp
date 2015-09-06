@@ -37,7 +37,7 @@ var Playlist =
     },
     selectPlaylist: function(playlist) {
       var that = this;
-      var trackId = PlayerStore.getTrack();
+      var trackId = PlayerStore.getTrack().id;
       var selectedPlaylist = playlist;
       var trackIdsArray = [];
       var userId = AppStore.getUserId();
@@ -73,8 +73,9 @@ var Playlist =
       document.getElementById('new-playlist').classList.add('show');
     },
     newPlaylist: function() {
+      var that = this;
       var playlistName = document.getElementById('playlist-name').value;
-      var track = PlayerStore.getTrack();
+      var track = PlayerStore.getTrack().id;
       var tracks = [track].map(function(id) { return { id: id }; });
       SC.post('/playlists', { playlist: { title: playlistName, tracks: tracks } }, function(response, error){
         if(error){
