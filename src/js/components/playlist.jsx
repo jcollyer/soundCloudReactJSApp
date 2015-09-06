@@ -107,6 +107,23 @@ var Playlist =
         AppActions.login();
       }
     },
+    deletePlaylist: function(id) {
+      var playlistId = id;
+      var url = 'https://api.soundcloud.com/playlists/'+playlistId+'?client_id=b5e21578d92314bc753b90ea7c971c1e';
+      SC.connect(function() {
+        SC.get('/me', function(me) {
+          SC.get(url, function(response, error){
+            if(error){
+              console.log("Some error occured: " + error.message);
+            }else{
+              var playlist = document.getElementById(playlistId);
+              playlist.classList.add("remove_playlist");
+
+            }
+          });
+        });
+      });
+    },
     render: function() {
       var that = this;
       return (
@@ -118,8 +135,9 @@ var Playlist =
             <button onClick={this.closePlaylistPane}>X</button>
             {this.state.playlists.map(function(playlist){
               return (
-                <div className="row playlist" key={playlist.id}>
+                <div className="row playlist" key={playlist.id} id={playlist.id}>
                   <h1>{playlist.title}</h1>
+                  <button onClick={that.deletePlaylist.bind(null, playlist.id)}>delete</button>
                   {playlist.tracks.map(function(track){
                     return (
                       <div className='col-md-12' key={track.id}>
