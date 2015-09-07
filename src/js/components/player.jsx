@@ -175,7 +175,7 @@ var Player =
               <button id="prev" onClick={this.prevTrack}>Prev</button>
               <button id="mute" onClick={this.muteToggle} className={this.state.mute ? 'fa fa-volume-up' : 'fa fa-volume-off'}>Mute</button>
 
-              <button className="track-favorite-add" onClick={this.favoriteTrack.bind(null, this.state.track)}>Favorite</button>
+              <button className="track-favorite-add" onClick={this.favoriteTrack.bind(null, this.state.id)}>Favorite</button>
 
 
             </div>
