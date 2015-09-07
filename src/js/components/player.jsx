@@ -3,6 +3,7 @@ var PlayerStore = require('../stores/player-store.js');
 var AppStore = require('../stores/app-store.js');
 var AppActions = require('../actions/app-actions.js');
 var PlayerActions = require('../actions/player-actions.js');
+var GenreActions = require('../actions/genre-actions.js');
 require('../../style/player.less');
 var player = '';
 var interval = 0;
@@ -17,6 +18,7 @@ var Player =
         title: "",
         author: "",
         artwork: "",
+        user_id: "",
         duration: 0,
         currentTime: 0,
         playing: false,
@@ -117,6 +119,7 @@ var Player =
         author: track.author,
         artwork: track.artwork,
         duration: track.duration,
+        user_id: track.user_id,
         currentTime: 0,
         playing: false,
         mute: false
@@ -151,6 +154,9 @@ var Player =
         AppActions.login();
       }
     },
+    displayArtistTracks: function(author) {
+      GenreActions.setGenre({type: "author", name: author});
+    },
     componentDidMount: function(){
       PlayerStore.on('change', this.updateTrack);
     },
@@ -169,7 +175,7 @@ var Player =
             </div>
             <div className="player-info">
               <p>{this.state.title}</p>
-              <h1>{this.state.author}</h1>
+              <h1><button onClick={this.displayArtistTracks.bind(null, this.state.user_id)}>{this.state.author}</button></h1>
               <button id="toggle" onClick={this.toggleTrack} className={this.state.playing ? 'fa fa-pause' : 'fa fa-play'}></button>
               <button id="next" onClick={this.playNextTrack}>Next</button>
               <button id="prev" onClick={this.prevTrack}>Prev</button>

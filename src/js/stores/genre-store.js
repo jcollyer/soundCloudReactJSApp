@@ -5,7 +5,7 @@ var assign = require('object-assign');
 
 var CHANGE_EVENT = "change";
 
-var _genre = "lofi";
+var _genre = {kind: "genre", namne: "lofi"};
 
 function _setGenre(genre) {
   _genre = genre;

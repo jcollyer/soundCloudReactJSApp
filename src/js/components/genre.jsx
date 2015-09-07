@@ -6,12 +6,12 @@ var PlayerStore = require('../stores/player-store.js');
 var Genre =
   React.createClass({
     getInitialState: function() {
-      GenreActions.setGenre("rap");
-      var genre = GenreStore.getGenre();
+      GenreActions.setGenre({type: "genre", name: "lofi"});
+      var genre = GenreStore.getGenre().name;
       return {genre: genre, tags: ["rock","hop"]};
     },
     handleClick: function(event) {
-      var genre = event.target.getAttribute("data-genre");
+      var genre = {type: "genre", name: event.target.getAttribute("data-genre")};
       GenreActions.setGenre(genre);
       this.setState({genre: genre});
     },
@@ -45,7 +45,6 @@ var Genre =
           <button onClick={this.handleClick} data-genre="deephouse">deephouse</button>
           <button onClick={this.handleClick} data-genre="acoustic">acoustic</button>
           <button onClick={this.handleClick} data-genre="FutureRnB">FutureRnB</button>
-
         </div>
       );
     }

@@ -8,7 +8,7 @@ var Track =
   React.createClass({
     handleClick: function (event) {
       PlayerActions.setTags(this.props.tags);
-      PlayerActions.setTrack(this.props.id, this.props.duration, this.props.title, this.props.author, this.props.artwork);
+      PlayerActions.setTrack(this.props.id, this.props.duration, this.props.title, this.props.author, this.props.artwork, this.props.user_id);
     },
     removeTrack: function(id, e) {
       var that = this;

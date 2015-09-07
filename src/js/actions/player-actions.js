@@ -2,14 +2,15 @@ var PlayerConstants = require('../constants/player-constants.js');
 var PlayerDispatcher = require('../dispatchers/player-dispatcher.js');
 
 var PlayerActions = {
-  setTrack:function(id, duration, title, author, artwork){
+  setTrack:function(id, duration, title, author, artwork, user_id){
     PlayerDispatcher.handlePlayerAction({
       actionType: PlayerConstants.SET_TRACK,
       id: id,
       duration: duration,
       title: title,
       author: author,
-      artwork: artwork
+      artwork: artwork,
+      user_id: user_id
     })
   },
   setTrackIds:function(ids){
