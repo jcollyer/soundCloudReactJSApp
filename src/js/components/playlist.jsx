@@ -81,8 +81,10 @@ var Playlist =
         if(error){
           console.log("Some error occured: " + error.message);
         }else{
-          var menu = document.getElementById("playlist-select-menu");
-          menu.className = "";
+          // hide "choose playlist menu"
+          document.getElementById("playlist-select-menu").classList.remove("show");
+          //hide "new playlist" menu
+          document.getElementById('new-playlist').classList.remove('show');
           that.getPlaylists();
         }
       });
