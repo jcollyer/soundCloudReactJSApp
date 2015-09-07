@@ -1,18 +1,18 @@
 var React = require('react');
-var AppActions = require('../actions/app-actions.js');
-var AppStore = require('../stores/app-store.js');
+var GenreActions = require('../actions/genre-actions.js');
+var GenreStore = require('../stores/genre-store.js');
 var PlayerStore = require('../stores/player-store.js');
-var TrackList = require('./tracklist.jsx');
+
 var Genre =
   React.createClass({
     getInitialState: function() {
-      AppActions.setGenre("rap");
-      var genre = AppStore.getGenre();
+      GenreActions.setGenre("rap");
+      var genre = GenreStore.getGenre();
       return {genre: genre, tags: ["rock","hop"]};
     },
     handleClick: function(event) {
       var genre = event.target.getAttribute("data-genre");
-      AppActions.setGenre(genre);
+      GenreActions.setGenre(genre);
       this.setState({genre: genre});
     },
     componentDidMount: function(){
@@ -45,7 +45,7 @@ var Genre =
           <button onClick={this.handleClick} data-genre="deephouse">deephouse</button>
           <button onClick={this.handleClick} data-genre="acoustic">acoustic</button>
           <button onClick={this.handleClick} data-genre="FutureRnB">FutureRnB</button>
-          <TrackList genre={this.state.genre} />
+
         </div>
       );
     }

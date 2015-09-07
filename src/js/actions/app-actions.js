@@ -6,12 +6,6 @@ var AppActions = {
     AppDispatcher.handleViewAction({
       actionType: AppConstants.LOGIN
     })
-  },
-  setGenre:function(genre){
-    AppDispatcher.handleViewAction({
-      actionType: AppConstants.SET_GENRE,
-      genre: genre
-    })
   }
 }
 

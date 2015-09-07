@@ -5,8 +5,6 @@ var assign = require('object-assign');
 
 var CHANGE_EVENT = "change";
 
-var _genre = [];
-var _track;
 var _userId = "";
 var isLoggedIn = false;
 
@@ -37,10 +35,6 @@ function getCookie(name) {
   if (parts.length == 2) return parts.pop().split(";").shift();
 };
 
-function _setGenre(genre) {
-  _genre = genre;
-};
-
 var AppStore = assign({}, EventEmitter.prototype, {
   emitChange:function(){
     this.emit(CHANGE_EVENT)
@@ -52,10 +46,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
   removeChangeListener:function(callback){
     this.removeListener(CHANGE_EVENT, callback)
-  },
-
-  getGenre:function(){
-    return _genre;
   },
 
   getUserId:function(){
@@ -91,10 +81,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
       case AppConstants.LOGIN:
         _setUserId();
         break;
-
-      case AppConstants.SET_GENRE:
-        _setGenre(payload.action.genre);
-        break
     }
 
     return true;

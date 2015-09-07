@@ -1,5 +1,5 @@
 var React = require('react');
-var AppStore = require('../stores/app-store.js');
+var GenreStore = require('../stores/genre-store.js');
 var PlayerActions = require('../actions/player-actions.js');
 var Track = require('./track.jsx');
 
@@ -25,7 +25,8 @@ var TrackList =
       //set track ids for next/prev
       PlayerActions.setTrackIds(trackIds);
     },
-    getTracks: function(genre) {
+    getTracks: function() {
+      var genre = GenreStore.getGenre();
       var that = this;
       var tracksArr = [];
       // var url = 'https://api.soundcloud.com/tracks?'+genre+'&client_id=b5e21578d92314bc753b90ea7c971c1e';
@@ -40,11 +41,12 @@ var TrackList =
       xmlhttp.open("GET", url, true);
       xmlhttp.send();
     },
-    componentDidMount: function() {
-      this.getTracks(AppStore.getGenre());
+    componentDidMount: function(){
+      this.getTracks();
+      GenreStore.on('change', this.getTracks);
     },
-    componentWillReceiveProps: function(){
-      this.getTracks(AppStore.getGenre());
+    componentWillUnmount: function() {
+      GenreStore.removeListener('change', this.getTracks);
     },
     render: function() {
       return (
