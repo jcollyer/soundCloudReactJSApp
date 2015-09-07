@@ -112,12 +112,17 @@ var Playlist =
       var url = 'https://api.soundcloud.com/playlists/'+playlistId+'?client_id=b5e21578d92314bc753b90ea7c971c1e';
       SC.connect(function() {
         SC.get('/me', function(me) {
-          SC.get(url, function(response, error){
+          SC.delete(url, function(response, error){
             if(error){
               console.log("Some error occured: " + error.message);
             }else{
+              console.log("playlist deleted");
               var playlist = document.getElementById(playlistId);
               playlist.classList.add("remove_playlist");
+
+              document.cookie = "userPlaylists=";
+              // var allPlaylists = document.cookie.split(";")[1].split("=")[1].split(",");
+              // var newPlaylists = allPlaylists.indexOf()
 
             }
           });

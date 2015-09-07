@@ -11,8 +11,8 @@ var Track =
       PlayerActions.setTrack(this.props.id, this.props.duration, this.props.title, this.props.author, this.props.artwork);
     },
     removeTrack: function(id, e) {
-      that = this;
-      trackID = id;
+      var that = this;
+      var trackID = id;
       var playlistID = this.props.playlist;
       var trackToRemove;
 
@@ -29,14 +29,14 @@ var Track =
             console.log("Some error occured: " + error.message);
           }else{
             var track = document.getElementById(trackID);
-            track.className = track.className + " remove_track";
+            track.classList.add("remove_track");
           }
         });
       });
 
     },
     deleteTrack: function(id, e) {
-      id = id;
+      var id = id;
       var isLoggedIn = AppStore.isLoggedIn();
       if(isLoggedIn) {
         this.removeTrack(id);
