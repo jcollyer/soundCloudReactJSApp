@@ -29,9 +29,9 @@ var TrackList =
     getTracks: function() {
       var genre = GenreStore.getGenre();
       var authorId = PlayerStore.getTrack().user_id || "";
-      
+
       if (genre.type == "author") {
-        var url = 'http://api.soundcloud.com/users/'+authorId+'/tracks?client_id=b5e21578d92314bc753b90ea7c971c1e';
+        var url = 'https://api.soundcloud.com/users/'+authorId+'/tracks?client_id=b5e21578d92314bc753b90ea7c971c1e';
       } else {
         var url = 'https://api.soundcloud.com/tracks.json?client_id=b5e21578d92314bc753b90ea7c971c1e&tags='+genre.name+'&order=hotness&limit=10&offset=0';
       }
