@@ -24,8 +24,8 @@ function _setUserId(){
         var playlistArray = [];
         playlists.forEach(function(playlist) {
           playlistArray.push(playlist.title);
+          document.cookie = "userPlaylists="+playlistArray;
         });
-      
       });
     });
   });

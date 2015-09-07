@@ -120,9 +120,7 @@ var Playlist =
               var playlist = document.getElementById(playlistId);
               playlist.classList.add("remove_playlist");
 
-              document.cookie = "userPlaylists=";
-              // var allPlaylists = document.cookie.split(";")[1].split("=")[1].split(",");
-              // var newPlaylists = allPlaylists.indexOf()
+              //TODO remove playlist cookie
 
             }
           });
