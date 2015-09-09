@@ -33,7 +33,6 @@ var Track =
           }
         });
       });
-
     },
     deleteTrack: function(id, e) {
       var id = id;

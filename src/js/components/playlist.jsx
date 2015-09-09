@@ -11,7 +11,7 @@ var Playlist =
     getInitialState: function() {
       return {playlists:[], newPlaylistName: 'Playlist', track: "", uPlaylistNames: []};
     },
-    getUsersPlaylists: function() {
+    logIn: function() {
       var isLoggedIn = AppStore.isLoggedIn();
       if(!isLoggedIn) {
         AppActions.login();
@@ -19,7 +19,7 @@ var Playlist =
     },
     getPlaylists: function() {
       var that = this;
-      this.getUsersPlaylists();
+      this.logIn();
 
       document.getElementById('playlist-wrapper').classList.remove('close');
 
