@@ -8,15 +8,16 @@
   width: 300px;
   background-color: #fff;
   z-index: 1;
-  .favorite.remove_favorite {
-    display: none;
+  .favorite-track-wrapper.remove_track{
+    display:none;
   }
-  .favorite{
+  .favorite-track-wrapper{
+    display:block;
     .track {
-      border-bottom: 1px solid #444;
+      float: left;
       height: 50px;
       margin: 0px;
-
+      width: 80%;
       .track-image {
         float: left;
         width: 15%;
@@ -26,20 +27,11 @@
       .track-info {
         float: left;
         width: 60%;
-
-        .title {
-
-        }
-
-        .author {
-
-        }
       }
-
-      .track-actions {
-        float: left;
-        width: 20%;
-      }
+    }
+    .favorite-actions {
+      float: left;
+      width: 20%;
     }
   }
 }
