@@ -10,39 +10,6 @@ var Track =
       PlayerActions.setTags(this.props.tags);
       PlayerActions.setTrack(this.props.id, this.props.duration, this.props.title, this.props.author, this.props.artwork, this.props.user_id);
     },
-    removeTrack: function(id, e) {
-      var that = this;
-      var trackID = id;
-      var playlistID = this.props.playlist;
-      var trackToRemove;
-
-      SC.get('http://api.soundcloud.com/playlists/'+playlistID+'?client_id=b5e21578d92314bc753b90ea7c971c1e', function(playlist) {
-        var newTrackList = [];
-        playlist.tracks.forEach(function(track) {
-          if(trackID !== track.id) {
-            newTrackList.push({id:track.id});
-          }
-        });
-        // Update playlist with tracks minus deleted track
-        SC.put(playlist.uri, { playlist: { tracks: newTrackList } }, function(response, error){
-          if(error){
-            console.log("Some error occured: " + error.message);
-          }else{
-            var track = document.getElementById(trackID);
-            track.classList.add("remove_track");
-          }
-        });
-      });
-    },
-    deleteTrack: function(id, e) {
-      var id = id;
-      var isLoggedIn = AppStore.isLoggedIn();
-      if(isLoggedIn) {
-        this.removeTrack(id);
-      } else {
-        login();
-      }
-    },
     render: function() {
       return (
         <div className="track" id={this.props.id}>
@@ -52,9 +19,6 @@ var Track =
           <div className="track-info">
             <p className="title">{this.props.title}</p>
             <p className="author">{this.props.author}</p>
-          </div>
-          <div className="track-actions">
-            <button className="track-delete" onClick={this.deleteTrack.bind(null, this.props.id)}>Delete</button>
           </div>
         </div>
       );

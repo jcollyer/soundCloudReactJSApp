@@ -12,45 +12,36 @@
     display: none;
   }
   .playlist{
-    .track {
-      border-bottom: 1px solid #444;
-      height: 50px;
-      margin: 0px;
-
-      .track-image {
+    .playlist-track-wrapper.remove_track{
+      display:none;
+    }
+    .playlist-track-wrapper{
+      display:block;
+      .track {
         float: left;
-        width: 15%;
-        margin-right: 2%;
-      }
-
-      .track-info {
-        float: left;
-        width: 60%;
-
-        .title {
-
+        height: 50px;
+        margin: 0px;
+        width: 80%;
+        .track-image {
+          float: left;
+          width: 15%;
+          margin-right: 2%;
         }
 
-        .author {
-
+        .track-info {
+          float: left;
+          width: 60%;
         }
       }
-
-      .track-actions {
+      .playlist-actions {
         float: left;
         width: 20%;
-        .track-delete {
-
-        }
-
-        .track-playlist-add {
-          display: none;
-        }
-
-        .track-favorite-add {
-          display: none;
-        }
       }
+    }
+    .track-actions {
+      float: left;
+      width: 20%;
+    
     }
   }
 }

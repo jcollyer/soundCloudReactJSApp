@@ -109,6 +109,38 @@ var Playlist =
         AppActions.login();
       }
     },
+    removeTrack: function(trackId, playlistId) {
+      var that = this;
+      var trackID = trackId;
+      var playlistID = playlistId;
+      var trackToRemove;
+      SC.get('http://api.soundcloud.com/playlists/'+playlistID+'?client_id=b5e21578d92314bc753b90ea7c971c1e', function(playlist) {
+        var newTrackList = [];
+        playlist.tracks.forEach(function(track) {
+          if(trackID !== track.id) {
+            newTrackList.push({id:track.id});
+          }
+        });
+        // Update playlist with tracks minus deleted track
+        SC.put(playlist.uri, { playlist: { tracks: newTrackList } }, function(response, error){
+          if(error){
+            console.log("Some error occured: " + error.message);
+          }else{
+            var track = document.getElementById(trackID);
+            track.classList.add("remove_track");
+          }
+        });
+      });
+    },
+    deleteTrack: function(trackId, playlistId, e) {
+      var id = id;
+      var isLoggedIn = AppStore.isLoggedIn();
+      if(isLoggedIn) {
+        this.removeTrack(trackId, playlistId);
+      } else {
+        login();
+      }
+    },
     deletePlaylist: function(id) {
       var playlistId = id;
       var url = 'https://api.soundcloud.com/playlists/'+playlistId+'?client_id=b5e21578d92314bc753b90ea7c971c1e';
@@ -145,7 +177,7 @@ var Playlist =
                   <button onClick={that.deletePlaylist.bind(null, playlist.id)}>delete</button>
                   {playlist.tracks.map(function(track){
                     return (
-                      <div className='col-md-12' key={track.id}>
+                      <div className='col-md-12 playlist-track-wrapper' key={track.id} id={track.id}>
                         <Track
                               title={track.title}
                               artwork={track.artwork_url}
@@ -154,6 +186,9 @@ var Playlist =
                               author={track.user.username}
                               playlist={playlist.id}
                         />
+                        <div className="playlist-actions">
+                          <button className="track-delete" onClick={that.deleteTrack.bind(null, track.id, playlist.id)}>Delete</button>
+                        </div>
                       </div>
                     )
                   })}
