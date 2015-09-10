@@ -25,6 +25,7 @@ var Player =
         playing: false,
         mute: false,
         tags: ["jelly","jamz"],
+        uPlaylistNames: []
       };
     },
     toggleTrack: function() {
@@ -160,12 +161,54 @@ var Player =
     displayArtistTracks: function(author) {
       GenreActions.setGenre({type: "author", name: author});
     },
+    clickAddToPlaylist: function(id, e) {
+      this.setState({uPlaylistNames:AppStore.getUserPlaylists()});
+      var isLoggedIn = AppStore.isLoggedIn();
+      if(isLoggedIn) {
+        document.getElementById("playlist-select-menu").classList.add("show");
+      } else {
+        AppActions.login();
+      }
+    },
+    selectPlaylist: function(playlist) {
+      var that = this;
+      var trackId = PlayerStore.getTrack().id;
+      var selectedPlaylist = playlist;
+      var trackIdsArray = [];
+      var userId = AppStore.getUserId();
+      SC.get('/users/'+userId+'/playlists', function(playlists) {
+
+        playlists.forEach(function(playlist) {
+          // Get selected playlist
+          if (selectedPlaylist === playlist.title) {
+
+            playlist.tracks.forEach(function (track){
+              // Add existing tracks to array
+              trackIdsArray.push(track.id);
+            });
+            // Add new track to array
+            trackIdsArray.push(trackId);
+            // Turn track array into objects
+            var tracks = trackIdsArray.map(function(id) { return { id: id }; });
+            // Add tracks to playlist
+            SC.put(playlist.uri, { playlist: { tracks: tracks } }, function(response, error){
+              if(error){
+                console.log("Some error occured: " + error.message);
+              }else{
+                document.getElementById("playlist-select-menu").classList.remove("show");
+                alert("track added to playlist!");
+              }
+            });
+          } // end if
+        });
+      });
+    },
     setTags: function() {
       var genre = {type: "genre", name: event.target.getAttribute("data-genre")};
       GenreActions.setGenre(genre);
       this.updateTags();
     },
-    updateTags: function(event) {
+    updateTags: function() {
       var tags = PlayerStore.getTags();
       this.setState({tags: tags});
     },
@@ -195,6 +238,9 @@ var Player =
               <button id="mute" onClick={this.muteToggle} className={this.state.mute ? 'fa fa-volume-up' : 'fa fa-volume-off'}>Mute</button>
 
               <button className="track-favorite-add" onClick={this.favoriteTrack.bind(null, this.state.id)}>Favorite</button>
+              <button className="track-playlist-add" onClick={this.clickAddToPlaylist}>+Playlist</button>
+            </div>
+          </div>
 
           <iframe id="soundcloud_widget" width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F1848538&show_artwork=true"></iframe>
           <hr />
@@ -206,7 +252,18 @@ var Player =
           })}
           <hr />
 
+          <div id="playlist-select-menu">
+            {this.state.uPlaylistNames.map(function(playlist){
+              return (
+                <button onClick={that.selectPlaylist.bind(null, playlist.name)}>{playlist.name}</button>
+              )
+            })}
+            <div id="new-playlist">
+              <input type="text" value={this.state.newPalylist} id="playlist-name" />;
+              <button onClick={that.newPlaylist}>Create</button>
             </div>
+            <button onClick={that.namePlaylist}>+ New Playlist</button>
+            <button onClick={that.cancelSelectPlaylist}>Cancel</button>
           </div>
 
         </div>

@@ -9,7 +9,7 @@ require('../../style/playlists-menu.less');
 var Playlist =
   React.createClass({
     getInitialState: function() {
-      return {playlists:[], newPlaylistName: 'Playlist', track: "", uPlaylistNames: []};
+      return {playlists:[], newPlaylistName: 'Playlist', track: ""};
     },
     logIn: function() {
       var isLoggedIn = AppStore.isLoggedIn();
@@ -34,40 +34,6 @@ var Playlist =
       };
       xmlhttp.open("GET", url, true);
       xmlhttp.send();
-    },
-    selectPlaylist: function(playlist) {
-      var that = this;
-      var trackId = PlayerStore.getTrack().id;
-      var selectedPlaylist = playlist;
-      var trackIdsArray = [];
-      var userId = AppStore.getUserId();
-      SC.get('/users/'+userId+'/playlists', function(playlists) {
-
-        playlists.forEach(function(playlist) {
-          // Get selected playlist
-          if (selectedPlaylist === playlist.title) {
-
-            playlist.tracks.forEach(function (track){
-              // Add existing tracks to array
-              trackIdsArray.push(track.id);
-            });
-            // Add new track to array
-            trackIdsArray.push(trackId);
-            // Turn track array into objects
-            var tracks = trackIdsArray.map(function(id) { return { id: id }; });
-            // Add tracks to playlist
-            SC.put(playlist.uri, { playlist: { tracks: tracks } }, function(response, error){
-              if(error){
-                console.log("Some error occured: " + error.message);
-              }else{
-                var menu = document.getElementById("playlist-select-menu");
-                menu.className = "";
-                that.getPlaylists();
-              }
-            });
-          } // end if
-        });
-      });
     },
     namePlaylist: function() {
       document.getElementById('new-playlist').classList.add('show');
@@ -95,19 +61,6 @@ var Playlist =
     },
     closePlaylistPane: function(e) {
       document.getElementById('playlist-wrapper').classList.add('close');
-    },
-    addTrack: function(id) {
-      var menu = document.getElementById("playlist-select-menu");
-      menu.className = menu.className + "show";
-    },
-    clickAddToPlaylist: function(id, e) {
-      this.setState({uPlaylistNames:AppStore.getUserPlaylists()});
-      var isLoggedIn = AppStore.isLoggedIn();
-      if(isLoggedIn) {
-        this.addTrack(id, e);
-      } else {
-        AppActions.login();
-      }
     },
     removeTrack: function(trackId, playlistId) {
       var that = this;
@@ -166,7 +119,6 @@ var Playlist =
       return (
         <div>
           <button onClick={this.getPlaylists}>My playlists</button>
-          <button className="track-playlist-add" onClick={this.clickAddToPlaylist}>+Playlist</button>
 
           <div id="playlist-wrapper" className="close">
             <button onClick={this.closePlaylistPane}>X</button>
@@ -195,20 +147,6 @@ var Playlist =
                 </div>
               )
             })}
-          </div>
-
-          <div id="playlist-select-menu">
-            {this.state.uPlaylistNames.map(function(playlist){
-              return (
-                <button onClick={that.selectPlaylist.bind(null, playlist.name)}>{playlist.name}</button>
-              )
-            })}
-            <div id="new-playlist">
-              <input type="text" value={this.state.newPalylist} id="playlist-name" />;
-              <button onClick={that.newPlaylist}>Create</button>
-            </div>
-            <button onClick={that.namePlaylist}>+ New Playlist</button>
-            <button onClick={that.cancelSelectPlaylist}>Cancel</button>
           </div>
         </div>
       );
