@@ -160,10 +160,12 @@ var Player =
     displayArtistTracks: function(author) {
       GenreActions.setGenre({type: "author", name: author});
     },
-    updateTags: function() {
+    setTags: function() {
       var genre = {type: "genre", name: event.target.getAttribute("data-genre")};
       GenreActions.setGenre(genre);
-
+      this.updateTags();
+    },
+    updateTags: function(event) {
       var tags = PlayerStore.getTags();
       this.setState({tags: tags});
     },
@@ -199,7 +201,7 @@ var Player =
           {this.state.tags.map(function(tag){
             var cleanTag = tag.replace(/['"]+/g, '');
             return (
-              <button onClick={that.updateTags} data-genre={tag}>{cleanTag}</button>
+              <button onClick={that.setTags} data-genre={tag}>{cleanTag}</button>
             )
           })}
           <hr />
