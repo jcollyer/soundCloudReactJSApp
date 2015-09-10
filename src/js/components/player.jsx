@@ -2,6 +2,7 @@ var React = require('react');
 var PlayerStore = require('../stores/player-store.js');
 var AppStore = require('../stores/app-store.js');
 var AppActions = require('../actions/app-actions.js');
+var GenreActions = require('../actions/genre-actions.js');
 var PlayerActions = require('../actions/player-actions.js');
 var GenreActions = require('../actions/genre-actions.js');
 require('../../style/player.less');
@@ -22,7 +23,8 @@ var Player =
         duration: 0,
         currentTime: 0,
         playing: false,
-        mute: false
+        mute: false,
+        tags: ["jelly","jamz"],
       };
     },
     toggleTrack: function() {
@@ -125,6 +127,7 @@ var Player =
         mute: false
       });
       this.getPlayer();
+      this.updateTags();
 
       // this seems smelly
       // var oldActiveTrack = document.querySelector("._active-track");
@@ -157,6 +160,13 @@ var Player =
     displayArtistTracks: function(author) {
       GenreActions.setGenre({type: "author", name: author});
     },
+    updateTags: function() {
+      var genre = {type: "genre", name: event.target.getAttribute("data-genre")};
+      GenreActions.setGenre(genre);
+
+      var tags = PlayerStore.getTags();
+      this.setState({tags: tags});
+    },
     componentDidMount: function(){
       PlayerStore.on('change', this.updateTrack);
     },
@@ -164,6 +174,7 @@ var Player =
       PlayerStore.removeListener('change', this.updateTrack);
     },
     render: function() {
+      var that = this;
       return (
         <div className="player">
           <div className="progress-container" onClick={this.updateTrackTime}>
@@ -183,11 +194,19 @@ var Player =
 
               <button className="track-favorite-add" onClick={this.favoriteTrack.bind(null, this.state.id)}>Favorite</button>
 
+          <iframe id="soundcloud_widget" width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F1848538&show_artwork=true"></iframe>
+          <hr />
+          {this.state.tags.map(function(tag){
+            var cleanTag = tag.replace(/['"]+/g, '');
+            return (
+              <button onClick={that.updateTags} data-genre={tag}>{cleanTag}</button>
+            )
+          })}
+          <hr />
 
             </div>
           </div>
 
-          <iframe id="soundcloud_widget" width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F1848538&show_artwork=true"></iframe>
         </div>
       );
     }
