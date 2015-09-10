@@ -9,6 +9,7 @@ var Track =
     handleClick: function (event) {
       PlayerActions.setTags(this.props.tags);
       PlayerActions.setTrack(this.props.id, this.props.duration, this.props.title, this.props.author, this.props.artwork, this.props.user_id);
+      document.getElementById("player-wrapper").classList.remove("close");
     },
     render: function() {
       return (

@@ -5,4 +5,4 @@ var App;
 require('./sc-player.jsx');
 
 App = React.render(<Home />, document.getElementById('home'));
-App = React.render(<Player />, document.getElementById('player'));
+App = React.render(<Player />, document.getElementById('player-wrapper'));

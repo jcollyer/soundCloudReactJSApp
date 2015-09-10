@@ -4,37 +4,43 @@
   left: -99999px;
 }
 
-.player{
-  height: 250px;
-  .progress-container {
-    width: 100%;
-    border-bottom: 1px solid rgba(0,0,0,0.3);
-    .progress{
-      background: #444;
-      height: 12px;
-    }
-  }
-  .player-box {
-    width: 600px;
-    margin: 10px auto;
-    p {
-      marign: 0px;
-    }
-    h1{
-      marign: 0px;
-    }
-    .player-image {
-      float: left;
-      margin-top: 10px;
-      width: 35%;
-      .track-artwork {
-        border-radius: 50%;
+#player-wrapper.close {
+  display: none;
+}
+#player-wrapper {
+  display: block;
+  .player{
+    height: 250px;
+    .progress-container {
+      width: 100%;
+      border-bottom: 1px solid rgba(0,0,0,0.3);
+      .progress{
+        background: #444;
+        height: 12px;
       }
     }
-    .player-info {
-      text-shadow: 1px 0px 1px #eee;
-      float: left;
-      width: 65%;
+    .player-box {
+      width: 600px;
+      margin: 10px auto;
+      p {
+        marign: 0px;
+      }
+      h1{
+        marign: 0px;
+      }
+      .player-image {
+        float: left;
+        margin-top: 10px;
+        width: 35%;
+        .track-artwork {
+          border-radius: 50%;
+        }
+      }
+      .player-info {
+        text-shadow: 1px 0px 1px #eee;
+        float: left;
+        width: 65%;
+      }
     }
   }
 }
