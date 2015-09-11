@@ -3,6 +3,7 @@ var GenreStore = require('../stores/genre-store.js');
 var PlayerActions = require('../actions/player-actions.js');
 var PlayerStore = require('../stores/player-store.js');
 var Track = require('./track.jsx');
+require('../../style/tracklist.less');
 
 var TrackList =
   React.createClass({
@@ -58,7 +59,7 @@ var TrackList =
     },
     render: function() {
       return (
-        <div id="tracklist">
+        <div id="tracklist-wrapper">
           {this.state.tracks.map(function(track){
             var bigImage = track.artwork_url? track.artwork_url.replace('large', 't200x200') : "";
             var tags = track.tag_list.split(" ");

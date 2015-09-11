@@ -1,7 +1,6 @@
 var React = require('react');
 var PlayerActions = require('../actions/player-actions.js');
 var AppStore = require('../stores/app-store.js');
-
 require('../../style/track.less');
 
 var Track =
