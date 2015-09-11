@@ -13,13 +13,15 @@ var Home =
     render: function() {
       return (
         <div>
+          <div id="side-nav">
+            <Login />
+            <Playlist />
+            <Favorites />
+            <Genre />
+          </div>
           <div id="player-wrapper" className="close">
             <Player />
           </div>
-          <Playlist />
-          <Favorites />
-          <Login />
-          <Genre />
           <TrackList />
         </div>
       );

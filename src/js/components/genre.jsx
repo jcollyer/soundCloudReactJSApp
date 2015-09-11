@@ -15,7 +15,7 @@ var Genre =
     },
     render: function() {
       return (
-        <div>
+        <div id="genre-wrapper">
           <button onClick={this.handleClick} data-genre="chilltrap">chilltrap</button>
           <button onClick={this.handleClick} data-genre="hegemon">hegemon</button>
           <button onClick={this.handleClick} data-genre="smallroom">smallroom</button>
