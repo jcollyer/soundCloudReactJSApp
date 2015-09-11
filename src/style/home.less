@@ -2,6 +2,7 @@ body {
   background: url('https://s3-us-west-2.amazonaws.com/soundcloud-client/bg.jpg');
   background-repeat: no-repeat;
   background-attachment: fixed;
+  font-family: 'Montserrat', sans-serif;
   #side-nav {
     position: fixed;
     width: 110px;
@@ -14,11 +15,21 @@ body {
         width: 100%;
       }
     }
-  }
-  button {
-    border:none;
-    background: rgba(0,0,0,0.5);
-    color: white;
-    margin: 5px;
+    button {
+      background: none;
+      border:none;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      border-right: 1px solid #222;
+      border-top: 1px solid rgba(0,0,0,0.4);
+      color: rgba(255,255,255,0.7);
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 200;
+      text-transform: uppercase;
+      padding: 5px;
+      width: 100%;
+      &:hover {
+        background: rgba(255,255,255,0.05);
+      }
+    }
   }
 }

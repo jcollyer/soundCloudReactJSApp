@@ -7,7 +7,7 @@ var Login =
       AppActions.login();
     },
     render:function(){
-      return <button onClick={this.handleClick}>Login to Soundclud</button>
+      return <button onClick={this.handleClick}>Login</button>
     }
   });
 module.exports = Login;
