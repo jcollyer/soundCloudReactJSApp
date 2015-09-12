@@ -1,10 +1,15 @@
-#side-nav {
+#fixed-frame {
   position: fixed;
+  top: 0px;
+  left: 0px;
+}
+
+#side-nav {
+  position: absolute;
   width: 110px;
   top: 0px;
   left: 0px;
   height: 100%;
-  background: #333;
   z-index: 1;
   #image-placeholder {
     img {
@@ -14,14 +19,14 @@
   button {
     background: none;
     border:none;
-    color: rgba(255,255,255,0.7);
+    color: #333;
     font-family: 'Josefin Sans', sans-serif;
     font-weight: 200;
     text-transform: uppercase;
     padding: 5px;
     width: 100%;
     &:hover {
-      background: rgba(255,255,255,0.05);
+      background: rgba(255,255,255,0.2);
     }
   }
   .active-side-nav-button {

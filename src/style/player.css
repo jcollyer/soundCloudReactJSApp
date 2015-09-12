@@ -1,0 +1,4 @@
+#player-wrapper {
+  right: 0px;
+  width: calc(100% - 110px);
+}

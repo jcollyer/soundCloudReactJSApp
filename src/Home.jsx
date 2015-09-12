@@ -9,22 +9,25 @@ require('./style/grid.min.less');
 require('./style/home.less');
 require('./style/side-nav.less');
 
+
 var Home =
   React.createClass({
     render: function() {
       return (
         <div>
-          <div id="side-nav">
-            <div id="image-placeholder">
-              <img src="https://i1.sndcdn.com/artworks-000001876940-w2l3qc-large.jpg" />
+          <div id="fixed-frame">
+            <div id="player-wrapper" className="close">
+              <Player />
             </div>
-            <Login />
-            <Playlist />
-            <Favorites />
-            <Genre />
-          </div>
-          <div id="player-wrapper" className="close">
-            <Player />
+            <div id="side-nav">
+              <div id="image-placeholder">
+                <img src="https://i1.sndcdn.com/artworks-000001876940-w2l3qc-large.jpg" />
+              </div>
+              <Login />
+              <Playlist />
+              <Favorites />
+              <Genre />
+            </div>
           </div>
           <TrackList />
         </div>

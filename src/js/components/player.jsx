@@ -6,6 +6,7 @@ var GenreActions = require('../actions/genre-actions.js');
 var PlayerActions = require('../actions/player-actions.js');
 var GenreActions = require('../actions/genre-actions.js');
 require('../../style/player.less');
+require('../../style/player.css');
 var player = '';
 var interval = 0;
 
