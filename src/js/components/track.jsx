@@ -7,7 +7,7 @@ var Track =
   React.createClass({
     handleClick: function (event) {
       PlayerActions.setTags(this.props.tags);
-      PlayerActions.setTrack(this.props.id, this.props.duration, this.props.title, this.props.author, this.props.artwork, this.props.user_id);
+      PlayerActions.setTrack(this.props.id, this.props.duration, this.props.title, this.props.author, this.props.artwork);
       document.getElementById("player-wrapper").classList.remove("close");
     },
     render: function() {
