@@ -7,6 +7,7 @@ var Favorites = require('./js/components/favorites.jsx');
 var TrackList = require('./js/components/tracklist.jsx');
 require('./style/grid.min.less');
 require('./style/home.less');
+require('./style/side-nav.less');
 
 var Home =
   React.createClass({

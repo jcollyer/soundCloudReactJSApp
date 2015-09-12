@@ -2,7 +2,6 @@ var React = require('react');
 var AppActions = require('../actions/app-actions.js');
 var AppStore = require('../stores/app-store.js');
 var Track = require('./track.jsx');
-require('../../style/favorites.less');
 
 var Favorites = React.createClass({
   getInitialState: function() {
@@ -63,25 +62,30 @@ var Favorites = React.createClass({
     var that = this;
     return (
       <div>
-        <button onClick={this.getUserFavorites}>My Favorites</button>
+        <button onClick={this.getUserFavorites} id="get-favorites-button">My Favorites</button>
         <div id="favorites-wrapper" className="close">
-          <button onClick={this.closeFavoritePane}>X</button>
-          {this.state.favorites.map(function(track){
-            return (
-              <div className='col-md-12 favorite-track-wrapper' key={track.id} id={track.id}>
-                <Track
-                      title={track.title}
-                      artwork={track.artwork_url}
-                      id={track.id}
-                      duration={track.duration}
-                      author={track.user.username}
-                />
-                <div className="favorite-actions">
-                  <button className="track-delete" onClick={that.deleteTrack.bind(null, track.id)}>Delete</button>
+          <button onClick={this.closeFavoritePane} className="favorite-close-button">X</button>
+          <div className="favorite">
+            <div className="favorite-title">
+              <h3>My Favorites</h3>
+            </div>
+            {this.state.favorites.map(function(track){
+              return (
+                <div className='favorite-track-wrapper' key={track.id} id={track.id}>
+                  <Track
+                        title={track.title}
+                        artwork={track.artwork_url}
+                        id={track.id}
+                        duration={track.duration}
+                        author={track.user.username}
+                  />
+                  <div className="favorite-actions">
+                    <button className="track-delete" onClick={that.deleteTrack.bind(null, track.id)}>x</button>
+                  </div>
                 </div>
-              </div>
-            )
-          })}
+              )
+            })}
+          </div>
         </div>
       </div>
     )
