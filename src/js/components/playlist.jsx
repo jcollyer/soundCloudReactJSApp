@@ -29,6 +29,7 @@ var Playlist =
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
           var playlistArr = JSON.parse(xmlhttp.responseText);
           that.setState({playlists: playlistArr});
+          document.getElementById("favorites-wrapper").classList.add("close");
           document.getElementById("get-favorites-button").classList.remove("active-side-nav-button");
           document.getElementById("get-playlist-button").classList.add("active-side-nav-button");
         }
