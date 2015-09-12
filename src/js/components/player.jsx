@@ -100,7 +100,7 @@ var Player =
       xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
           var track = JSON.parse(xmlhttp.responseText);
-          var artwork = track.artwork_url? track.artwork_url.replace('large', 't200x200') : "";
+          var artwork = track.artwork_url;
           PlayerActions.setTrack(nextTrack, track.duration, track.title, track.user.username, artwork);
         }
       };
@@ -223,16 +223,16 @@ var Player =
       var that = this;
       return (
         <div className="player">
-          <div className="progress-container" onClick={this.updateTrackTime}>
-            <div className="progress" style={{width: this.state.currentTime + '%'}} onClick={this.updateTrackTime}></div>
+          <div className="player-image">
+            <img className="track-artwork" src={this.state.artwork} />
           </div>
           <div className="player-box">
-            <div className="player-image">
-              <img className="track-artwork" src={this.state.artwork} />
-            </div>
             <div className="player-info">
+              <div className="progress-container" onClick={this.updateTrackTime}>
+                <div className="progress" style={{width: this.state.currentTime + '%'}} onClick={this.updateTrackTime}></div>
+              </div>
               <p>{this.state.title}</p>
-              <h1><button onClick={this.displayArtistTracks.bind(null, this.state.user_id)}>{this.state.author}</button></h1>
+              <button onClick={this.displayArtistTracks.bind(null, this.state.user_id)}>{this.state.author}</button>
               <button id="toggle" onClick={this.toggleTrack} className={this.state.playing ? 'fa fa-pause' : 'fa fa-play'}></button>
               <button id="next" onClick={this.playNextTrack}>Next</button>
               <button id="prev" onClick={this.prevTrack}>Prev</button>
@@ -241,18 +241,17 @@ var Player =
               <button className="track-favorite-add" onClick={this.favoriteTrack.bind(null, this.state.id)}>Favorite</button>
               <button className="track-playlist-add" onClick={this.clickAddToPlaylist}>+Playlist</button>
             </div>
+            <div className="player-tags">
+              {this.state.tags.map(function(tag){
+                var cleanTag = tag.replace(/['"]+/g, '');
+                return (
+                  <button onClick={that.setTags} data-genre={tag}>{cleanTag}</button>
+                )
+              })}
+            </div>
           </div>
 
           <iframe id="soundcloud_widget" width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F1848538&show_artwork=true"></iframe>
-          <hr />
-          {this.state.tags.map(function(tag){
-            var cleanTag = tag.replace(/['"]+/g, '');
-            return (
-              <button onClick={that.setTags} data-genre={tag}>{cleanTag}</button>
-            )
-          })}
-          <hr />
-
           <div id="playlist-select-menu">
             {this.state.uPlaylistNames.map(function(playlist){
               return (

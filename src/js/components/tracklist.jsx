@@ -72,7 +72,7 @@ var TrackList =
                       artwork={bigImage}
                       duration={track.duration}
                       user_id={track.user.id}
-                      tags={tags}
+                      tags={track.tag_list}
                 />
               </div>
             )

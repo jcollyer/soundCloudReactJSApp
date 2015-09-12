@@ -8,42 +8,49 @@
   display: none;
 }
 #player-wrapper {
-  display: block;
-  position: absolute;
+  background: #eee;
   float: right;
   height: 110px;
-  background: #eee;
+  position: absolute;
+  width: 100%;
+  z-index: 2;
   .player{
-    height: 250px;
-    .progress-container {
-      width: 100%;
-      border-bottom: 1px solid rgba(0,0,0,0.3);
-      .progress{
-        background: #444;
-        height: 12px;
+    position: absolute;
+    top: 0px;
+    width: 100%;
+
+    .player-image {
+      float: left;
+      width: 110px;
+      img {
+        width: 100%;
       }
     }
     .player-box {
-      width: 600px;
-      margin: 10px auto;
+      float: left;
       p {
         marign: 0px;
       }
       h1{
         marign: 0px;
       }
-      .player-image {
+      .player-info {
         float: left;
-        margin-top: 10px;
-        width: 35%;
-        .track-artwork {
-          border-radius: 50%;
+        padding: 0px 25px;
+        width: 65%;
+
+        .progress-container {
+          width: 100%;
+          border-bottom: 1px solid rgba(0,0,0,0.3);
+          .progress{
+            background: #444;
+            height: 12px;
+          }
         }
       }
-      .player-info {
-        text-shadow: 1px 0px 1px #eee;
+      .player-tags {
         float: left;
-        width: 65%;
+        width: 30%;
       }
     }
   }

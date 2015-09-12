@@ -1,4 +1,3 @@
-#player-wrapper {
-  right: 0px;
+#player-wrapper .player-box {
   width: calc(100% - 110px);
 }
