@@ -26,6 +26,8 @@ var Favorites = React.createClass({
       if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
         favoritetArr = JSON.parse(xmlhttp.responseText);
         that.setState({favorites: favoritetArr});
+        document.getElementById("get-playlist-button").classList.remove("active-side-nav-button");
+        document.getElementById("get-favorites-button").classList.add("active-side-nav-button");
       }
     };
     xmlhttp.open("GET", url, true);
@@ -57,6 +59,7 @@ var Favorites = React.createClass({
   },
   closeFavoritePane: function() {
     document.getElementById('favorites-wrapper').classList.add('close');
+    document.getElementById("get-favorites-button").classList.remove("active-side-nav-button");
   },
   render: function() {
     var that = this;

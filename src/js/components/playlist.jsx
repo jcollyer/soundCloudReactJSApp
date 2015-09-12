@@ -29,6 +29,8 @@ var Playlist =
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
           var playlistArr = JSON.parse(xmlhttp.responseText);
           that.setState({playlists: playlistArr});
+          document.getElementById("get-favorites-button").classList.remove("active-side-nav-button");
+          document.getElementById("get-playlist-button").classList.add("active-side-nav-button");
         }
       };
       xmlhttp.open("GET", url, true);
@@ -60,6 +62,7 @@ var Playlist =
     },
     closePlaylistPane: function(e) {
       document.getElementById('playlist-wrapper').classList.add('close');
+      document.getElementById("get-playlist-button").classList.remove("active-side-nav-button");
     },
     removeTrack: function(trackId, playlistId) {
       var that = this;
@@ -117,7 +120,7 @@ var Playlist =
       var that = this;
       return (
         <div>
-          <button onClick={this.getPlaylists} className="active-side-nav-button">My playlists</button>
+          <button onClick={this.getPlaylists} id="get-playlist-button">My playlists</button>
 
           <div id="playlist-wrapper" className="close">
             <button onClick={this.closePlaylistPane} className="playlist-close-button">X</button>
