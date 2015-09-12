@@ -3,7 +3,6 @@ var AppActions = require('../actions/app-actions.js');
 var AppStore = require('../stores/app-store.js');
 var PlayerStore = require('../stores/player-store.js');
 var Track = require('./track.jsx');
-require('../../style/playlist.less');
 require('../../style/playlists-menu.less');
 
 var Playlist =
@@ -118,18 +117,21 @@ var Playlist =
       var that = this;
       return (
         <div>
-          <button onClick={this.getPlaylists}>My playlists</button>
+          <button onClick={this.getPlaylists} className="active-side-nav-button">My playlists</button>
 
           <div id="playlist-wrapper" className="close">
-            <button onClick={this.closePlaylistPane}>X</button>
+            <button onClick={this.closePlaylistPane} className="playlist-close-button">X</button>
             {this.state.playlists.map(function(playlist){
               return (
-                <div className="row playlist" key={playlist.id} id={playlist.id}>
-                  <h1>{playlist.title}</h1>
-                  <button onClick={that.deletePlaylist.bind(null, playlist.id)}>delete</button>
+                <div className="playlist" key={playlist.id} id={playlist.id}>
+                  <div className="playlist-title">
+                    <h3>{playlist.title}</h3>
+                    <button onClick={that.deletePlaylist.bind(null, playlist.id)}>delete</button>
+                  </div>
+
                   {playlist.tracks.map(function(track){
                     return (
-                      <div className='col-md-12 playlist-track-wrapper' key={track.id} id={track.id}>
+                      <div className='playlist-track-wrapper' key={track.id} id={track.id}>
                         <Track
                               title={track.title}
                               artwork={track.artwork_url}
@@ -139,7 +141,7 @@ var Playlist =
                               playlist={playlist.id}
                         />
                         <div className="playlist-actions">
-                          <button className="track-delete" onClick={that.deleteTrack.bind(null, track.id, playlist.id)}>Delete</button>
+                          <button className="track-delete" onClick={that.deleteTrack.bind(null, track.id, playlist.id)}>x</button>
                         </div>
                       </div>
                     )
