@@ -18,7 +18,7 @@ function _setTrackIds(ids) {
 };
 
 function _setTags(tags) {
-  _tags = tags.tags;
+  _tags = tags.tags.split(" ");
 };
 
 var PlayerStore = assign({}, EventEmitter.prototype, {

@@ -81,6 +81,7 @@ var Favorites = React.createClass({
                         id={track.id}
                         duration={track.duration}
                         author={track.user.username}
+                        tags={track.tag_list}
                   />
                   <div className="favorite-actions">
                     <button className="track-delete" onClick={that.deleteTrack.bind(null, track.id)}>x</button>
