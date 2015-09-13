@@ -230,9 +230,11 @@ var Player =
             <div className="player-info">
               <div className="player-actions">
                 <button className="track-favorite-add" onClick={this.favoriteTrack.bind(null, this.state.id)}>
-                  <i className="icon-heart"></i>
+                  <div className="icon-heart"></div>
                 </button>
-                <button className="track-playlist-add" onClick={this.clickAddToPlaylist}>+Playlist</button>
+                <button className="track-playlist-add" onClick={this.clickAddToPlaylist}>
+                  <div className="icon-circle-plus"></div>
+                </button>
               </div>
               <div className="player-details">
                 <h4>{this.state.title}</h4>
@@ -240,22 +242,31 @@ var Player =
               </div>
               <div className="playlist-controls">
                 <div className="player-seek">
-                  <button id="prev" onClick={this.prevTrack}>Prev</button>
-                  <button id="toggle" onClick={this.toggleTrack} className={this.state.playing ? 'fa fa-pause' : 'fa fa-play'}></button>
-                  <button id="next" onClick={this.playNextTrack}>Next</button>
+                  <button id="prev" onClick={this.prevTrack}>
+                    <div className="icon-skip-back"></div>
+                  </button>
+                  <button id="toggle" onClick={this.toggleTrack}>
+                    <i className={this.state.playing ? 'icon-pause' : 'icon-play'}></i>
+                  </button>
+                  <button id="next" onClick={this.playNextTrack}>
+                    <div className="icon-skip-forward"></div>
+                  </button>
                 </div>
                 <div className="player-volume">
-                  <button id="mute" onClick={this.muteToggle} className={this.state.mute ? 'fa fa-volume-up' : 'fa fa-volume-off'}>Mute</button>
+                  <button id="mute" onClick={this.muteToggle} className={this.state.mute ? 'icon-volume' : 'icon-mute'}></button>
                 </div>
               </div>
             </div>
             <div className="player-tags">
-              {this.state.tags.map(function(tag){
-                var cleanTag = tag.replace(/['"]+/g, '');
-                return (
-                  <button onClick={that.setTags} data-genre={tag}>{cleanTag}</button>
-                )
-              })}
+              <h2>tags</h2>
+              <div className="player-tag-buttons">
+                {this.state.tags.map(function(tag){
+                  var cleanTag = tag.replace(/['"]+/g, '');
+                  return (
+                    <button onClick={that.setTags} data-genre={tag}>{cleanTag}</button>
+                  )
+                })}
+              </div>
             </div>
             <div className="progress-container" onClick={this.updateTrackTime}>
               <div className="progress" style={{width: this.state.currentTime + '%'}} onClick={this.updateTrackTime}></div>
