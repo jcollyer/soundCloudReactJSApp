@@ -121,7 +121,10 @@ var Playlist =
       var that = this;
       return (
         <div>
-          <button onClick={this.getPlaylists} id="get-playlist-button">My playlists</button>
+          <div onClick={this.getPlaylists} id="get-playlist-button" className="side-nav-link">
+            <i className="side-nav-icon icon-folder"></i>
+            <p>playlists</p>
+          </div>
 
           <div id="playlist-wrapper" className="close">
             <button onClick={this.closePlaylistPane} className="playlist-close-button">X</button>

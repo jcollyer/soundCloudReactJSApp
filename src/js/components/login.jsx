@@ -7,7 +7,12 @@ var Login =
       AppActions.login();
     },
     render:function(){
-      return <button onClick={this.handleClick}>Login</button>
+      return (
+        <div onClick={this.handleClick}  className="side-nav-link">
+          <i className="side-nav-icon icon-head"></i>
+          <p>Login</p>
+        </div>
+      )
     }
   });
 module.exports = Login;

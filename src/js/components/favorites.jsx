@@ -66,7 +66,10 @@ var Favorites = React.createClass({
     var that = this;
     return (
       <div>
-        <button onClick={this.getUserFavorites} id="get-favorites-button">My Favorites</button>
+        <div onClick={this.getUserFavorites} id="get-favorites-button" className="side-nav-link">
+          <i className="side-nav-icon icon-heart"></i>
+          <p>Favorites</p>
+        </div>
         <div id="favorites-wrapper" className="close">
           <button onClick={this.closeFavoritePane} className="favorite-close-button">X</button>
           <div className="favorite">
@@ -83,6 +86,7 @@ var Favorites = React.createClass({
                         duration={track.duration}
                         author={track.user.username}
                         tags={track.tag_list}
+                        user_id={track.user_id}
                   />
                   <div className="favorite-actions">
                     <button className="track-delete" onClick={that.deleteTrack.bind(null, track.id)}>x</button>

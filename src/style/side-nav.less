@@ -17,17 +17,27 @@
       width: 100%;
     }
   }
-  button {
-    background: none;
-    border:none;
+  .side-nav-link {
     color: #ccc;
+    cursor: pointer;
+    display: block;
     font-family: 'Josefin Sans', sans-serif;
     font-weight: 200;
-    text-transform: uppercase;
+    height: 50px;
     padding: 5px;
+    text-transform: uppercase;
     width: 100%;
     &:hover {
-      background: rgba(255,255,255,0.2);
+      background: #888;
+    }
+    i.side-nav-icon {
+      color: white;
+      float: left;
+      font-size: 20px;
+      margin: 9px 4px 0px 0px;
+    }
+    p {
+      float: left;
     }
   }
   .active-side-nav-button {
@@ -122,5 +132,18 @@
   }
   #new-playlist.show {
     display: block;
+  }
+  #genre-wrapper {
+    bottom: 7px;
+    position: absolute;
+    button {
+      border: none;
+      background: #888;
+      color: #ccc;
+      border-radius: 2px;
+      margin: 7px 0px 0px 7px;
+      max-width: 100px;
+
+    }
   }
 }
