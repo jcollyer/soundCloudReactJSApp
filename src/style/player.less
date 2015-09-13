@@ -36,21 +36,48 @@
       }
       .player-info {
         float: left;
-        padding: 0px 25px;
         width: 65%;
-
-        .progress-container {
-          width: 100%;
-          border-bottom: 1px solid rgba(0,0,0,0.3);
-          .progress{
-            background: #444;
-            height: 12px;
+        .player-actions {
+          float: left;
+          width: 50px;
+          .lnr {
+            font-size: 25px;
+          }
+        }
+        .player-details {
+          float: left;
+          width: 70%;
+          h3 {
+            text-align: center;
+          }
+          h4 {
+            text-align: center;
+          }
+        }
+        .playlist-controls {
+          float: left;
+          width: 20%;
+          .player-seek {
+            width: 100%;
+          }
+          .player-volume {
+            width: 100%;
           }
         }
       }
       .player-tags {
         float: left;
         width: 30%;
+      }
+    }
+    .progress-container {
+      border-top: 1px solid rgba(0,0,0,0.3);
+      bottom: 0px;
+      position: absolute;
+      width: 100%;
+      .progress{
+        background: #444;
+        height: 12px;
       }
     }
   }

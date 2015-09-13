@@ -8,6 +8,7 @@ var TrackList = require('./js/components/tracklist.jsx');
 require('./style/grid.min.less');
 require('./style/home.less');
 require('./style/side-nav.less');
+require('./style/icon-fonts.css');
 
 
 var Home =

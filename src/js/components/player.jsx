@@ -228,18 +228,26 @@ var Player =
           </div>
           <div className="player-box">
             <div className="player-info">
-              <div className="progress-container" onClick={this.updateTrackTime}>
-                <div className="progress" style={{width: this.state.currentTime + '%'}} onClick={this.updateTrackTime}></div>
+              <div className="player-actions">
+                <button className="track-favorite-add" onClick={this.favoriteTrack.bind(null, this.state.id)}>
+                  <i className="icon-heart"></i>
+                </button>
+                <button className="track-playlist-add" onClick={this.clickAddToPlaylist}>+Playlist</button>
               </div>
-              <p>{this.state.title}</p>
-              <button onClick={this.displayArtistTracks.bind(null, this.state.user_id)}>{this.state.author}</button>
-              <button id="toggle" onClick={this.toggleTrack} className={this.state.playing ? 'fa fa-pause' : 'fa fa-play'}></button>
-              <button id="next" onClick={this.playNextTrack}>Next</button>
-              <button id="prev" onClick={this.prevTrack}>Prev</button>
-              <button id="mute" onClick={this.muteToggle} className={this.state.mute ? 'fa fa-volume-up' : 'fa fa-volume-off'}>Mute</button>
-
-              <button className="track-favorite-add" onClick={this.favoriteTrack.bind(null, this.state.id)}>Favorite</button>
-              <button className="track-playlist-add" onClick={this.clickAddToPlaylist}>+Playlist</button>
+              <div className="player-details">
+                <h4>{this.state.title}</h4>
+                <h3 onClick={this.displayArtistTracks.bind(null, this.state.user_id)}>{this.state.author}</h3>
+              </div>
+              <div className="playlist-controls">
+                <div className="player-seek">
+                  <button id="prev" onClick={this.prevTrack}>Prev</button>
+                  <button id="toggle" onClick={this.toggleTrack} className={this.state.playing ? 'fa fa-pause' : 'fa fa-play'}></button>
+                  <button id="next" onClick={this.playNextTrack}>Next</button>
+                </div>
+                <div className="player-volume">
+                  <button id="mute" onClick={this.muteToggle} className={this.state.mute ? 'fa fa-volume-up' : 'fa fa-volume-off'}>Mute</button>
+                </div>
+              </div>
             </div>
             <div className="player-tags">
               {this.state.tags.map(function(tag){
@@ -248,6 +256,9 @@ var Player =
                   <button onClick={that.setTags} data-genre={tag}>{cleanTag}</button>
                 )
               })}
+            </div>
+            <div className="progress-container" onClick={this.updateTrackTime}>
+              <div className="progress" style={{width: this.state.currentTime + '%'}} onClick={this.updateTrackTime}></div>
             </div>
           </div>
 
