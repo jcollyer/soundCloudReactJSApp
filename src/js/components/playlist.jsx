@@ -144,6 +144,7 @@ var Playlist =
                               author={track.user.username}
                               playlist={playlist.id}
                               tags={track.tag_list}
+                              user_id={track.user_id}
                         />
                         <div className="playlist-actions">
                           <button className="track-delete" onClick={that.deleteTrack.bind(null, track.id, playlist.id)}>x</button>
