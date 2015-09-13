@@ -258,7 +258,7 @@ var Player =
               </div>
             </div>
             <div className="player-tags">
-              <h2>tags</h2>
+              <h3>tags</h3>
               <div className="player-tag-buttons">
                 {this.state.tags.map(function(tag){
                   var cleanTag = tag.replace(/['"]+/g, '');

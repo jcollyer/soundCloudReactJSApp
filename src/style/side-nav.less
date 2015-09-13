@@ -31,10 +31,10 @@
       background: #888;
     }
     i.side-nav-icon {
-      color: white;
+      color: #ccc;
       float: left;
       font-size: 20px;
-      margin: 9px 4px 0px 0px;
+      margin: 9px 5px 0px 0px;
     }
     p {
       float: left;
@@ -134,16 +134,30 @@
     display: block;
   }
   #genre-wrapper {
+    border-top: 2px solid;
     bottom: 7px;
     position: absolute;
-    button {
-      border: none;
-      background: #888;
-      color: #ccc;
-      border-radius: 2px;
-      margin: 7px 0px 0px 7px;
-      max-width: 100px;
-
+    &:after {
+      content: "tags";
+      left: 7px;
+      position: absolute;
+      top: -22px;
+    }
+    #genre-wrapper-scroll {
+      max-height: 160px;
+      overflow: scroll;
+      button {
+        border: none;
+        background: #333;
+        color: #555;
+        border-radius: 2px;
+        margin: 4px 0px 0px 7px;
+        max-width: 100px;
+        &:hover {
+          background: #555;
+          color: #999;
+        }
+      }
     }
   }
 }

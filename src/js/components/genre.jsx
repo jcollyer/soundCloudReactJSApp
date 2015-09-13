@@ -16,14 +16,16 @@ var Genre =
     render: function() {
       return (
         <div id="genre-wrapper">
-          <button onClick={this.handleClick} data-genre="chilltrap">chilltrap</button>
-          <button onClick={this.handleClick} data-genre="hegemon">hegemon</button>
-          <button onClick={this.handleClick} data-genre="smallroom">smallroom</button>
-          <button onClick={this.handleClick} data-genre="pat%20lok">pat lok</button>
-          <button onClick={this.handleClick} data-genre="disco">disco</button>
-          <button onClick={this.handleClick} data-genre="deephouse">deephouse</button>
-          <button onClick={this.handleClick} data-genre="acoustic">acoustic</button>
-          <button onClick={this.handleClick} data-genre="FutureRnB">FutureRnB</button>
+          <div id="genre-wrapper-scroll">
+            <button onClick={this.handleClick} data-genre="chilltrap">chilltrap</button>
+            <button onClick={this.handleClick} data-genre="hegemon">hegemon</button>
+            <button onClick={this.handleClick} data-genre="smallroom">smallroom</button>
+            <button onClick={this.handleClick} data-genre="pat%20lok">pat lok</button>
+            <button onClick={this.handleClick} data-genre="disco">disco</button>
+            <button onClick={this.handleClick} data-genre="deephouse">deephouse</button>
+            <button onClick={this.handleClick} data-genre="acoustic">acoustic</button>
+            <button onClick={this.handleClick} data-genre="FutureRnB">FutureRnB</button>
+          </div>
         </div>
       );
     }
