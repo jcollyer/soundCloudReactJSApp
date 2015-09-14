@@ -25,7 +25,7 @@ var Player =
         currentTime: 0,
         playing: false,
         mute: false,
-        tags: ["jelly","jamz"],
+        tags: [],
         uPlaylistNames: []
       };
     },
@@ -137,11 +137,13 @@ var Player =
       // document.getElementById(track.id).classList.add("_active-track");
     },
     updateTrackTime: function(event) {
-      var width = window.innerWidth;
-      var xoffset = event.clientX;
+      var width = document.getElementById("progress-container").clientWidth;
+      var xoffset = event.clientX - 110;
       var duration = this.state.duration;
       var currentTime = (xoffset / width) * duration;
       var time = Math.floor(currentTime);
+
+      console.log("width: ",width,"xoffset: ",xoffset,"duration: ",duration,"currentTime: ",currentTime,"time: ",time)
       player.seekTo(time);
     },
     favoriteTrack: function(id, e) {
@@ -268,7 +270,7 @@ var Player =
                 })}
               </div>
             </div>
-            <div className="progress-container" onClick={this.updateTrackTime}>
+            <div id="progress-container" onClick={this.updateTrackTime}>
               <div className="progress" style={{width: this.state.currentTime + '%'}} onClick={this.updateTrackTime}></div>
             </div>
           </div>
