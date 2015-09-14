@@ -142,8 +142,6 @@ var Player =
       var duration = this.state.duration;
       var currentTime = (xoffset / width) * duration;
       var time = Math.floor(currentTime);
-
-      console.log("width: ",width,"xoffset: ",xoffset,"duration: ",duration,"currentTime: ",currentTime,"time: ",time)
       player.seekTo(time);
     },
     favoriteTrack: function(id, e) {
