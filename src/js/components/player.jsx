@@ -108,6 +108,10 @@ var Player =
       var that = this;
       var duration = this.state.duration;
       player.getPosition(function(time){
+        // not sure if i like this
+        if (time > 0 && time < 2000){
+          document.getElementById("overlay").classList.remove("show");
+        }
         var currentTime = 100 * (time / duration);
         that.setState({currentTime: currentTime});
       })

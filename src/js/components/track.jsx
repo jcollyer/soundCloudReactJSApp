@@ -6,15 +6,16 @@ require('../../style/track.less');
 var Track =
   React.createClass({
     handleClick: function (event) {
+      document.getElementById("overlay").classList.add("show");
       PlayerActions.setTags(this.props.tags);
       PlayerActions.setTrack(this.props.id, this.props.duration, this.props.title, this.props.author, this.props.artwork, this.props.user_id);
       document.getElementById("player-wrapper").classList.remove("close");
     },
     render: function() {
       return (
-        <div className="track" id={this.props.id}>
+        <div className="track" id={this.props.id} onClick={this.handleClick}>
           <div className="track-image">
-            <img src={this.props.artwork} onClick={this.handleClick} />
+            <img src={this.props.artwork} />
           </div>
           <div className="track-info">
             <p className="title">{this.props.title}</p>

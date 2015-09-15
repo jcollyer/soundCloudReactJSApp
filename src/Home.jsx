@@ -5,10 +5,12 @@ var Playlist = require('./js/components/playlist.jsx');
 var Player = require('./js/components/player.jsx');
 var Favorites = require('./js/components/favorites.jsx');
 var TrackList = require('./js/components/tracklist.jsx');
+var Overlay = require('./js/components/overlay.jsx');
 require('./style/grid.min.less');
 require('./style/home.less');
 require('./style/side-nav.less');
 require('./style/icon-fonts.css');
+require('./style/overlay.less');
 
 
 var Home =
@@ -16,6 +18,7 @@ var Home =
     render: function() {
       return (
         <div>
+          <Overlay />
           <div id="fixed-frame">
             <div id="player-wrapper" className="close">
               <Player />
