@@ -34,7 +34,7 @@ var TrackList =
       if (genre.type == "author") {
         var url = 'https://api.soundcloud.com/users/'+authorId+'/tracks?client_id=b5e21578d92314bc753b90ea7c971c1e';
       } else {
-        var url = 'https://api.soundcloud.com/tracks.json?client_id=b5e21578d92314bc753b90ea7c971c1e&tags='+genre.name+'&order=hotness&limit=10&offset=0';
+        var url = 'https://api.soundcloud.com/tracks.json?client_id=b5e21578d92314bc753b90ea7c971c1e&tags='+genre.name+'&order=hotness&limit=30&offset=0';
       }
 
       var that = this;
@@ -64,7 +64,7 @@ var TrackList =
             var bigImage = track.artwork_url? track.artwork_url.replace('large', 't200x200') : "";
             var tags = track.tag_list.split(" ");
             return (
-              <div className='col-md-3' key={track.id}>
+              <div className='col-md-2' key={track.id}>
                 <Track
                       id={track.id}
                       title={track.title}
