@@ -23,6 +23,7 @@ var Player =
         user_id: "",
         duration: 0,
         currentTime: 0,
+        currentVolume: 75,
         playing: false,
         mute: false,
         tags: [],
@@ -56,17 +57,13 @@ var Player =
       player.pause();
       this.setState({playing: false});
     },
-    muteToggle: function() {
-      var that = this;
-      player.getVolume(function(vol){
-        if(vol == 1 ) {
-          player.setVolume(0);
-          that.setState({mute: true});
-        } else {
-          player.setVolume(1);
-          that.setState({mute: false});
-        }
-      });
+    muteTrack: function() {
+      player.setVolume(0);
+      this.setState({mute: true, currentVolume: 0});
+    },
+    fullVolumeTrack: function() {
+      player.setVolume(1);
+      this.setState({mute: false, currentVolume: 100});
     },
     getPlayer: function() {
       var that = this;
@@ -135,6 +132,13 @@ var Player =
       // var oldActiveTrack = document.querySelector("._active-track");
       // if (oldActiveTrack != null) oldActiveTrack.classList.remove("_active-track");
       // document.getElementById(track.id).classList.add("_active-track");
+    },
+    updateTrackVolume: function(event) {
+      var clickLocation = event.clientX - event.target.getBoundingClientRect().left;
+      var volume = clickLocation/100
+      player.setVolume(volume);
+
+      this.setState({currentVolume: clickLocation});
     },
     updateTrackTime: function(event) {
       var width = document.getElementById("progress-container").clientWidth;
@@ -253,7 +257,11 @@ var Player =
                   </button>
                 </div>
                 <div className="player-volume">
-                  <button id="mute" onClick={this.muteToggle} className={this.state.mute ? 'icon-volume' : 'icon-mute'}></button>
+                  <button id="mute" onClick={this.muteTrack} className='icon-mute'></button>
+                  <div id="volume-container" onClick={this.updateTrackVolume}>
+                    <div id="volume-bar" style={{width: this.state.currentVolume + '%'}}></div>
+                  </div>
+                  <button onClick={this.fullVolumeTrack} className='icon-volume'></button>
                 </div>
               </div>
             </div>
@@ -269,7 +277,7 @@ var Player =
               </div>
             </div>
             <div id="progress-container" onClick={this.updateTrackTime}>
-              <div className="progress" style={{width: this.state.currentTime + '%'}} onClick={this.updateTrackTime}></div>
+              <div className="progress" style={{width: this.state.currentTime + '%'}}></div>
             </div>
           </div>
 
