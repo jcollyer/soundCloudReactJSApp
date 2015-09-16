@@ -127,13 +127,18 @@ var Playlist =
           </div>
 
           <div id="playlist-wrapper" className="close">
-            <button onClick={this.closePlaylistPane} className="playlist-close-button">X</button>
+            <div onClick={this.closePlaylistPane} className="playlist-close-button">
+              <i className="icon-circle-cross"></i>
+            </div>
             {this.state.playlists.map(function(playlist){
               return (
                 <div className="playlist" key={playlist.id} id={playlist.id}>
                   <div className="playlist-title">
                     <h3>{playlist.title}</h3>
-                    <button onClick={that.deletePlaylist.bind(null, playlist.id)}>delete</button>
+                    <button onClick={that.deletePlaylist.bind(null, playlist.id)}>
+                    delete
+                    <i className="icon-trash"></i>
+                    </button>
                   </div>
 
                   {playlist.tracks.map(function(track){
@@ -150,7 +155,9 @@ var Playlist =
                               user_id={track.user_id}
                         />
                         <div className="playlist-actions">
-                          <button className="track-delete" onClick={that.deleteTrack.bind(null, track.id, playlist.id)}>x</button>
+                          <div className="track-delete" onClick={that.deleteTrack.bind(null, track.id, playlist.id)}>
+                            <i className="icon-trash"></i>
+                          </div>
                         </div>
                       </div>
                     )
