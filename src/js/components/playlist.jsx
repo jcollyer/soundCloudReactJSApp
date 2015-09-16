@@ -134,7 +134,10 @@ var Playlist =
               return (
                 <div className="playlist" key={playlist.id} id={playlist.id}>
                   <div className="playlist-title">
-                    <h3>{playlist.title}</h3>
+                    <div className="header-container">
+                      <div className="header-line"></div>
+                      <h3>{playlist.title}</h3>
+                    </div>
                     <button onClick={that.deletePlaylist.bind(null, playlist.id)}>
                     delete
                     <i className="icon-trash"></i>
