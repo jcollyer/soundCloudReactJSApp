@@ -76,7 +76,10 @@ var Favorites = React.createClass({
           </div>
           <div className="favorite">
             <div className="favorite-title">
-              <h3>My Favorites</h3>
+              <div className="header-container">
+                <div className="header-line"></div>
+                <h3>My Favorites</h3>
+              </div>
             </div>
             {this.state.favorites.map(function(track){
               return (
