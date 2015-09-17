@@ -28,10 +28,11 @@ var Playlist =
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
           var playlistArr = JSON.parse(xmlhttp.responseText);
           that.setState({playlists: playlistArr});
-          document.getElementById("favorites-wrapper").classList.add("close");
-          document.getElementById("get-favorites-button").classList.remove("active-side-nav-button");
-          document.getElementById("get-playlist-button").classList.add("active-side-nav-button");
-          document.getElementById('playlist-wrapper').classList.remove('close');
+
+          [].slice.call(document.getElementsByClassName("side-nav-link")).forEach(function(d){d.classList.remove("active-side-nav-button")});
+          [].slice.call(document.getElementsByClassName("panel-box")).forEach(function(d){d.classList.remove("active-panel")});
+          document.getElementById('get-playlist-button').classList.add("active-side-nav-button");
+          document.getElementById('playlist-wrapper').classList.add('active-panel');
         }
       };
       xmlhttp.open("GET", url, true);
@@ -62,7 +63,7 @@ var Playlist =
       document.getElementById("playlist-select-menu").classList.remove('show');
     },
     closePlaylistPane: function(e) {
-      document.getElementById('playlist-wrapper').classList.add('close');
+      document.getElementById('playlist-wrapper').classList.remove('active-panel');
       document.getElementById("get-playlist-button").classList.remove("active-side-nav-button");
     },
     removeTrack: function(trackId, playlistId) {
@@ -126,7 +127,7 @@ var Playlist =
             <p>playlists</p>
           </div>
 
-          <div id="playlist-wrapper" className="close">
+          <div id="playlist-wrapper" className="panel-box close">
             <div onClick={this.closePlaylistPane} className="playlist-close-button">
               <i className="icon-circle-cross"></i>
             </div>

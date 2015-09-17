@@ -53,12 +53,13 @@
       color: #333;
     }
   }
-  #favorites-wrapper.close, #playlist-wrapper.close {
-    display:none;
+  #favorites-wrapper.active-panel, #playlist-wrapper.active-panel {
+    display: block;
   }
   #favorites-wrapper, #playlist-wrapper {
     background-color: #eee;
     border-bottom-right-radius: 10px;
+    display:none;
     left: 110px;
     padding: 5px 10px 0px 10px;
     position: absolute;
@@ -216,12 +217,13 @@
       }
     }
   }
-  #search-wrapper.close {
-    display: none;
+  #search-wrapper.active-panel {
+    display: block;
   }
   #search-wrapper {
     background-color: #eee;
     border-bottom-right-radius: 10px;
+    display: none;
     left: 110px;
     top: 110px;
     position: absolute;
@@ -246,11 +248,14 @@
       }
     }
     .search-close-button {
-      color: #666;
+      color: #777;
       cursor: pointer;
       font-size: 25px;
       position: absolute;
       right: 10px;
+      &:hover {
+        color: ccc;
+      }
     }
   }
 }

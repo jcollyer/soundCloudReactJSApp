@@ -17,7 +17,6 @@ var Favorites = React.createClass({
     var that = this;
     this.logIn();
 
-    document.getElementById('favorites-wrapper').classList.remove('close');
     var userId = AppStore.getUserId();
     var url = 'https://api.soundcloud.com/users/'+userId+'/favorites.json?client_id=b5e21578d92314bc753b90ea7c971c1e';
     var xmlhttp = new XMLHttpRequest();
@@ -26,9 +25,11 @@ var Favorites = React.createClass({
       if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
         favoritetArr = JSON.parse(xmlhttp.responseText);
         that.setState({favorites: favoritetArr});
-        document.getElementById("playlist-wrapper").classList.add("close");
-        document.getElementById("get-playlist-button").classList.remove("active-side-nav-button");
-        document.getElementById("get-favorites-button").classList.add("active-side-nav-button");
+
+        [].slice.call(document.getElementsByClassName("side-nav-link")).forEach(function(d){d.classList.remove("active-side-nav-button")});
+        [].slice.call(document.getElementsByClassName("panel-box")).forEach(function(d){d.classList.remove("active-panel")});
+        document.getElementById('get-favorites-button').classList.add("active-side-nav-button");
+        document.getElementById('favorites-wrapper').classList.add('active-panel');
       }
     };
     xmlhttp.open("GET", url, true);
@@ -59,7 +60,7 @@ var Favorites = React.createClass({
     }
   },
   closeFavoritePane: function() {
-    document.getElementById('favorites-wrapper').classList.add('close');
+    document.getElementById('favorites-wrapper').classList.remove('active-panel');
     document.getElementById("get-favorites-button").classList.remove("active-side-nav-button");
   },
   render: function() {
@@ -70,7 +71,7 @@ var Favorites = React.createClass({
           <i className="side-nav-icon icon-heart"></i>
           <p>Favorites</p>
         </div>
-        <div id="favorites-wrapper" className="close">
+        <div id="favorites-wrapper" className="panel-box close">
           <div onClick={this.closeFavoritePane} className="favorite-close-button">
             <i className="icon-circle-cross"></i>
           </div>
