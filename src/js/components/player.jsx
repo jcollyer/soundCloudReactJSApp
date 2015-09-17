@@ -81,7 +81,7 @@ var Player =
 
       player.bind(SC.Widget.Events.FINISH, function() {
         clearInterval(interval);
-        that.playNextTrack();
+        that.clickNextTrack();
       });
 
       that.setState({playing: true});
@@ -160,7 +160,12 @@ var Player =
       var duration = this.state.duration;
       var currentTime = (xoffset / width) * duration;
       var time = Math.floor(currentTime);
+      // update SoundCloud player
       player.seekTo(time);
+
+      // update progress bar - this is here so it works while track is paused
+      var currentTime = 100 * (time / duration);
+      this.setState({currentTime: currentTime});
     },
     favoriteTrack: function(id, e) {
       id = id;
