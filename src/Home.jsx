@@ -5,6 +5,7 @@ var Playlist = require('./js/components/playlist.jsx');
 var Player = require('./js/components/player.jsx');
 var Favorites = require('./js/components/favorites.jsx');
 var TrackList = require('./js/components/tracklist.jsx');
+var Search = require('./js/components/search.jsx');
 var Overlay = require('./js/components/overlay.jsx');
 require('./style/grid.min.less');
 require('./style/home.less');
@@ -28,6 +29,7 @@ var Home =
                 <img src="https://i1.sndcdn.com/artworks-000001876940-w2l3qc-large.jpg" />
               </div>
               <Login />
+              <Search />
               <Playlist />
               <Favorites />
               <Genre />
