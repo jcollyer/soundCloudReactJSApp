@@ -9,6 +9,7 @@ require('../../style/player.less');
 require('../../style/player.css');
 var player = '';
 var interval = 0;
+var nextTrack = "";
 
 var Player =
   React.createClass({
@@ -86,12 +87,21 @@ var Player =
       that.setState({playing: true});
       this.getCurrentTimeInterval();
     },
-    playNextTrack: function() {
+    clickPrevTrack: function() {
       var currentId = this.state.id;
       var tracks = PlayerStore.getTrackIds().ids;
       var index = tracks.indexOf(currentId)
-      var nextTrack = tracks[index + 1];
-
+      nextTrack = tracks[index - 1];
+      this.playNextOrPrevTrack();
+    },
+    clickNextTrack: function() {
+      var currentId = this.state.id;
+      var tracks = PlayerStore.getTrackIds().ids;
+      var index = tracks.indexOf(currentId)
+      nextTrack = tracks[index + 1];
+      this.playNextOrPrevTrack();
+    },
+    playNextOrPrevTrack: function() {
       var url = 'https://api.soundcloud.com/tracks/'+nextTrack+'?client_id=b5e21578d92314bc753b90ea7c971c1e'
       var xmlhttp = new XMLHttpRequest();
       xmlhttp.onreadystatechange = function () {
@@ -250,13 +260,13 @@ var Player =
               </div>
               <div className="playlist-controls">
                 <div className="player-seek">
-                  <button id="prev" onClick={this.prevTrack}>
+                  <button id="prev" onClick={this.clickPrevTrack}>
                     <div className="icon-skip-back"></div>
                   </button>
                   <button id="toggle" onClick={this.toggleTrack}>
                     <i className={this.state.playing ? 'icon-pause' : 'icon-play'}></i>
                   </button>
-                  <button id="next" onClick={this.playNextTrack}>
+                  <button id="next" onClick={this.clickNextTrack}>
                     <div className="icon-skip-forward"></div>
                   </button>
                 </div>
