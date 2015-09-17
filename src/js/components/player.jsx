@@ -108,6 +108,7 @@ var Player =
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
           var track = JSON.parse(xmlhttp.responseText);
           var artwork = track.artwork_url;
+          PlayerActions.setTags(track.tag_list);
           PlayerActions.setTrack(nextTrack, track.duration, track.title, track.user.username, artwork);
         }
       };
