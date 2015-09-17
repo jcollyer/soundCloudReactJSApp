@@ -31,11 +31,15 @@ var TrackList =
       var genre = GenreStore.getGenre();
       var authorId = PlayerStore.getTrack().user_id || "";
 
+
       if (genre.type == "author") {
         var url = 'https://api.soundcloud.com/users/'+authorId+'/tracks?client_id=b5e21578d92314bc753b90ea7c971c1e';
+      } else if (genre.type == "query"){
+        var url = 'https://api.soundcloud.com/tracks.json?client_id=b5e21578d92314bc753b90ea7c971c1e&q='+genre.name+'&order=hotness&limit=70&offset=0'
       } else {
         var url = 'https://api.soundcloud.com/tracks.json?client_id=b5e21578d92314bc753b90ea7c971c1e&tags='+genre.name+'&order=hotness&limit=30&offset=0';
       }
+
 
       var that = this;
       var tracksArr = [];

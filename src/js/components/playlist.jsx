@@ -20,7 +20,6 @@ var Playlist =
       var that = this;
       this.logIn();
 
-      document.getElementById('playlist-wrapper').classList.remove('close');
 
       var userId = AppStore.getUserId();
       var url = 'https://api.soundcloud.com/users/'+userId+'/playlists.json?client_id=b5e21578d92314bc753b90ea7c971c1e';
@@ -32,6 +31,7 @@ var Playlist =
           document.getElementById("favorites-wrapper").classList.add("close");
           document.getElementById("get-favorites-button").classList.remove("active-side-nav-button");
           document.getElementById("get-playlist-button").classList.add("active-side-nav-button");
+          document.getElementById('playlist-wrapper').classList.remove('close');
         }
       };
       xmlhttp.open("GET", url, true);
