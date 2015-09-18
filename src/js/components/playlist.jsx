@@ -19,8 +19,6 @@ var Playlist =
     getPlaylists: function() {
       var that = this;
       this.logIn();
-
-
       var userId = AppStore.getUserId();
       var url = 'https://api.soundcloud.com/users/'+userId+'/playlists.json?client_id=b5e21578d92314bc753b90ea7c971c1e';
       var xmlhttp = new XMLHttpRequest();
@@ -37,30 +35,6 @@ var Playlist =
       };
       xmlhttp.open("GET", url, true);
       xmlhttp.send();
-    },
-    namePlaylist: function() {
-      document.getElementById('new-playlist').classList.add('show');
-    },
-    newPlaylist: function() {
-      var that = this;
-      var playlistName = document.getElementById('playlist-name').value;
-      var track = PlayerStore.getTrack().id;
-      var tracks = [track].map(function(id) { return { id: id }; });
-      SC.post('/playlists', { playlist: { title: playlistName, tracks: tracks } }, function(response, error){
-        if(error){
-          console.log("Some error occured: " + error.message);
-        }else{
-          // hide "choose playlist menu"
-          document.getElementById("playlist-select-menu").classList.remove("show");
-          //hide "new playlist" menu
-          document.getElementById('new-playlist').classList.remove('show');
-          that.getPlaylists();
-        }
-      });
-
-    },
-    cancelSelectPlaylist: function() {
-      document.getElementById("playlist-select-menu").classList.remove('show');
     },
     closePlaylistPane: function(e) {
       document.getElementById('playlist-wrapper').classList.remove('active-panel');
