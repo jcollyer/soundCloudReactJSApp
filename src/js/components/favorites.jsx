@@ -18,7 +18,8 @@ var Favorites = React.createClass({
     this.logIn();
 
     var userId = AppStore.getUserId();
-    var url = 'https://api.soundcloud.com/users/'+userId+'/favorites.json?client_id=b5e21578d92314bc753b90ea7c971c1e';
+    // debugger;
+    var url = 'https://api.soundcloud.com/users/'+userId+'/favorites.json?client_id='+clientId+'';
     var xmlhttp = new XMLHttpRequest();
     var favoritetArr = [];
     xmlhttp.onreadystatechange = function () {
