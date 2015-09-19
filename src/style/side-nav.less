@@ -13,9 +13,10 @@
   height: 100%;
   z-index: 1;
   #image-placeholder {
-    img {
-      width: 100%;
-    }
+    background-color: #fff;
+    background-image: url('https://s3-us-west-2.amazonaws.com/soundcloud-client/jplay-logo.png');
+    height: 110px;
+    width: 110px;
   }
   .side-nav-link {
     color: #ccc;
@@ -53,13 +54,20 @@
       color: #333;
     }
   }
-  #favorites-wrapper.active-panel, #playlist-wrapper.active-panel {
-    display: block;
+  #favorites-wrapper.panel-box, #playlist-wrapper.panel-box {
+    // opacity:0;
+    left: -400px;
+    transition: left 0.3s;
+  }
+  #favorites-wrapper.active-panel, #playlist-wrapper.active-panel  {
+    // opacity:1;
+    left: 110px;
+    // transition-delay:0s;
+    // visibility:visible;
   }
   #favorites-wrapper, #playlist-wrapper {
     background-color: #eee;
     border-bottom-right-radius: 10px;
-    display:none;
     left: 110px;
     max-height: 360px;
     overflow: scroll;

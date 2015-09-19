@@ -25,9 +25,7 @@ var Home =
               <Player />
             </div>
             <div id="side-nav">
-              <div id="image-placeholder">
-                <img src="https://i1.sndcdn.com/artworks-000001876940-w2l3qc-large.jpg" />
-              </div>
+              <div id="image-placeholder"></div>
               <Login />
               <Search />
               <Playlist />
