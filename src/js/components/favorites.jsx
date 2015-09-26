@@ -1,6 +1,7 @@
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
 var AppStore = require('../stores/app-store.js');
+var FavoritesStore = require('../stores/favorites-store.js');
 var Track = require('./track.jsx');
 
 var Favorites = React.createClass({
@@ -18,7 +19,6 @@ var Favorites = React.createClass({
     this.logIn();
 
     var userId = AppStore.getUserId();
-    // debugger;
     var url = 'https://api.soundcloud.com/users/'+userId+'/favorites.json?client_id='+clientId+'';
     var xmlhttp = new XMLHttpRequest();
     var favoritetArr = [];
@@ -63,6 +63,12 @@ var Favorites = React.createClass({
   closeFavoritePane: function() {
     document.getElementById('favorites-wrapper').classList.remove('active-panel');
     document.getElementById("get-favorites-button").classList.remove("active-side-nav-button");
+  },
+  componentDidMount: function(){
+    FavoritesStore.on('change', this.getUserFavorites);
+  },
+  componentWillUnmount: function() {
+    FavoritesStore.removeListener('change', this.getUserFavorites);
   },
   render: function() {
     var that = this;

@@ -5,6 +5,7 @@ var AppActions = require('../actions/app-actions.js');
 var GenreActions = require('../actions/genre-actions.js');
 var PlayerActions = require('../actions/player-actions.js');
 var GenreActions = require('../actions/genre-actions.js');
+var FavoritesActions = require('../actions/favorites-actions.js');
 require('../../style/player.less');
 require('../../style/player.css');
 var player = '';
@@ -169,16 +170,10 @@ var Player =
       this.setState({currentTime: currentTime});
     },
     favoriteTrack: function(id, e) {
-      id = id;
+      var trackId = id;
       var isLoggedIn = AppStore.isLoggedIn();
       if(isLoggedIn) {
-        SC.put('/me/favorites/'+id, function(status, error) {
-          if (error) {
-            alert("Error: " + error.message);
-          } else {
-            alert("Favorite:  " + id);
-          }
-        });
+        FavoritesActions.setFavorites(trackId);
       } else {
         AppActions.login();
       }
