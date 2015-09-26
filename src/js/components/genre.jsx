@@ -5,7 +5,7 @@ var GenreStore = require('../stores/genre-store.js');
 var Genre =
   React.createClass({
     getInitialState: function() {
-      GenreActions.setGenre({type: "genre", name: "disco"});
+      GenreActions.setGenre({type: "genre", name: "sax"});
       var genre = GenreStore.getGenre().name;
       return {genre: genre};
     },
