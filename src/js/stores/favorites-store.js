@@ -6,14 +6,8 @@ var CHANGE_EVENT = "change";
 
 var _favorites = {};
 
-function _setFavorites(trackId) {
-  SC.put('/me/favorites/'+trackId, function(status, error) {
-    if (error) {
-      alert("Error: " + error.message);
-    } else {
-      console.log("Favorite:  " + trackId);
-    }
-  });
+function _setFavorites(action) {
+  var trackId = action.trackId;
 };
 
 var FavoritesStore = assign({}, EventEmitter.prototype, {
@@ -38,7 +32,12 @@ var FavoritesStore = assign({}, EventEmitter.prototype, {
     switch(action.actionType){
 
       case FavoritesConstants.SET_FAVORITES:
-        _setFavorites(payload.action.trackId);
+        _setFavorites(payload.action);
+        FavoritesStore.emit('change');
+        break
+
+      case FavoritesConstants.GET_FAVORITES:
+        _setFavorites(payload.action);
         FavoritesStore.emit('change');
         break
     }

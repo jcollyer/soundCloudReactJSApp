@@ -5,7 +5,7 @@ var GenreStore = require('../stores/genre-store.js');
 var Genre =
   React.createClass({
     getInitialState: function() {
-      GenreActions.setGenre({type: "genre", name: "sax"});
+      GenreActions.setGenre({type: "genre", name: "griz"});
       var genre = GenreStore.getGenre().name;
       return {genre: genre};
     },
@@ -17,7 +17,7 @@ var Genre =
       return (
         <div id="genre-wrapper">
           <div id="genre-wrapper-scroll">
-            <button onClick={this.handleClick} data-genre="chilltrap">chilltrap</button>
+            <button onClick={this.handleClick} data-genre=".sinh">.sinh</button>
             <button onClick={this.handleClick} data-genre="hegemon">hegemon</button>
             <button onClick={this.handleClick} data-genre="smallroom">smallroom</button>
             <button onClick={this.handleClick} data-genre="pat%20lok">pat lok</button>

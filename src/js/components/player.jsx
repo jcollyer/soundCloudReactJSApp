@@ -170,12 +170,28 @@ var Player =
       this.setState({currentTime: currentTime});
     },
     favoriteTrack: function(id, e) {
-      var trackId = id;
-      var isLoggedIn = AppStore.isLoggedIn();
-      if(isLoggedIn) {
-        FavoritesActions.setFavorites(trackId);
+      var userActions = {"action":"favorite", "trackId":id};
+      var isLoggedInSC = AppStore.isLoggedInSC();
+      if(isLoggedInSC) {
+        SC.put('/me/favorites/'+id, function(status, error) {
+          if (error) {
+            alert("Error----: " + error.message);
+          } else {
+            console.log("Favorite:  " + id);
+            FavoritesActions.setFavorites(userActions);
+          }
+        });
       } else {
-        AppActions.login();
+        SC.connect(function(){
+          SC.put('/me/favorites/'+id, function(status, error) {
+            if (error) {
+              alert("Error----: " + error.message);
+            } else {
+              console.log("Favorite:  " + id);
+              FavoritesActions.setFavorites(userActions);
+            }
+          });
+        });
       }
     },
     displayArtistTracks: function(author) {

@@ -1,3 +1,4 @@
 module.exports = {
+  GET_FAVORITES: 'GET_FAVORITES',
   SET_FAVORITES: 'SET_FAVORITES'
 };

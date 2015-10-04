@@ -8,33 +8,32 @@ var Favorites = React.createClass({
   getInitialState: function() {
     return {favorites:[]};
   },
-  logIn: function() {
-    var isLoggedIn = AppStore.isLoggedIn();
-    if(!isLoggedIn) {
-      AppActions.login();
-    }
-  },
   getUserFavorites: function() {
     var that = this;
-    this.logIn();
-
     var userId = AppStore.getUserId();
-    var url = 'https://api.soundcloud.com/users/'+userId+'/favorites.json?client_id='+clientId+'';
-    var xmlhttp = new XMLHttpRequest();
-    var favoritetArr = [];
-    xmlhttp.onreadystatechange = function () {
-      if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-        favoritetArr = JSON.parse(xmlhttp.responseText);
-        that.setState({favorites: favoritetArr});
+    var isLoggedIn = AppStore.isLoggedIn();
+    if(!isLoggedIn) {
+      AppActions.login("favorite", null);
+    } else {
 
-        [].slice.call(document.getElementsByClassName("side-nav-link")).forEach(function(d){d.classList.remove("active-side-nav-button")});
-        [].slice.call(document.getElementsByClassName("panel-box")).forEach(function(d){d.classList.remove("active-panel")});
-        document.getElementById('get-favorites-button').classList.add("active-side-nav-button");
-        document.getElementById('favorites-wrapper').classList.add('active-panel');
-      }
-    };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
+      var url = 'https://api.soundcloud.com/users/'+userId+'/favorites.json?client_id='+clientId+'';
+      var xmlhttp = new XMLHttpRequest();
+      var favoritetArr = [];
+      xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+          favoritetArr = JSON.parse(xmlhttp.responseText);
+          that.setState({favorites: favoritetArr});
+
+          [].slice.call(document.getElementsByClassName("side-nav-link")).forEach(function(d){d.classList.remove("active-side-nav-button")});
+          [].slice.call(document.getElementsByClassName("panel-box")).forEach(function(d){d.classList.remove("active-panel")});
+          document.getElementById('get-favorites-button').classList.add("active-side-nav-button");
+          document.getElementById('favorites-wrapper').classList.add('active-panel');
+        }
+      };
+      xmlhttp.open("GET", url, true);
+      xmlhttp.send();
+    }
+
   },
   removeTrack: function(trackId) {
     var userId = AppStore.getUserId();

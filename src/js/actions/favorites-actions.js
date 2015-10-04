@@ -2,10 +2,17 @@ var FavoritesConstants = require('../constants/favorites-constants.js');
 var FavoritesDispatcher = require('../dispatchers/favorites-dispatcher.js');
 
 var FavoritesActions = {
-  setFavorites:function(trackId){
+  getFavorites:function(userId){
+    FavoritesDispatcher.handleFavoritesAction({
+      actionType: FavoritesConstants.GET_FAVORITES,
+      userId: userId
+    })
+  },
+  setFavorites:function(userAction){
     FavoritesDispatcher.handleFavoritesAction({
       actionType: FavoritesConstants.SET_FAVORITES,
-      trackId: trackId
+      action: userAction.action,
+      trackId: userAction.trackId
     })
   }
 }
