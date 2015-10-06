@@ -10,31 +10,29 @@ var Playlist =
     getInitialState: function() {
       return {playlists:[], newPlaylistName: 'Playlist', track: ""};
     },
-    logIn: function() {
-      var isLoggedIn = AppStore.isLoggedIn();
-      if(!isLoggedIn) {
-        AppActions.login();
-      }
-    },
     getPlaylists: function() {
       var that = this;
-      this.logIn();
       var userId = AppStore.getUserId();
-      var url = 'https://api.soundcloud.com/users/'+userId+'/playlists.json?client_id=b5e21578d92314bc753b90ea7c971c1e';
-      var xmlhttp = new XMLHttpRequest();
-      xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-          var playlistArr = JSON.parse(xmlhttp.responseText);
-          that.setState({playlists: playlistArr});
+      var isLoggedIn = AppStore.isLoggedIn();
+      if(!isLoggedIn) {
+        AppActions.login("playlist", null);
+      } else {
+        var url = 'https://api.soundcloud.com/users/'+userId+'/playlists.json?client_id=b5e21578d92314bc753b90ea7c971c1e';
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+          if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            var playlistArr = JSON.parse(xmlhttp.responseText);
+            that.setState({playlists: playlistArr});
 
-          [].slice.call(document.getElementsByClassName("side-nav-link")).forEach(function(d){d.classList.remove("active-side-nav-button")});
-          [].slice.call(document.getElementsByClassName("panel-box")).forEach(function(d){d.classList.remove("active-panel")});
-          document.getElementById('get-playlist-button').classList.add("active-side-nav-button");
-          document.getElementById('playlist-wrapper').classList.add('active-panel');
-        }
-      };
-      xmlhttp.open("GET", url, true);
-      xmlhttp.send();
+            [].slice.call(document.getElementsByClassName("side-nav-link")).forEach(function(d){d.classList.remove("active-side-nav-button")});
+            [].slice.call(document.getElementsByClassName("panel-box")).forEach(function(d){d.classList.remove("active-panel")});
+            document.getElementById('get-playlist-button').classList.add("active-side-nav-button");
+            document.getElementById('playlist-wrapper').classList.add('active-panel');
+          }
+        };
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+      }
     },
     closePlaylistPane: function(e) {
       document.getElementById('playlist-wrapper').classList.remove('active-panel');

@@ -3,6 +3,7 @@ var AppConstants = require('../constants/app-constants');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var FavortiesActions = require('../actions/favorites-actions.js');
+var PlaylistsActions = require('../actions/playlists-actions.js');
 var CHANGE_EVENT = "change";
 
 var _userId = "";

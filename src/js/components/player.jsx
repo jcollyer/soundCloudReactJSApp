@@ -203,7 +203,7 @@ var Player =
       if(isLoggedIn) {
         document.getElementById("playlist-select-menu").classList.add("show");
       } else {
-        AppActions.login();
+        AppActions.login("playlist", id);
       }
     },
     selectPlaylist: function(playlist) {
@@ -290,7 +290,7 @@ var Player =
                 <button className="track-favorite-add" onClick={this.favoriteTrack.bind(null, this.state.id)}>
                   <div className="icon-heart"></div>
                 </button>
-                <button className="track-playlist-add" onClick={this.clickAddToPlaylist}>
+                <button className="track-playlist-add" onClick={this.clickAddToPlaylist.bind(null, this.state.id)}>
                   <div className="icon-circle-plus"></div>
                 </button>
               </div>
@@ -340,6 +340,7 @@ var Player =
             <button onClick={that.cancelSelectPlaylist} className='close-button'>
               <i className='icon-circle-cross'></i>
             </button>
+
             <h3>select playlist</h3>
             {this.state.uPlaylistNames.map(function(playlist){
               return (
@@ -350,6 +351,7 @@ var Player =
               )
             })}
             <hr />
+
             <div className="new-playlist-wrapper">
               <h4>create new playlist</h4>
               <button onClick={that.namePlaylist} className='new-playlist-button'>+ New Playlist</button>
