@@ -89,7 +89,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
       })
       return objectArray;
     } else {
-      return ["red","blue"];
+      return [];
     }
   },
 
