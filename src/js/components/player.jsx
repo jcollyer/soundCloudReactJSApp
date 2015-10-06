@@ -178,7 +178,7 @@ var Player =
             alert("Error----: " + error.message);
           } else {
             console.log("Favorite:  " + id);
-            FavoritesActions.setFavorites(userActions);
+            FavoritesActions.openFavorites(userActions);
           }
         });
       } else {
@@ -188,7 +188,7 @@ var Player =
               alert("Error----: " + error.message);
             } else {
               console.log("Favorite:  " + id);
-              FavoritesActions.setFavorites(userActions);
+              FavoritesActions.openFavorites(userActions);
             }
           });
         });

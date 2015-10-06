@@ -6,7 +6,7 @@ var CHANGE_EVENT = "change";
 
 var _favorites = {};
 
-function _setFavorites(action) {
+function _openFavorites(action) {
   var trackId = action.trackId;
 };
 
@@ -23,21 +23,12 @@ var FavoritesStore = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  getFavorites:function(){
-    return _favorites;
-  },
-
   dispatcherIndex:FavoritesDispatcher.register(function(payload){
     var action = payload.action; // this is our action from handleViewAction
     switch(action.actionType){
 
-      case FavoritesConstants.SET_FAVORITES:
-        _setFavorites(payload.action);
-        FavoritesStore.emit('change');
-        break
-
-      case FavoritesConstants.GET_FAVORITES:
-        _setFavorites(payload.action);
+      case FavoritesConstants.OPEN_FAVORITES:
+        _openFavorites(payload.action);
         FavoritesStore.emit('change');
         break
     }

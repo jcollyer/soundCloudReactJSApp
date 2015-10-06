@@ -38,9 +38,8 @@ function _logIn(action){
 };
 
 function setActionCallback(userAction) {
-
   if (userAction.action == "favorite") {
-    FavortiesActions.setFavorites(userAction);
+    FavortiesActions.openFavorites(userAction);
     if (userAction.trackId) {
       SC.put('/me/favorites/'+trackId, function(status, error) {
         if (error) {
@@ -51,7 +50,7 @@ function setActionCallback(userAction) {
       });
     }
   } else if (userAction.action == "playlist") {
-    FavortiesActions.setFavorites(userAction);
+    PlyalistsActions.openPlaylists(userAction);
   } else {
     return;
   }
