@@ -2,38 +2,28 @@ var React = require('react');
 var AppActions = require('../actions/app-actions.js');
 var AppStore = require('../stores/app-store.js');
 var FavoritesStore = require('../stores/favorites-store.js');
+var FavoritesActions = require('../actions/favorites-actions.js');
 var Track = require('./track.jsx');
+
+var favArr = [];
 
 var Favorites = React.createClass({
   getInitialState: function() {
     return {favorites:[]};
   },
   getUserFavorites: function() {
-    var that = this;
     var userId = AppStore.getUserId();
-    var isLoggedIn = AppStore.isLoggedIn();
-    if(!isLoggedIn) {
+    if(!userId) {
       AppActions.login("favorite", null);
     } else {
-
-      var url = 'https://api.soundcloud.com/users/'+userId+'/favorites.json?client_id='+clientId+'';
-      var xmlhttp = new XMLHttpRequest();
-      var favoritetArr = [];
-      xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-          favoritetArr = JSON.parse(xmlhttp.responseText);
-          that.setState({favorites: favoritetArr});
-
-          [].slice.call(document.getElementsByClassName("side-nav-link")).forEach(function(d){d.classList.remove("active-side-nav-button")});
-          [].slice.call(document.getElementsByClassName("panel-box")).forEach(function(d){d.classList.remove("active-panel")});
-          document.getElementById('get-favorites-button').classList.add("active-side-nav-button");
-          document.getElementById('favorites-wrapper').classList.add('active-panel');
-        }
-      };
-      xmlhttp.open("GET", url, true);
-      xmlhttp.send();
+      var userFavorites = FavoritesStore.getFavorites();
+      this.setState({favorites: userFavorites});
+      FavoritesActions.openFavorites();
     }
-
+  },
+  setFavorites: function() {
+    var userFavorites = FavoritesStore.getFavorites();
+    this.setState({favorites: userFavorites});
   },
   removeTrack: function(trackId) {
     var userId = AppStore.getUserId();
@@ -64,10 +54,10 @@ var Favorites = React.createClass({
     document.getElementById("get-favorites-button").classList.remove("active-side-nav-button");
   },
   componentDidMount: function(){
-    FavoritesStore.on('change', this.getUserFavorites);
+    AppStore.on('change', this.setFavorites);
   },
   componentWillUnmount: function() {
-    FavoritesStore.removeListener('change', this.getUserFavorites);
+    AppStore.removeListener('change', this.setFavorites);
   },
   render: function() {
     var that = this;

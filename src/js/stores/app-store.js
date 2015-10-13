@@ -8,7 +8,7 @@ var CHANGE_EVENT = "change";
 
 var _userId = "";
 var isLoggedInSC = false;
-var isLoggedIn = false;
+// var isLoggedIn = false;
 if (getCookie("userId")){
   isLoggedIn = true;
 };
@@ -19,11 +19,12 @@ function _logIn(action){
   SC.connect(function() {
     SC.get('/me', function(me) {
       _userId = me.id;
-      isLoggedIn = true;
+      // isLoggedIn = true;
       isLoggedInSC = true;
 
       // Set User ID Cookie
       document.cookie = "userId="+me.id;
+
       // Set User Playlists Cookie
       SC.get('/users/'+_userId+'/playlists', function(playlists) {
         var playlistArray = [];
@@ -32,8 +33,13 @@ function _logIn(action){
           document.cookie = "userPlaylists="+playlistArray;
         });
       });
-      setActionCallback(userAction);
 
+      // Set User Favortes to localStorage
+      FavortiesActions.setFavorites(_userId);
+
+      // Run the action to do after logging in
+      setActionCallback(userAction);
+      AppStore.emit('change');
     });
   });
 };
@@ -42,13 +48,7 @@ function setActionCallback(userAction) {
   if (userAction.action == "favorite") {
     FavortiesActions.openFavorites(userAction);
     if (userAction.trackId) {
-      SC.put('/me/favorites/'+trackId, function(status, error) {
-        if (error) {
-          alert("Error----: " + error.message);
-        } else {
-          console.log("Favorite:  " + trackId);
-        }
-      });
+      FavoritesActions.setFavorites(userAction.trackId);
     }
   } else if (userAction.action == "playlist") {
     PlyalistsActions.openPlaylists(userAction);
@@ -100,13 +100,13 @@ var AppStore = assign({}, EventEmitter.prototype, {
       return false;
     }
   },
-  isLoggedIn:function(){
-    if (isLoggedIn){
-      return true;
-    } else {
-      return false;
-    }
-  },
+  // isLoggedIn:function(){
+  //   if (isLoggedIn){
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // },
 
   dispatcherIndex:AppDispatcher.register(function(payload){
     var action = payload.action; // this is our action from handleViewAction

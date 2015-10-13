@@ -29,7 +29,8 @@ var Player =
         playing: false,
         mute: false,
         tags: [],
-        uPlaylistNames: []
+        uPlaylistNames: [],
+        isLoggedIn: false
       };
     },
     toggleTrack: function() {
@@ -170,27 +171,13 @@ var Player =
       this.setState({currentTime: currentTime});
     },
     favoriteTrack: function(id, e) {
-      var userActions = {"action":"favorite", "trackId":id};
-      var isLoggedInSC = AppStore.isLoggedInSC();
-      if(isLoggedInSC) {
-        SC.put('/me/favorites/'+id, function(status, error) {
-          if (error) {
-            alert("Error----: " + error.message);
-          } else {
-            console.log("Favorite:  " + id);
-            FavoritesActions.openFavorites(userActions);
-          }
-        });
+      var that = this;
+      if(this.state.isLoggedIn) {
+        FavoritesActions.addFavorite(id);
       } else {
         SC.connect(function(){
-          SC.put('/me/favorites/'+id, function(status, error) {
-            if (error) {
-              alert("Error----: " + error.message);
-            } else {
-              console.log("Favorite:  " + id);
-              FavoritesActions.openFavorites(userActions);
-            }
-          });
+          that.setState({isLoggedIn: true});
+          FavoritesActions.addFavorite(id);
         });
       }
     },
