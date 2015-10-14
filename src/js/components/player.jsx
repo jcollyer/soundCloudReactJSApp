@@ -170,16 +170,26 @@ var Player =
       var currentTime = 100 * (time / duration);
       this.setState({currentTime: currentTime});
     },
+    // getUserFavorites: function() {
+    //   var userId = AppStore.getUserId();
+    //   if(!userId) {
+    //     AppActions.login("favorite", null);
+    //   } else {
+    //     var userFavorites = FavoritesStore.getFavorites();
+    //     this.setState({favorites: userFavorites});
+    //     FavoritesActions.openFavorites();
+    //   }
+    // },
     favoriteTrack: function(id, e) {
       var that = this;
-      if(this.state.isLoggedIn) {
-        FavoritesActions.addFavorite(id);
+
+      if(!this.state.isLoggedIn) {
+        that.setState({isLoggedIn: true});
+        AppActions.login("favorite", id);
       } else {
-        SC.connect(function(){
-          that.setState({isLoggedIn: true});
-          FavoritesActions.addFavorite(id);
-        });
-      }
+        FavoritesActions.addFavorite(id);
+        FavoritesActions.openFavorites();
+      }      
     },
     displayArtistTracks: function(author) {
       GenreActions.setGenre({type: "author", name: author});

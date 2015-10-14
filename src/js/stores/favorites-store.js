@@ -25,6 +25,7 @@ function _setFavorites(userId) {
   };
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
+  FavoritesStore.emit('change');
 };
 
 function _addFavorites(id) {
@@ -33,7 +34,8 @@ function _addFavorites(id) {
       alert("Error----: " + error.message);
     } else {
       console.log("Favorite:  " + id);
-      FavoritesActions.openFavorites('favorite', null);
+      this._setFavorites(id);
+      FavoritesActions.openFavorites();
     }
   });
 };

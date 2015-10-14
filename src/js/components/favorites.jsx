@@ -54,10 +54,10 @@ var Favorites = React.createClass({
     document.getElementById("get-favorites-button").classList.remove("active-side-nav-button");
   },
   componentDidMount: function(){
-    AppStore.on('change', this.setFavorites);
+    FavoritesStore.on('change', this.setFavorites);
   },
   componentWillUnmount: function() {
-    AppStore.removeListener('change', this.setFavorites);
+    FavoritesStore.removeListener('change', this.setFavorites);
   },
   render: function() {
     var that = this;

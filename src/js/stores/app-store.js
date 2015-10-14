@@ -39,16 +39,15 @@ function _logIn(action){
 
       // Run the action to do after logging in
       setActionCallback(userAction);
-      AppStore.emit('change');
     });
   });
 };
 
 function setActionCallback(userAction) {
   if (userAction.action == "favorite") {
-    FavortiesActions.openFavorites(userAction);
+    FavortiesActions.openFavorites(userAction)
     if (userAction.trackId) {
-      FavoritesActions.setFavorites(userAction.trackId);
+      FavoritesActions.addFavorites(userAction.trackId);
     }
   } else if (userAction.action == "playlist") {
     PlyalistsActions.openPlaylists(userAction);
