@@ -28,6 +28,21 @@ function _setFavorites(userId) {
   xmlhttp.send();
 };
 
+function _deleteFavorite(userId, trackId) {
+  var path = "https://api.soundcloud.com/users/"+userId+"/favorites/"+trackId+"?client_id=b5e21578d92314bc753b90ea7c971c1e";
+  debugger;
+  SC.delete(path, function(response, error) {
+    if (error) {
+      console.log("Some error occured: " + JSON.parse(error));
+    } else {
+      console.log("favorite deleted");
+      var favorite = document.getElementById(trackId);
+      favorite.classList.add("remove_track");
+      _setFavorites(userId);
+    }
+  });
+};
+
 function _addFavorites(id) {
   var userId = AppStore.getUserId();
   SC.put('/me/favorites/' + id, function(status, error) {
@@ -72,10 +87,10 @@ var FavoritesStore = assign({}, EventEmitter.prototype, {
       case FavoritesConstants.SET_FAVORITES:
         _setFavorites(payload.action.id);
         break
-      //
-      // case FavoritesConstants.GET_FAVORITES:
-      //   _getFavorites(payload.action.id);
-      //   break
+
+      case FavoritesConstants.DELETE_FAVORITE:
+        _deleteFavorite(payload.action.userId, payload.action.trackId);
+        break
 
       case FavoritesConstants.ADD_FAVORITE:
         _addFavorites(payload.action.id);

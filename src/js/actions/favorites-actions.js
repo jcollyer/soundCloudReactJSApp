@@ -14,15 +14,22 @@ var FavoritesActions = {
       id: id
     })
   },
+  openFavorites:function(){
+    FavoritesDispatcher.handleFavoritesAction({
+      actionType: FavoritesConstants.OPEN_FAVORITES
+    })
+  },
   addFavorite:function(id){
     FavoritesDispatcher.handleFavoritesAction({
       actionType: FavoritesConstants.ADD_FAVORITE,
       id: id
     })
   },
-  openFavorites:function(){
+  deleteFavorite:function(trackId, userId){
     FavoritesDispatcher.handleFavoritesAction({
-      actionType: FavoritesConstants.OPEN_FAVORITES
+      actionType: FavoritesConstants.DELETE_FAVORITE,
+      trackId: trackId,
+      userId: userId
     })
   }
 }

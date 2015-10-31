@@ -26,27 +26,13 @@ var Favorites = React.createClass({
     this.setState({favorites: userFavorites});
   },
   removeTrack: function(trackId) {
-    var userId = AppStore.getUserId();
-    var trackId = trackId;
-    var path = 'https://api.soundcloud.com/users/'+userId+'/favorites/'+trackId+'?client_id=b5e21578d92314bc753b90ea7c971c1e';
 
-    SC.delete(path, function(response, error) {
-      if (error) {
-        console.log("Some error occured: " + error);
-      } else {
-        console.log("favorite deleted");
-        var favorite = document.getElementById(trackId);
-        favorite.classList.add("remove_track");
-      }
-    });
-  },
-  deleteTrack: function(trackId) {
-    var id = id;
-    var isLoggedIn = AppStore.isLoggedIn();
-    if(isLoggedIn) {
-      this.removeTrack(trackId);
+    var trackId = trackId;
+    if(!isLoggedInSC) {
+      AppActions.login();
     } else {
-      login();
+      var userId = AppStore.getUserId();
+      FavoritesActions.deleteFavorite(trackId, userId);
     }
   },
   closeFavoritePane: function() {
@@ -91,7 +77,7 @@ var Favorites = React.createClass({
                         user_id={track.user_id}
                   />
                   <div className="favorite-actions">
-                    <div className="track-delete" onClick={that.deleteTrack.bind(null, track.id)}>
+                    <div className="track-delete" onClick={that.removeTrack.bind(null, track.id)}>
                       <i className="icon-trash"></i>
                     </div>
                   </div>

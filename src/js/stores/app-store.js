@@ -7,7 +7,7 @@ var PlaylistsActions = require('../actions/playlists-actions.js');
 var CHANGE_EVENT = "change";
 
 var _userId = "";
-var isLoggedInSC = false;
+window.isLoggedInSC = false;
 // var isLoggedIn = false;
 if (getCookie("userId")){
   isLoggedIn = true;
@@ -47,6 +47,9 @@ function _logIn(action){
 function setActionCallback(userAction, _userId) {
   if (userAction.action == "favorite") {
     if (userAction.trackId) {
+      if(userAction.delete) {
+        FavortiesActions.deleteFavorite(userAction.trackId, _userId)
+      }
       FavortiesActions.addFavorite(userAction.trackId);
     }
     FavortiesActions.openFavorites();
