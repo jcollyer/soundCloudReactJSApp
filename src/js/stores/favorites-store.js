@@ -30,7 +30,6 @@ function _setFavorites(userId) {
 
 function _deleteFavorite(userId, trackId) {
   var path = "https://api.soundcloud.com/users/"+userId+"/favorites/"+trackId+"?client_id=b5e21578d92314bc753b90ea7c971c1e";
-  debugger;
   SC.delete(path, function(response, error) {
     if (error) {
       console.log("Some error occured: " + JSON.parse(error));
@@ -51,6 +50,7 @@ function _addFavorites(id) {
     } else {
       console.log("Favorite:  " + id);
       _setFavorites(userId);
+      FavoritesActions.openFavorites();
     }
   });
 };

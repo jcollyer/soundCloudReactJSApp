@@ -25,7 +25,7 @@ var Player =
         user_id: "",
         duration: 0,
         currentTime: 0,
-        currentVolume: 75,
+        currentVolume: .25,
         playing: false,
         mute: false,
         tags: [],
@@ -45,6 +45,8 @@ var Player =
     },
     playTrack: function() {
       player.play();
+      debugger;
+      player.setVolume(this.state.currentVolume);
       this.setState({playing: true});
       this.getCurrentTimeInterval();
     },
