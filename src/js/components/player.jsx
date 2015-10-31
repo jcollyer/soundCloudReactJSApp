@@ -30,7 +30,7 @@ var Player =
         mute: false,
         tags: [],
         uPlaylistNames: [],
-        isLoggedIn: false
+        connectedToSoundCloud: false
       };
     },
     toggleTrack: function() {
@@ -170,26 +170,16 @@ var Player =
       var currentTime = 100 * (time / duration);
       this.setState({currentTime: currentTime});
     },
-    // getUserFavorites: function() {
-    //   var userId = AppStore.getUserId();
-    //   if(!userId) {
-    //     AppActions.login("favorite", null);
-    //   } else {
-    //     var userFavorites = FavoritesStore.getFavorites();
-    //     this.setState({favorites: userFavorites});
-    //     FavoritesActions.openFavorites();
-    //   }
-    // },
     favoriteTrack: function(id, e) {
       var that = this;
 
-      if(!this.state.isLoggedIn) {
-        that.setState({isLoggedIn: true});
+      if(!this.state.connectedToSoundCloud) {
+        that.setState({connectedToSoundCloud: true});
         AppActions.login("favorite", id);
       } else {
         FavoritesActions.addFavorite(id);
-        FavoritesActions.openFavorites();
-      }      
+        // FavoritesActions.openFavorites();
+      }
     },
     displayArtistTracks: function(author) {
       GenreActions.setGenre({type: "author", name: author});

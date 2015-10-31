@@ -19,11 +19,12 @@ function _logIn(action){
   SC.connect(function() {
     SC.get('/me', function(me) {
       _userId = me.id;
+
       // isLoggedIn = true;
       isLoggedInSC = true;
 
       // Set User ID Cookie
-      document.cookie = "userId="+me.id;
+      document.cookie = "userId="+_userId;
 
       // Set User Playlists Cookie
       SC.get('/users/'+_userId+'/playlists', function(playlists) {
@@ -34,21 +35,21 @@ function _logIn(action){
         });
       });
 
-      // Set User Favortes to localStorage
-      FavortiesActions.setFavorites(_userId);
+      // set user favorites
+      FavortiesActions.setFavorites(_userId)
 
       // Run the action to do after logging in
-      setActionCallback(userAction);
+      setActionCallback(userAction, _userId);
     });
   });
 };
 
-function setActionCallback(userAction) {
+function setActionCallback(userAction, _userId) {
   if (userAction.action == "favorite") {
-    FavortiesActions.openFavorites(userAction)
     if (userAction.trackId) {
-      FavoritesActions.addFavorites(userAction.trackId);
+      FavortiesActions.addFavorite(userAction.trackId);
     }
+    FavortiesActions.openFavorites();
   } else if (userAction.action == "playlist") {
     PlyalistsActions.openPlaylists(userAction);
   } else {

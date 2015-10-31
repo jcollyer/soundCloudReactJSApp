@@ -16,16 +16,15 @@ function _openFavorites() {
 function _setFavorites(userId) {
   var url = 'https://api.soundcloud.com/users/'+userId+'/favorites.json?client_id='+clientId+'';
   var xmlhttp = new XMLHttpRequest();
-  var favoritetArr = [];
   xmlhttp.onreadystatechange = function () {
     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-      favoritetArr = JSON.parse(xmlhttp.responseText);
-      localStorage["userFavorites"] = JSON.stringify(favoritetArr);
+      // Set response in localStorage
+      localStorage["userFavorites"] = xmlhttp.responseText;
+      _updateFavorites();
     }
   };
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
-  FavoritesStore.emit('change');
 };
 
 function _addFavorites(id) {
@@ -34,10 +33,13 @@ function _addFavorites(id) {
       alert("Error----: " + error.message);
     } else {
       console.log("Favorite:  " + id);
-      this._setFavorites(id);
-      FavoritesActions.openFavorites();
+      _setFavorites(id);
     }
   });
+};
+
+function _updateFavorites() {
+  FavoritesStore.emitChange();
 };
 
 var FavoritesStore = assign({}, EventEmitter.prototype, {
@@ -68,10 +70,10 @@ var FavoritesStore = assign({}, EventEmitter.prototype, {
       case FavoritesConstants.SET_FAVORITES:
         _setFavorites(payload.action.id);
         break
-
-      case FavoritesConstants.GET_FAVORITES:
-        _getFavorites(payload.action.id);
-        break
+      //
+      // case FavoritesConstants.GET_FAVORITES:
+      //   _getFavorites(payload.action.id);
+      //   break
 
       case FavoritesConstants.ADD_FAVORITE:
         _addFavorites(payload.action.id);
