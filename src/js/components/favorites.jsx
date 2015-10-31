@@ -26,13 +26,12 @@ var Favorites = React.createClass({
     this.setState({favorites: userFavorites});
   },
   removeTrack: function(trackId) {
-
     var trackId = trackId;
     if(!isLoggedInSC) {
       AppActions.login();
     } else {
       var userId = AppStore.getUserId();
-      FavoritesActions.deleteFavorite(trackId, userId);
+      FavoritesActions.deleteFavorite(userId, trackId);
     }
   },
   closeFavoritePane: function() {

@@ -25,11 +25,11 @@ var FavoritesActions = {
       id: id
     })
   },
-  deleteFavorite:function(trackId, userId){
+  deleteFavorite:function(userId, trackId){
     FavoritesDispatcher.handleFavoritesAction({
       actionType: FavoritesConstants.DELETE_FAVORITE,
-      trackId: trackId,
-      userId: userId
+      userId: userId,
+      trackId: trackId
     })
   }
 }
