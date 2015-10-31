@@ -1,6 +1,7 @@
 var FavoritesDispatcher = require('../dispatchers/favorites-dispatcher');
 var FavoritesConstants = require('../constants/favorites-constants');
 var FavoritesActions = require('../actions/favorites-actions');
+var AppStore = require('../stores/app-store.js');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 
@@ -28,12 +29,13 @@ function _setFavorites(userId) {
 };
 
 function _addFavorites(id) {
+  var userId = AppStore.getUserId();
   SC.put('/me/favorites/' + id, function(status, error) {
     if (error) {
       alert("Error----: " + error.message);
     } else {
       console.log("Favorite:  " + id);
-      _setFavorites(id);
+      _setFavorites(userId);
     }
   });
 };
