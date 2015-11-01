@@ -6,7 +6,7 @@ var assign = require('object-assign');
 var CHANGE_EVENT = "change";
 
 function _open() {
-  document.getElementById("playlist-select-menu").classList.add("show");
+  PlaylistModalStore.emitChange();
 };
 
 var PlaylistModalStore = assign({}, EventEmitter.prototype, {

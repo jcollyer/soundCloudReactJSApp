@@ -27,15 +27,6 @@ function _logIn(action){
       // Set User ID Cookie
       document.cookie = "userId="+_userId;
 
-      // // Set User Playlists Cookie
-      // SC.get('/users/'+_userId+'/playlists', function(playlists) {
-      //   var playlistArray = [];
-      //   playlists.forEach(function(playlist) {
-      //     playlistArray.push(playlist.title);
-      //     document.cookie = "userPlaylists="+playlistArray;
-      //   });
-      // });
-
       // set user playlists
       PlaylistsActions.setPlaylists(_userId)
 
@@ -88,16 +79,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
     return getCookie("userId");
   },
 
-  // getUserPlaylists:function(){
-  //     debugger;
-  //   var userPlaylistsCookie = getCookie('userPlaylists');
-  //   if (userPlaylistsCookie){
-  //     return [{name:"green"},{name:"red"}];
-  //   } else {
-  //     return [];
-  //   }
-  // },
-
   isLoggedInSC:function(){
     if (isLoggedInSC){
       return true;
@@ -105,13 +86,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
       return false;
     }
   },
-  // isLoggedIn:function(){
-  //   if (isLoggedIn){
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // },
 
   dispatcherIndex:AppDispatcher.register(function(payload){
     var action = payload.action; // this is our action from handleViewAction

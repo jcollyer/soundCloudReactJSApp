@@ -57,9 +57,6 @@ function _addPlaylists(id) {
   });
 };
 
-function _addPlaylistTitle(title) {
-  getPlaylistsTitles
-};
 
 function _updatePlaylists() {
   PlaylistsStore.emitChange();
@@ -83,10 +80,10 @@ var PlaylistsStore = assign({}, EventEmitter.prototype, {
   },
 
   getPlaylistsTitles:function(){
+    uPlaylistTitles = [];
     JSON.parse(localStorage["userPlaylists"]).map(function(playlist){
       uPlaylistTitles.push({name:playlist.permalink});
     })
-    debugger;
     return uPlaylistTitles;
   },
 
@@ -114,9 +111,6 @@ var PlaylistsStore = assign({}, EventEmitter.prototype, {
         _addPlaylists(payload.action.id);
         break
 
-      case PlaylistsConstants.ADD_PLAYLIST_TITLE:
-        _addPlaylistTitle(payload.action.trackTitle);
-        break
     }
     return true;
   })

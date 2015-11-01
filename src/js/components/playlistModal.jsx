@@ -1,11 +1,17 @@
 var React = require('react');
 var PlaylistModalActions = require('../actions/playlistModal-actions.js');
 var PlaylistModalStore = require('../stores/playlistModal-store.js');
+var PlaylistsStore = require('../stores/playlists-store.js');
 
 var PlaylistModal =
   React.createClass({
     getInitialState: function() {
       return {uPlaylistNames:["red","green"]}
+    },
+    open: function() {
+      var titles = PlaylistsStore.getPlaylistsTitles();
+      this.setState({uPlaylistNames:titles});
+      document.getElementById("playlist-select-menu").classList.add("show");
     },
     selectPlaylist: function(playlist) {
       var that = this;
@@ -47,7 +53,7 @@ var PlaylistModal =
       if(!this.state.connectedToSoundCloud) {
         this.setState({connectedToSoundCloud: true});
         var playlistTitle = document.getElementById("playlist-name").value;
-        debugger;
+
         AppActions.login("playlistTitle", null, playlistTitle);
       } else {
         var that = this;
@@ -69,6 +75,12 @@ var PlaylistModal =
     },
     cancelSelectPlaylist: function() {
       document.getElementById("playlist-select-menu").classList.remove('show');
+    },
+    componentDidMount: function(){
+      PlaylistModalStore.on('change', this.open);
+    },
+    componentWillUnmount: function() {
+      PlaylistModalStore.removeListener('change', this.open);
     },
     render:function(){
       var that = this;

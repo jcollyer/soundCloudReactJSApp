@@ -47,7 +47,6 @@ var Player =
     },
     playTrack: function() {
       player.play();
-      debugger;
       player.setVolume(this.state.currentVolume);
       this.setState({playing: true});
       this.getCurrentTimeInterval();
@@ -190,7 +189,6 @@ var Player =
         this.setState({connectedToSoundCloud: true});
         AppActions.login("playlistModal");
       } else {
-        this.setState({uPlaylistNames:PlaylistsStore.getPlaylistsTitles()});
         PlaylistModalActions.open();
       }
     },
