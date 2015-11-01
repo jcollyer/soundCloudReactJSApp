@@ -185,12 +185,12 @@ var Player =
       }
     },
     clickAddToPlaylist: function(id, e) {
-      this.setState({uPlaylistNames:PlaylistsStore.getPlaylistsTitles()});
-      var userId = AppStore.getUserId();
-      if(userId) {
-        document.getElementById("playlist-select-menu").classList.add("show");
+      if(!this.state.connectedToSoundCloud) {
+        this.setState({connectedToSoundCloud: true});
+        AppActions.login("playlistModal");
       } else {
-        AppActions.login("playlist", id);
+        this.setState({uPlaylistNames:PlaylistsStore.getPlaylistsTitles()});
+        document.getElementById("playlist-select-menu").classList.add("show");
       }
     },
     selectPlaylist: function(playlist) {
@@ -232,7 +232,9 @@ var Player =
     newPlaylist: function() {
       if(!this.state.connectedToSoundCloud) {
         this.setState({connectedToSoundCloud: true});
-        AppActions.login("playlists", null);
+        var playlistTitle = document.getElementById("playlist-name").value;
+        debugger;
+        AppActions.login("playlistTitle", null, playlistTitle);
       } else {
         var that = this;
         var playlistName = document.getElementById('playlist-name').value;

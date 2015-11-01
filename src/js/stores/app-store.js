@@ -48,6 +48,7 @@ function _logIn(action){
 };
 
 function setActionCallback(userAction, _userId) {
+  debugger;
   if (userAction.action == "favorite") {
     if (userAction.trackId) {
       FavortiesActions.addFavorite(userAction.trackId);
@@ -58,6 +59,9 @@ function setActionCallback(userAction, _userId) {
       PlaylistsActions.addPlaylist(userAction.trackId);
     }
     PlaylistsActions.openPlaylists(userAction);
+  } else if (userAction.action == "playlistModal") {
+
+    // PlaylistsActions.addPlaylistTitle(userAction.trackTitle);
   } else {
     return;
   }

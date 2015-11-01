@@ -2,11 +2,12 @@ var AppConstants = require('../constants/app-constants.js');
 var AppDispatcher = require('../dispatchers/app-dispatcher.js');
 
 var AppActions = {
-  login:function(action, trackId){
+  login:function(action, trackId, trackTitle){
     AppDispatcher.handleViewAction({
       actionType: AppConstants.LOGIN,
       action: action,
-      trackId: trackId
+      trackId: trackId,
+      trackTitle: trackTitle
     })
   }
 }
