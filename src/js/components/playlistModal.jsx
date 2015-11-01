@@ -9,8 +9,11 @@ var PlaylistModal =
       return {uPlaylistNames:["red","green"]}
     },
     open: function() {
-      var titles = PlaylistsStore.getPlaylistsTitles();
-      this.setState({uPlaylistNames:titles});
+      var that = this;
+      setTimeout(function(){ //this hack is required for some reason when user signs in with cleared cache and localStorage
+        var titles = PlaylistsStore.getPlaylistsTitles();
+        that.setState({uPlaylistNames:titles});
+      },500)
       document.getElementById("playlist-select-menu").classList.add("show");
     },
     selectPlaylist: function(playlist) {
