@@ -5,6 +5,8 @@ var AppStore = require('../stores/app-store.js');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 
+var uPlaylistTitles = [];
+
 var CHANGE_EVENT = "change";
 
 function _openPlaylists() {
@@ -21,7 +23,6 @@ function _setPlaylists(userId) {
     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
       // Set response in localStorage
       localStorage["userPlaylists"] = xmlhttp.responseText;
-  
       _updatePlaylists();
     }
   };
@@ -75,6 +76,13 @@ var PlaylistsStore = assign({}, EventEmitter.prototype, {
 
   getPlaylists:function() {
     return JSON.parse(localStorage["userPlaylists"]);
+  },
+
+  getPlaylistsTitles:function(){
+    JSON.parse(localStorage["userPlaylists"]).map(function(playlist){
+      uPlaylistTitles.push({name:playlist.permalink});
+    })
+    return uPlaylistTitles;
   },
 
   dispatcherIndex:PlaylistsDispatcher.register(function(payload){

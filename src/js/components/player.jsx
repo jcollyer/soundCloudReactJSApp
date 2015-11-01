@@ -1,5 +1,6 @@
 var React = require('react');
 var PlayerStore = require('../stores/player-store.js');
+var PlaylistsStore = require('../stores/playlists-store.js');
 var AppStore = require('../stores/app-store.js');
 var AppActions = require('../actions/app-actions.js');
 var GenreActions = require('../actions/genre-actions.js');
@@ -172,22 +173,19 @@ var Player =
       var currentTime = 100 * (time / duration);
       this.setState({currentTime: currentTime});
     },
-    favoriteTrack: function(id, e) {
-      var that = this;
-
-      if(!this.state.connectedToSoundCloud) {
-        that.setState({connectedToSoundCloud: true});
-        AppActions.login("favorite", id);
-      } else {
-        FavoritesActions.addFavorite(id);
-        // FavoritesActions.openFavorites();
-      }
-    },
     displayArtistTracks: function(author) {
       GenreActions.setGenre({type: "author", name: author});
     },
+    favoriteTrack: function(id, e) {
+      if(!this.state.connectedToSoundCloud) {
+        this.setState({connectedToSoundCloud: true});
+        AppActions.login("favorite", id);
+      } else {
+        FavoritesActions.addFavorite(id);
+      }
+    },
     clickAddToPlaylist: function(id, e) {
-      this.setState({uPlaylistNames:AppStore.getUserPlaylists()});
+      this.setState({uPlaylistNames:PlaylistsStore.getPlaylistsTitles()});
       var userId = AppStore.getUserId();
       if(userId) {
         document.getElementById("playlist-select-menu").classList.add("show");
@@ -232,21 +230,28 @@ var Player =
       document.getElementById('new-playlist').classList.add('show');
     },
     newPlaylist: function() {
-      var that = this;
-      var playlistName = document.getElementById('playlist-name').value;
-      var track = PlayerStore.getTrack().id;
-      var tracks = [track].map(function(id) { return { id: id }; });
-      SC.post('/playlists', { playlist: { title: playlistName, tracks: tracks } }, function(response, error){
-        if(error){
-          console.log("Some error occured: " + error.message);
-        }else{
-          // hide "choose playlist menu"
-          document.getElementById("playlist-select-menu").classList.remove("show");
-          //hide "new playlist" menu
-          document.getElementById('new-playlist').classList.remove('show');
-          alert('track added to newly created playlist!');
-        }
-      });
+      if(!this.state.connectedToSoundCloud) {
+        this.setState({connectedToSoundCloud: true});
+        AppActions.login("playlists", null);
+      } else {
+        var that = this;
+        var playlistName = document.getElementById('playlist-name').value;
+        var track = PlayerStore.getTrack().id;
+        var tracks = [track].map(function(id) { return { id: id }; });
+        SC.post('/playlists', { playlist: { title: playlistName, tracks: tracks } }, function(response, error){
+          if(error){
+            console.log("Some error occured: " + error.message);
+          }else{
+            // hide "choose playlist menu"
+            document.getElementById("playlist-select-menu").classList.remove("show");
+            //hide "new playlist" menu
+            document.getElementById('new-playlist').classList.remove('show');
+            alert('track added to newly created playlist!');
+          }
+        });
+      }
+
+
     },
     cancelSelectPlaylist: function() {
       document.getElementById("playlist-select-menu").classList.remove('show');

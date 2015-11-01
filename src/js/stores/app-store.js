@@ -54,6 +54,9 @@ function setActionCallback(userAction, _userId) {
     }
     FavortiesActions.openFavorites();
   } else if (userAction.action == "playlist") {
+    if (userAction.trackId) {
+      PlaylistsActions.addPlaylist(userAction.trackId);
+    }
     PlaylistsActions.openPlaylists(userAction);
   } else {
     return;
@@ -82,19 +85,15 @@ var AppStore = assign({}, EventEmitter.prototype, {
     return getCookie("userId");
   },
 
-  getUserPlaylists:function(){
-    var userPlaylistsCookie = getCookie('userPlaylists');
-    if (userPlaylistsCookie){
-      var objectArray = [];
-      var array = userPlaylistsCookie.split(",");
-      array.forEach(function(p){
-        objectArray.push({name:p});
-      })
-      return objectArray;
-    } else {
-      return [];
-    }
-  },
+  // getUserPlaylists:function(){
+  //     debugger;
+  //   var userPlaylistsCookie = getCookie('userPlaylists');
+  //   if (userPlaylistsCookie){
+  //     return [{name:"green"},{name:"red"}];
+  //   } else {
+  //     return [];
+  //   }
+  // },
 
   isLoggedInSC:function(){
     if (isLoggedInSC){

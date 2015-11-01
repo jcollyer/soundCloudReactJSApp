@@ -18,6 +18,19 @@ var PlaylistsActions = {
     PlaylistsDispatcher.handlePlaylistsAction({
       actionType: PlaylistsConstants.OPEN_PLAYLISTS
     })
+  },
+  addPlaylist:function(id){
+    PlaylistsDispatcher.handlePlaylistsAction({
+      actionType: PlaylistsConstants.ADD_PLAYLIST,
+      id: id
+    })
+  },
+  deletePlaylist:function(userId, trackId){
+    PlaylistsDispatcher.handlePlaylistsAction({
+      actionType: PlaylistsConstants.DELETE_PLAYLIST,
+      userId: userId,
+      trackId: trackId
+    })
   }
 }
 
