@@ -26,14 +26,17 @@ function _logIn(action){
       // Set User ID Cookie
       document.cookie = "userId="+_userId;
 
-      // Set User Playlists Cookie
-      SC.get('/users/'+_userId+'/playlists', function(playlists) {
-        var playlistArray = [];
-        playlists.forEach(function(playlist) {
-          playlistArray.push(playlist.title);
-          document.cookie = "userPlaylists="+playlistArray;
-        });
-      });
+      // // Set User Playlists Cookie
+      // SC.get('/users/'+_userId+'/playlists', function(playlists) {
+      //   var playlistArray = [];
+      //   playlists.forEach(function(playlist) {
+      //     playlistArray.push(playlist.title);
+      //     document.cookie = "userPlaylists="+playlistArray;
+      //   });
+      // });
+
+      // set user playlists
+      PlaylistsActions.setPlaylists(_userId)
 
       // set user favorites
       FavortiesActions.setFavorites(_userId)
@@ -47,14 +50,11 @@ function _logIn(action){
 function setActionCallback(userAction, _userId) {
   if (userAction.action == "favorite") {
     if (userAction.trackId) {
-      if(userAction.delete) {
-        FavortiesActions.deleteFavorite(userAction.trackId, _userId)
-      }
       FavortiesActions.addFavorite(userAction.trackId);
     }
     FavortiesActions.openFavorites();
   } else if (userAction.action == "playlist") {
-    PlyalistsActions.openPlaylists(userAction);
+    PlaylistsActions.openPlaylists(userAction);
   } else {
     return;
   }

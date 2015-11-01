@@ -188,8 +188,8 @@ var Player =
     },
     clickAddToPlaylist: function(id, e) {
       this.setState({uPlaylistNames:AppStore.getUserPlaylists()});
-      var isLoggedIn = AppStore.isLoggedIn();
-      if(isLoggedIn) {
+      var userId = AppStore.getUserId();
+      if(userId) {
         document.getElementById("playlist-select-menu").classList.add("show");
       } else {
         AppActions.login("playlist", id);

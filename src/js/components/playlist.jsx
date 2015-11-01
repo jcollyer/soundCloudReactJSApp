@@ -1,7 +1,9 @@
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
 var AppStore = require('../stores/app-store.js');
+var PlaylistsStore = require('../stores/playlists-store.js');
 var PlayerStore = require('../stores/player-store.js');
+var PlaylistsActions = require('../actions/playlists-actions.js');
 var Track = require('./track.jsx');
 require('../../style/playlists-menu.less');
 
@@ -10,29 +12,36 @@ var Playlist =
     getInitialState: function() {
       return {playlists:[], newPlaylistName: 'Playlist', track: ""};
     },
-    getPlaylists: function() {
-      var that = this;
+    getUserPlaylists: function() {
       var userId = AppStore.getUserId();
-      var isLoggedIn = AppStore.isLoggedIn();
-      if(!isLoggedIn) {
+      if(!userId) {
         AppActions.login("playlist", null);
       } else {
-        var url = 'https://api.soundcloud.com/users/'+userId+'/playlists.json?client_id=b5e21578d92314bc753b90ea7c971c1e';
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function () {
-          if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            var playlistArr = JSON.parse(xmlhttp.responseText);
-            that.setState({playlists: playlistArr});
+        var userPlaylists = PlaylistsStore.getPlaylists();
+        this.setState({playlists: userPlaylists});
+        PlaylistsActions.openPlaylists();
 
-            [].slice.call(document.getElementsByClassName("side-nav-link")).forEach(function(d){d.classList.remove("active-side-nav-button")});
-            [].slice.call(document.getElementsByClassName("panel-box")).forEach(function(d){d.classList.remove("active-panel")});
-            document.getElementById('get-playlist-button').classList.add("active-side-nav-button");
-            document.getElementById('playlist-wrapper').classList.add('active-panel');
-          }
-        };
-        xmlhttp.open("GET", url, true);
-        xmlhttp.send();
+        //
+        // var url = 'https://api.soundcloud.com/users/'+userId+'/playlists.json?client_id=b5e21578d92314bc753b90ea7c971c1e';
+        // var xmlhttp = new XMLHttpRequest();
+        // xmlhttp.onreadystatechange = function () {
+        //   if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        //     var playlistArr = JSON.parse(xmlhttp.responseText);
+        //     that.setState({playlists: playlistArr});
+        //
+        //     [].slice.call(document.getElementsByClassName("side-nav-link")).forEach(function(d){d.classList.remove("active-side-nav-button")});
+        //     [].slice.call(document.getElementsByClassName("panel-box")).forEach(function(d){d.classList.remove("active-panel")});
+        //     document.getElementById('get-playlist-button').classList.add("active-side-nav-button");
+        //     document.getElementById('playlist-wrapper').classList.add('active-panel');
+        //   }
+        // };
+        // xmlhttp.open("GET", url, true);
+        // xmlhttp.send();
       }
+    },
+    setPlaylists: function() {
+      var userPlaylists = PlaylistsStore.getPlaylists();
+      this.setState({playlists: userPlaylists});
     },
     closePlaylistPane: function(e) {
       document.getElementById('playlist-wrapper').classList.remove('active-panel');
@@ -90,11 +99,17 @@ var Playlist =
         });
       });
     },
+    componentDidMount: function(){
+      PlaylistsStore.on('change', this.setPlaylists);
+    },
+    componentWillUnmount: function() {
+      PlaylistsStore.removeListener('change', this.setPlaylists);
+    },
     render: function() {
       var that = this;
       return (
         <div>
-          <div onClick={this.getPlaylists} id="get-playlist-button" className="side-nav-link">
+          <div onClick={this.getUserPlaylists} id="get-playlist-button" className="side-nav-link">
             <i className="side-nav-icon icon-folder"></i>
             <p>playlists</p>
           </div>
