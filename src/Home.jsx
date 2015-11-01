@@ -7,6 +7,7 @@ var Favorites = require('./js/components/favorites.jsx');
 var TrackList = require('./js/components/tracklist.jsx');
 var Search = require('./js/components/search.jsx');
 var Overlay = require('./js/components/overlay.jsx');
+var PlaylistModal = require('./js/components/playlistModal.jsx');
 require('./style/grid.min.less');
 require('./style/home.less');
 require('./style/side-nav.less');
@@ -20,6 +21,7 @@ var Home =
       return (
         <div>
           <Overlay />
+          <PlaylistModal />
           <div id="fixed-frame">
             <div id="player-wrapper" className="close">
               <Player />

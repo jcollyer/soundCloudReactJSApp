@@ -4,6 +4,7 @@ var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var FavortiesActions = require('../actions/favorites-actions.js');
 var PlaylistsActions = require('../actions/playlists-actions.js');
+var PlaylistModalActions = require('../actions/playlistModal-actions.js');
 var CHANGE_EVENT = "change";
 
 var _userId = "";
@@ -48,7 +49,6 @@ function _logIn(action){
 };
 
 function setActionCallback(userAction, _userId) {
-  debugger;
   if (userAction.action == "favorite") {
     if (userAction.trackId) {
       FavortiesActions.addFavorite(userAction.trackId);
@@ -60,8 +60,7 @@ function setActionCallback(userAction, _userId) {
     }
     PlaylistsActions.openPlaylists(userAction);
   } else if (userAction.action == "playlistModal") {
-
-    // PlaylistsActions.addPlaylistTitle(userAction.trackTitle);
+    PlaylistModalActions.open();
   } else {
     return;
   }
