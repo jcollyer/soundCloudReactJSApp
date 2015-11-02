@@ -1,22 +1,29 @@
 var React = require('react');
 var PlaylistModalActions = require('../actions/playlistModal-actions.js');
+var PlaylistsActions = require('../actions/playlists-actions.js');
 var PlaylistModalStore = require('../stores/playlistModal-store.js');
 var PlaylistsStore = require('../stores/playlists-store.js');
+var PlayerStore = require('../stores/player-store.js');
+var AppStore = require('../stores/app-store.js');
 
 var PlaylistModal =
   React.createClass({
     getInitialState: function() {
-      return {uPlaylistNames:["red","green"]}
+      return {uPlaylistNames:[]}
     },
     open: function() {
       var that = this;
       setTimeout(function(){ //this hack is required for some reason when user signs in with cleared cache and localStorage
+
         var titles = PlaylistsStore.getPlaylistsTitles();
         that.setState({uPlaylistNames:titles});
       },500)
       document.getElementById("playlist-select-menu").classList.add("show");
     },
     selectPlaylist: function(playlist) {
+
+      // PlaylistsActions.addPlaylist(playlist);
+
       var that = this;
       var trackId = PlayerStore.getTrack().id;
       var selectedPlaylist = playlist;
@@ -35,8 +42,9 @@ var PlaylistModal =
             // Add new track to array
             trackIdsArray.push(trackId);
             // Turn track array into objects
-            var tracks = trackIdsArray.map(function(id) { return { id: id }; });
+            var tracks = [trackId].map(function(id) { return { id: id }; });
             // Add tracks to playlist
+            debugger;
             SC.put(playlist.uri, { playlist: { tracks: tracks } }, function(response, error){
               if(error){
                 console.log("Some error occured: " + error.message);
@@ -48,6 +56,7 @@ var PlaylistModal =
           } // end if
         });
       });
+
     },
     namePlaylist: function() {
       document.getElementById('new-playlist').classList.add('show');
@@ -97,9 +106,9 @@ var PlaylistModal =
           <h3>select playlist</h3>
           {this.state.uPlaylistNames.map(function(playlist){
             return (
-              <button onClick={that.selectPlaylist.bind(null, playlist.name)} className='add-to-playlist'>
+              <button onClick={that.selectPlaylist.bind(null, playlist)} className='add-to-playlist'>
                 <i className='icon-circle-plus'></i>
-                {playlist.name}
+                {playlist}
               </button>
             )
           })}

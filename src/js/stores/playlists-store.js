@@ -2,6 +2,7 @@ var PlaylistsDispatcher = require('../dispatchers/playlists-dispatcher');
 var PlaylistsConstants = require('../constants/playlists-constants');
 var PlaylistsActions = require('../actions/playlists-actions');
 var AppStore = require('../stores/app-store.js');
+var PlayerStore = require('../stores/player-store.js');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 
@@ -19,10 +20,17 @@ function _openPlaylists() {
 function _setPlaylists(userId) {
   var url = 'https://api.soundcloud.com/users/'+userId+'/playlists.json?client_id='+clientId+'';
   var xmlhttp = new XMLHttpRequest();
+  var uPlaylists = [];
   xmlhttp.onreadystatechange = function () {
     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
       // Set response in localStorage
-      localStorage["userPlaylists"] = xmlhttp.responseText;
+      JSON.parse(xmlhttp.responseText).map(function(playlist){
+        uPlaylists.push(playlist.permalink);
+      });
+
+      localStorage["userPlaylists"] = uPlaylists;
+      localStorage["userPlaylistsObjects"] = xmlhttp.responseText;
+
       _updatePlaylists();
     }
   };
@@ -44,9 +52,23 @@ function _deletePlaylist(userId, trackId) {
   });
 };
 
-function _addPlaylists(id) {
+function _addPlaylists(playlistId) {
+  var playlistId = 160912448;
   var userId = AppStore.getUserId();
-  SC.put('/me/playlists/' + id, function(status, error) {
+  var trackId = PlayerStore.getTrack().id;
+  debugger;
+
+        SC.put(playlist.uri, { playlist: { tracks: tracks } }, function(response, error){
+          if(error){
+            console.log("Some error occured: " + error.message);
+          }else{
+            document.getElementById("playlist-select-menu").classList.remove("show");
+            alert("track added to playlist!");
+          }
+        });
+
+
+  SC.put('/me/playlists/' + playlistId + '/'+ trackId, function(status, error) {
     if (error) {
       alert("Error----: " + error.message);
     } else {
@@ -81,10 +103,8 @@ var PlaylistsStore = assign({}, EventEmitter.prototype, {
 
   getPlaylistsTitles:function(){
     uPlaylistTitles = [];
-    JSON.parse(localStorage["userPlaylists"]).map(function(playlist){
-      uPlaylistTitles.push({name:playlist.permalink});
-    })
-    return uPlaylistTitles;
+    var titles = localStorage["userPlaylists"].split(",");
+    return titles;
   },
 
   dispatcherIndex:PlaylistsDispatcher.register(function(payload){

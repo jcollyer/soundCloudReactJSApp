@@ -31,12 +31,6 @@ var PlaylistsActions = {
       userId: userId,
       trackId: trackId
     })
-  },
-  addPlaylistTitle:function(trackTitle){
-    PlaylistsDispatcher.handlePlaylistsAction({
-      actionType: PlaylistsConstants.ADD_PLAYLIST_TITLE,
-      trackTitle: trackTitle
-    })
   }
 }
 

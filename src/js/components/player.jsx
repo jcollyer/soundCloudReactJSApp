@@ -1,12 +1,10 @@
 var React = require('react');
 var PlayerStore = require('../stores/player-store.js');
 var PlaylistsStore = require('../stores/playlists-store.js');
-var AppStore = require('../stores/app-store.js');
 var AppActions = require('../actions/app-actions.js');
 var GenreActions = require('../actions/genre-actions.js');
 var PlayerActions = require('../actions/player-actions.js');
 var PlaylistModalActions = require('../actions/playlistModal-actions.js');
-var GenreActions = require('../actions/genre-actions.js');
 var FavoritesActions = require('../actions/favorites-actions.js');
 require('../../style/player.less');
 require('../../style/player.css');
