@@ -98,7 +98,7 @@ var PlaylistsStore = assign({}, EventEmitter.prototype, {
   },
 
   getPlaylists:function() {
-    return JSON.parse(localStorage["userPlaylists"]);
+    return JSON.parse(localStorage["userPlaylistsObjects"]);
   },
 
   getPlaylistsTitles:function(){

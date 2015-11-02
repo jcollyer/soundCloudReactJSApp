@@ -253,7 +253,7 @@ var Player =
                 {this.state.tags.map(function(tag){
                   var cleanTag = tag.replace(/['"]+/g, '');
                   return (
-                    <button onClick={that.setTags} data-genre={tag}>{cleanTag}</button>
+                    <button onClick={that.setTags} data-genre={tag} key={tag}>{cleanTag}</button>
                   )
                 })}
               </div>

@@ -42,7 +42,7 @@ var PlaylistModal =
             // Add new track to array
             trackIdsArray.push(trackId);
             // Turn track array into objects
-            var tracks = [trackId].map(function(id) { return { id: id }; });
+            var tracks = [trackIdsArray].map(function(id) { return { id: id }; });
             // Add tracks to playlist
             debugger;
             SC.put(playlist.uri, { playlist: { tracks: tracks } }, function(response, error){
@@ -106,7 +106,7 @@ var PlaylistModal =
           <h3>select playlist</h3>
           {this.state.uPlaylistNames.map(function(playlist){
             return (
-              <button onClick={that.selectPlaylist.bind(null, playlist)} className='add-to-playlist'>
+              <button key={playlist} onClick={that.selectPlaylist.bind(null, playlist)} className='add-to-playlist'>
                 <i className='icon-circle-plus'></i>
                 {playlist}
               </button>
