@@ -32,14 +32,14 @@ function _setPlaylists(userId) {
 };
 
 function _deletePlaylist(userId, playlistId) {
-  var path = 'https://api.soundcloud.com/users/'+userId+'/playlists/'+trackId+'?client_id='+clientId+'';
-  SC.delete(path, function(response, error) {
-    if (error) {
-      console.log("Some error occured: " + JSON.parse(error));
-    } else {
+  var url = 'https://api.soundcloud.com/playlists/'+playlistId+'?client_id=b5e21578d92314bc753b90ea7c971c1e';
+  SC.delete(url, function(response, error){
+    if(error){
+      console.log("Some error occured: " + error.message);
+    }else{
       console.log("playlist deleted");
-      var playlist = document.getElementById(trackId);
-      playlist.classList.add("remove_track");
+      var playlist = document.getElementById(playlistId);
+      playlist.classList.add("remove_playlist");
       _setPlaylists(userId);
     }
   });
@@ -134,7 +134,7 @@ var PlaylistsStore = assign({}, EventEmitter.prototype, {
         break
 
       case PlaylistsConstants.DELETE_PLAYLIST:
-        _deletePlaylist(payload.action.userId, payload.action.trackId);
+        _deletePlaylist(payload.action.userId, payload.action.playlistId);
         break
 
       case PlaylistsConstants.DELETE_PLAYLIST_TRACK:

@@ -37,25 +37,13 @@ var Playlist =
         PlaylistsActions.deletePlaylistTrack(userId, trackId, playlistId);
       }
     },
-    deletePlaylist: function(id) {
-      var playlistId = id;
-      var url = 'https://api.soundcloud.com/playlists/'+playlistId+'?client_id=b5e21578d92314bc753b90ea7c971c1e';
-      SC.connect(function() {
-        SC.get('/me', function(me) {
-          SC.delete(url, function(response, error){
-            if(error){
-              console.log("Some error occured: " + error.message);
-            }else{
-              console.log("playlist deleted");
-              var playlist = document.getElementById(playlistId);
-              playlist.classList.add("remove_playlist");
-
-              //TODO remove playlist cookie
-
-            }
-          });
-        });
-      });
+    deletePlaylist: function(playlistId) {
+      if(!isLoggedInSC) {
+        AppActions.login();
+      } else {
+        var userId = AppStore.getUserId();
+        PlaylistsActions.deletePlaylist(userId, playlistId);
+      }
     },
     componentDidMount: function(){
       PlaylistsStore.on('change', this.setPlaylists);

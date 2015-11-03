@@ -29,7 +29,7 @@ var PlaylistsActions = {
     PlaylistsDispatcher.handlePlaylistsAction({
       actionType: PlaylistsConstants.DELETE_PLAYLIST,
       userId: userId,
-      trackId: trackId
+      playlistId: playlistId
     })
   },
   deletePlaylistTrack:function(userId, trackId, playlistId){
