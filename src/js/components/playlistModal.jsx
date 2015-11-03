@@ -1,5 +1,6 @@
 var React = require('react');
 var PlaylistModalActions = require('../actions/playlistModal-actions.js');
+var AppActions = require('../actions/app-actions.js');
 var PlaylistsActions = require('../actions/playlists-actions.js');
 var PlaylistModalStore = require('../stores/playlistModal-store.js');
 var PlaylistsStore = require('../stores/playlists-store.js');
@@ -20,34 +21,15 @@ var PlaylistModal =
       document.getElementById("playlist-select-menu").classList.add("show");
     },
     selectPlaylist: function(playlistId) {
-      PlaylistsActions.addPlaylist(playlistId);
+      PlaylistsActions.addPlaylistTrack(playlistId);
     },
     namePlaylist: function() {
       document.getElementById('new-playlist').classList.add('show');
     },
-    newPlaylist: function() {
-      if(!this.state.connectedToSoundCloud) {
-        this.setState({connectedToSoundCloud: true});
-        var playlistTitle = document.getElementById("playlist-name").value;
-
-        AppActions.login("playlistTitle", null, playlistTitle);
-      } else {
-        var that = this;
-        var playlistName = document.getElementById('playlist-name').value;
-        var track = PlayerStore.getTrack().id;
-        var tracks = [track].map(function(id) { return { id: id }; });
-        SC.post('/playlists', { playlist: { title: playlistName, tracks: tracks } }, function(response, error){
-          if(error){
-            console.log("Some error occured: " + error.message);
-          }else{
-            // hide "choose playlist menu"
-            document.getElementById("playlist-select-menu").classList.remove("show");
-            //hide "new playlist" menu
-            document.getElementById('new-playlist').classList.remove('show');
-            alert('track added to newly created playlist!');
-          }
-        });
-      }
+    addPlaylist: function() {
+      var playlistName = document.getElementById('playlist-name').value;
+      var userId = AppStore.getUserId();
+      PlaylistsActions.addPlaylist(userId, playlistName);
     },
     cancelSelectPlaylist: function() {
       document.getElementById("playlist-select-menu").classList.remove('show');
@@ -83,8 +65,8 @@ var PlaylistModal =
             <h4>create new playlist</h4>
             <button onClick={this.namePlaylist} className='new-playlist-button'>+ New Playlist</button>
             <div id="new-playlist">
-              <input type="text" value="" id="playlist-name" />
-              <button onClick={this.newPlaylist}>Create</button>
+              <input type="text" id="playlist-name" />
+              <button onClick={this.addPlaylist}>Create</button>
             </div>
           </div>
         </div>

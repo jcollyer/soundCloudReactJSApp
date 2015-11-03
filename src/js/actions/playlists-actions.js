@@ -19,9 +19,16 @@ var PlaylistsActions = {
       actionType: PlaylistsConstants.OPEN_PLAYLISTS
     })
   },
-  addPlaylist:function(id){
+  addPlaylist:function(userId, playlistName){
     PlaylistsDispatcher.handlePlaylistsAction({
       actionType: PlaylistsConstants.ADD_PLAYLIST,
+      userId: userId,
+      playlistName: playlistName
+    })
+  },
+  addPlaylistTrack:function(id){
+    PlaylistsDispatcher.handlePlaylistsAction({
+      actionType: PlaylistsConstants.ADD_PLAYLIST_TRACK,
       id: id
     })
   },

@@ -65,7 +65,23 @@ function _deletePlaylistTrack(userId, trackId, playlistId) {
   });
 };
 
-function _addPlaylists(playlistId) {
+function _addPlaylist(userId, playlistName) {
+  var track = PlayerStore.getTrack().id;
+  var tracks = [track].map(function(id) { return { id: id }; });
+  SC.post('/playlists', { playlist: { title: playlistName, tracks: tracks } }, function(response, error){
+    if(error){
+      console.log("Some error occured: " + error.message);
+    }else{
+      // hide "choose playlist menu" and  "new playlist" menu
+      document.getElementById("playlist-select-menu").classList.remove("show");
+      document.getElementById('new-playlist').classList.remove('show');
+      _setPlaylists(userId);
+      PlaylistsActions.openPlaylists();
+    }
+  });
+}
+
+function _addPlaylist_track(playlistId) {
   var userId = AppStore.getUserId();
   var trackId = PlayerStore.getTrack().id;
   var trackIdsArray = [];
@@ -129,6 +145,10 @@ var PlaylistsStore = assign({}, EventEmitter.prototype, {
         _openPlaylists();
         break
 
+      case PlaylistsConstants.ADD_PLAYLIST:
+        _addPlaylist(payload.action.userId, payload.action.playlistName);
+        break
+
       case PlaylistsConstants.SET_PLAYLISTS:
         _setPlaylists(payload.action.id);
         break
@@ -137,17 +157,15 @@ var PlaylistsStore = assign({}, EventEmitter.prototype, {
         _deletePlaylist(payload.action.userId, payload.action.playlistId);
         break
 
+      case PlaylistsConstants.ADD_PLAYLIST_TRACK:
+        _addPlaylist_track(payload.action.id);
+        break
+
       case PlaylistsConstants.DELETE_PLAYLIST_TRACK:
         _deletePlaylistTrack(payload.action.userId, payload.action.trackId, payload.action.playlistId);
         break
 
-      case PlaylistsConstants.ADD_PLAYLIST:
-        _addPlaylists(payload.action.id);
-        break
 
-      case PlaylistsConstants.ADD_PLAYLIST:
-        _addPlaylists(payload.action.id);
-        break
 
     }
     return true;
