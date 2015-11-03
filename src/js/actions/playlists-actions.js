@@ -25,11 +25,19 @@ var PlaylistsActions = {
       id: id
     })
   },
-  deletePlaylist:function(userId, trackId){
+  deletePlaylist:function(userId, playlistId){
     PlaylistsDispatcher.handlePlaylistsAction({
       actionType: PlaylistsConstants.DELETE_PLAYLIST,
       userId: userId,
       trackId: trackId
+    })
+  },
+  deletePlaylistTrack:function(userId, trackId, playlistId){
+    PlaylistsDispatcher.handlePlaylistsAction({
+      actionType: PlaylistsConstants.DELETE_PLAYLIST_TRACK,
+      userId: userId,
+      trackId: trackId,
+      playlistId: playlistId
     })
   }
 }

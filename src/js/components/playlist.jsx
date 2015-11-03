@@ -29,36 +29,12 @@ var Playlist =
       document.getElementById('playlist-wrapper').classList.remove('active-panel');
       document.getElementById("get-playlist-button").classList.remove("active-side-nav-button");
     },
-    removeTrack: function(trackId, playlistId) {
-      var that = this;
-      var trackID = trackId;
-      var playlistID = playlistId;
-      var trackToRemove;
-      SC.get('http://api.soundcloud.com/playlists/'+playlistID+'?client_id=b5e21578d92314bc753b90ea7c971c1e', function(playlist) {
-        var newTrackList = [];
-        playlist.tracks.forEach(function(track) {
-          if(trackID !== track.id) {
-            newTrackList.push({id:track.id});
-          }
-        });
-        // Update playlist with tracks minus deleted track
-        SC.put(playlist.uri, { playlist: { tracks: newTrackList } }, function(response, error){
-          if(error){
-            console.log("Some error occured: " + error.message);
-          }else{
-            var track = document.getElementById(trackID);
-            track.classList.add("remove_track");
-          }
-        });
-      });
-    },
     deleteTrack: function(trackId, playlistId, e) {
-      var id = id;
-      var isLoggedIn = AppStore.isLoggedIn();
-      if(isLoggedIn) {
-        this.removeTrack(trackId, playlistId);
+      if(!isLoggedInSC) {
+        AppActions.login();
       } else {
-        login();
+        var userId = AppStore.getUserId();
+        PlaylistsActions.deletePlaylistTrack(userId, trackId, playlistId);
       }
     },
     deletePlaylist: function(id) {

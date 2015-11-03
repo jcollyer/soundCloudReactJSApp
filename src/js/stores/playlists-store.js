@@ -31,8 +31,8 @@ function _setPlaylists(userId) {
   xmlhttp.send();
 };
 
-function _deletePlaylist(userId, trackId) {
-  var path = "https://api.soundcloud.com/users/"+userId+"/playlists/"+trackId+"?client_id=b5e21578d92314bc753b90ea7c971c1e";
+function _deletePlaylist(userId, playlistId) {
+  var path = 'https://api.soundcloud.com/users/'+userId+'/playlists/'+trackId+'?client_id='+clientId+'';
   SC.delete(path, function(response, error) {
     if (error) {
       console.log("Some error occured: " + JSON.parse(error));
@@ -42,6 +42,26 @@ function _deletePlaylist(userId, trackId) {
       playlist.classList.add("remove_track");
       _setPlaylists(userId);
     }
+  });
+};
+
+function _deletePlaylistTrack(userId, trackId, playlistId) {
+  SC.get('http://api.soundcloud.com/playlists/'+playlistId+'?client_id='+clientId+'', function(playlist) {
+    var newTrackList = [];
+    playlist.tracks.forEach(function(track) {
+      if(trackId !== track.id) {
+        newTrackList.push({id:track.id});
+      }
+    });
+    // Update playlist with tracks minus deleted track
+    SC.put(playlist.uri, { playlist: { tracks: newTrackList } }, function(response, error){
+      if(error){
+        console.log("Some error occured: " + error.message);
+      }else{
+        _setPlaylists(userId);
+        document.getElementById(trackId).classList.add("remove_track");
+      }
+    });
   });
 };
 
@@ -115,6 +135,10 @@ var PlaylistsStore = assign({}, EventEmitter.prototype, {
 
       case PlaylistsConstants.DELETE_PLAYLIST:
         _deletePlaylist(payload.action.userId, payload.action.trackId);
+        break
+
+      case PlaylistsConstants.DELETE_PLAYLIST_TRACK:
+        _deletePlaylistTrack(payload.action.userId, payload.action.trackId, payload.action.playlistId);
         break
 
       case PlaylistsConstants.ADD_PLAYLIST:
