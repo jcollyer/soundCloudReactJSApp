@@ -17,26 +17,8 @@ var Playlist =
       if(!userId) {
         AppActions.login("playlist", null);
       } else {
-        var userPlaylists = PlaylistsStore.getPlaylists();
-        this.setState({playlists: userPlaylists});
+        this.setPlaylists();
         PlaylistsActions.openPlaylists();
-
-        //
-        // var url = 'https://api.soundcloud.com/users/'+userId+'/playlists.json?client_id=b5e21578d92314bc753b90ea7c971c1e';
-        // var xmlhttp = new XMLHttpRequest();
-        // xmlhttp.onreadystatechange = function () {
-        //   if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-        //     var playlistArr = JSON.parse(xmlhttp.responseText);
-        //     that.setState({playlists: playlistArr});
-        //
-        //     [].slice.call(document.getElementsByClassName("side-nav-link")).forEach(function(d){d.classList.remove("active-side-nav-button")});
-        //     [].slice.call(document.getElementsByClassName("panel-box")).forEach(function(d){d.classList.remove("active-panel")});
-        //     document.getElementById('get-playlist-button').classList.add("active-side-nav-button");
-        //     document.getElementById('playlist-wrapper').classList.add('active-panel');
-        //   }
-        // };
-        // xmlhttp.open("GET", url, true);
-        // xmlhttp.send();
       }
     },
     setPlaylists: function() {
@@ -118,7 +100,7 @@ var Playlist =
             <div onClick={this.closePlaylistPane} className="playlist-close-button">
               <i className="icon-circle-cross"></i>
             </div>
-            {this.state.playlists.map(function(playlist){
+            {this.state.playlists.reverse().map(function(playlist){
               return (
                 <div className="playlist" key={playlist.id} id={playlist.id}>
                   <div className="playlist-title">
@@ -132,7 +114,7 @@ var Playlist =
                     </button>
                   </div>
 
-                  {playlist.tracks.map(function(track){
+                  {playlist.tracks.reverse().map(function(track){
                     return (
                       <div className='playlist-track-wrapper' key={track.id} id={track.id}>
                         <Track

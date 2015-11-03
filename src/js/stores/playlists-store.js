@@ -49,10 +49,10 @@ function _addPlaylists(playlistId) {
   var userId = AppStore.getUserId();
   var trackId = PlayerStore.getTrack().id;
   var trackIdsArray = [];
-  var uPlaylistsArray = PlaylistsStore.getPlaylists();
+  var uPlaylistsArray  = PlaylistsStore.getPlaylists();
 
 
-    uPlaylistsArray.map(function(playlist) {
+    uPlaylistsArray .map(function(playlist) {
       // Get selected playlist
       if (playlistId === playlist.id) {
 
@@ -98,7 +98,7 @@ var PlaylistsStore = assign({}, EventEmitter.prototype, {
   },
 
   getPlaylists:function() {
-    return JSON.parse(localStorage["userPlaylistsObjects"]);
+    return JSON.parse(localStorage["userPlaylistsObjects"]).reverse();
   },
 
   dispatcherIndex:PlaylistsDispatcher.register(function(payload){
