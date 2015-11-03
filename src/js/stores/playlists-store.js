@@ -6,8 +6,6 @@ var PlayerStore = require('../stores/player-store.js');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 
-var uPlaylistTitles = [];
-
 var CHANGE_EVENT = "change";
 
 function _openPlaylists() {
@@ -24,11 +22,6 @@ function _setPlaylists(userId) {
   xmlhttp.onreadystatechange = function () {
     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
       // Set response in localStorage
-      JSON.parse(xmlhttp.responseText).map(function(playlist){
-        uPlaylists.push(playlist.permalink);
-      });
-
-      localStorage["userPlaylists"] = uPlaylists;
       localStorage["userPlaylistsObjects"] = xmlhttp.responseText;
 
       _updatePlaylists();
@@ -53,30 +46,37 @@ function _deletePlaylist(userId, trackId) {
 };
 
 function _addPlaylists(playlistId) {
-  var playlistId = 160912448;
   var userId = AppStore.getUserId();
   var trackId = PlayerStore.getTrack().id;
-  debugger;
+  var trackIdsArray = [];
+  var uPlaylistsArray = PlaylistsStore.getPlaylists();
 
+
+    uPlaylistsArray.map(function(playlist) {
+      // Get selected playlist
+      if (playlistId === playlist.id) {
+
+        playlist.tracks.forEach(function (track){
+          // Add existing tracks to array
+          trackIdsArray.push(track.id);
+        });
+        // Add new track to array
+        trackIdsArray.push(trackId);
+        // Turn track array into objects
+        var tracks = trackIdsArray.map(function(id) { return { id: id }; });
+        // Add tracks to playlist
         SC.put(playlist.uri, { playlist: { tracks: tracks } }, function(response, error){
           if(error){
             console.log("Some error occured: " + error.message);
           }else{
             document.getElementById("playlist-select-menu").classList.remove("show");
-            alert("track added to playlist!");
+            _setPlaylists(userId);
+            PlaylistsActions.openPlaylists();
           }
         });
+      } // end if
+    });
 
-
-  SC.put('/me/playlists/' + playlistId + '/'+ trackId, function(status, error) {
-    if (error) {
-      alert("Error----: " + error.message);
-    } else {
-      console.log("Playlist:  " + id);
-      _setPlaylists(userId);
-      PlaylistsActions.openPlaylists();
-    }
-  });
 };
 
 
@@ -99,12 +99,6 @@ var PlaylistsStore = assign({}, EventEmitter.prototype, {
 
   getPlaylists:function() {
     return JSON.parse(localStorage["userPlaylistsObjects"]);
-  },
-
-  getPlaylistsTitles:function(){
-    uPlaylistTitles = [];
-    var titles = localStorage["userPlaylists"].split(",");
-    return titles;
   },
 
   dispatcherIndex:PlaylistsDispatcher.register(function(payload){

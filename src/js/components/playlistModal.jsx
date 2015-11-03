@@ -9,54 +9,18 @@ var AppStore = require('../stores/app-store.js');
 var PlaylistModal =
   React.createClass({
     getInitialState: function() {
-      return {uPlaylistNames:[]}
+      return {playlists:[]}
     },
     open: function() {
       var that = this;
       setTimeout(function(){ //this hack is required for some reason when user signs in with cleared cache and localStorage
-
-        var titles = PlaylistsStore.getPlaylistsTitles();
-        that.setState({uPlaylistNames:titles});
+        var playlists = PlaylistsStore.getPlaylists();
+        that.setState({playlists:playlists});
       },500)
       document.getElementById("playlist-select-menu").classList.add("show");
     },
-    selectPlaylist: function(playlist) {
-
-      // PlaylistsActions.addPlaylist(playlist);
-
-      var that = this;
-      var trackId = PlayerStore.getTrack().id;
-      var selectedPlaylist = playlist;
-      var trackIdsArray = [];
-      var userId = AppStore.getUserId();
-      SC.get('/users/'+userId+'/playlists', function(playlists) {
-
-        playlists.forEach(function(playlist) {
-          // Get selected playlist
-          if (selectedPlaylist === playlist.title) {
-
-            playlist.tracks.forEach(function (track){
-              // Add existing tracks to array
-              trackIdsArray.push(track.id);
-            });
-            // Add new track to array
-            trackIdsArray.push(trackId);
-            // Turn track array into objects
-            var tracks = [trackIdsArray].map(function(id) { return { id: id }; });
-            // Add tracks to playlist
-            debugger;
-            SC.put(playlist.uri, { playlist: { tracks: tracks } }, function(response, error){
-              if(error){
-                console.log("Some error occured: " + error.message);
-              }else{
-                document.getElementById("playlist-select-menu").classList.remove("show");
-                alert("track added to playlist!");
-              }
-            });
-          } // end if
-        });
-      });
-
+    selectPlaylist: function(playlistId) {
+      PlaylistsActions.addPlaylist(playlistId);
     },
     namePlaylist: function() {
       document.getElementById('new-playlist').classList.add('show');
@@ -104,11 +68,12 @@ var PlaylistModal =
           </button>
 
           <h3>select playlist</h3>
-          {this.state.uPlaylistNames.map(function(playlist){
+
+          {this.state.playlists.map(function(playlist){
             return (
-              <button key={playlist} onClick={that.selectPlaylist.bind(null, playlist)} className='add-to-playlist'>
+              <button key={playlist.id} onClick={that.selectPlaylist.bind(null, playlist.id)} className='add-to-playlist'>
                 <i className='icon-circle-plus'></i>
-                {playlist}
+                {playlist.permalink}
               </button>
             )
           })}
