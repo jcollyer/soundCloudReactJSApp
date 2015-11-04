@@ -31,7 +31,7 @@ var Playlist =
     },
     deleteTrack: function(trackId, playlistId, e) {
       if(!isLoggedInSC) {
-        AppActions.login();
+        AppActions.login("playlist", trackId, "delete", playlistId);
       } else {
         var userId = AppStore.getUserId();
         PlaylistsActions.deletePlaylistTrack(userId, trackId, playlistId);
@@ -39,7 +39,7 @@ var Playlist =
     },
     deletePlaylist: function(playlistId) {
       if(!isLoggedInSC) {
-        AppActions.login();
+        AppActions.login("playlist", 1, "delete", playlistId);
       } else {
         var userId = AppStore.getUserId();
         PlaylistsActions.deletePlaylist(userId, playlistId);

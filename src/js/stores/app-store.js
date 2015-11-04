@@ -8,12 +8,8 @@ var PlaylistModalActions = require('../actions/playlistModal-actions.js');
 var CHANGE_EVENT = "change";
 
 var _userId = "";
-window.isLoggedInSC = false;
-// var isLoggedIn = false;
-if (getCookie("userId")){
-  isLoggedIn = true;
-};
 var userAction = {};
+window.isLoggedInSC = false;
 
 function _logIn(action){
   userAction = action;
@@ -42,14 +38,26 @@ function _logIn(action){
 function setActionCallback(userAction, _userId) {
   if (userAction.action == "favorite") {
     if (userAction.trackId) {
-      FavortiesActions.addFavorite(userAction.trackId);
+      if (userAction.verb == "delete") {
+        FavortiesActions.deleteFavorite(AppStore.getUserId(), userAction.trackId);
+      } else {
+        FavortiesActions.addFavorite(userAction.trackId);
+      }
     }
     FavortiesActions.openFavorites();
   } else if (userAction.action == "playlist") {
     if (userAction.trackId) {
-      PlaylistsActions.addPlaylist(userAction.trackId);
+      if (userAction.verb == "delete") {
+        if (userAction.trackId == 1) { //delete playlist
+          PlaylistsActions.deletePlaylist(AppStore.getUserId(), userAction.playlistId);
+        } else { //delete playlist track
+          PlaylistsActions.deletePlaylistTrack(AppStore.getUserId(), userAction.trackId, userAction.playlistId);
+        }
+      } else {
+        PlaylistsActions.addPlaylist(getCookie("userId"), userAction.trackId);
+      }
     }
-    PlaylistsActions.openPlaylists(userAction);
+    PlaylistsActions.openPlaylists();
   } else if (userAction.action == "playlistModal") {
     PlaylistModalActions.open();
   } else {

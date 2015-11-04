@@ -28,7 +28,7 @@ var Favorites = React.createClass({
   removeTrack: function(trackId) {
     var trackId = trackId;
     if(!isLoggedInSC) {
-      AppActions.login();
+      AppActions.login("favorite", trackId, "delete");
     } else {
       var userId = AppStore.getUserId();
       FavoritesActions.deleteFavorite(userId, trackId);

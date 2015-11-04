@@ -23,7 +23,6 @@ function _setPlaylists(userId) {
     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
       // Set response in localStorage
       localStorage["userPlaylistsObjects"] = xmlhttp.responseText;
-
       _updatePlaylists();
     }
   };
@@ -32,15 +31,13 @@ function _setPlaylists(userId) {
 };
 
 function _deletePlaylist(userId, playlistId) {
-  var url = 'https://api.soundcloud.com/playlists/'+playlistId+'?client_id=b5e21578d92314bc753b90ea7c971c1e';
+  var url = 'https://api.soundcloud.com/playlists/'+playlistId+'?client_id='+clientId+'';
   SC.delete(url, function(response, error){
     if(error){
       console.log("Some error occured: " + error.message);
     }else{
-      console.log("playlist deleted");
-      var playlist = document.getElementById(playlistId);
-      playlist.classList.add("remove_playlist");
       _setPlaylists(userId);
+      document.getElementById(playlistId).classList.add("remove_playlist");
     }
   });
 };
