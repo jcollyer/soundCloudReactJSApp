@@ -8,7 +8,7 @@ require('../../style/tracklist.less');
 var TrackList =
   React.createClass({
     getInitialState: function() {
-      return {tracks: []};
+      return {tracks: [], ready: true, cached: false, offset: 0 };
     },
     displayTracks: function(tracksArr) {
       var that = this;
@@ -27,29 +27,65 @@ var TrackList =
       //set track ids for next/prev
       PlayerActions.setTrackIds(trackIds);
     },
-    getTracks: function() {
-      var genre = GenreStore.getGenre();
-      var authorId = PlayerStore.getTrack().user_id || "";
-
-
-      if (genre.type == "author") {
+    getTracksAjax: function(genre, authorId, offset) {
+      if (genre.type == "author") { // load for author
         var url = 'https://api.soundcloud.com/users/'+authorId+'/tracks?client_id=b5e21578d92314bc753b90ea7c971c1e';
-      } else if (genre.type == "query"){
+      } else if (genre.type == "query"){  // load for search
         var url = 'https://api.soundcloud.com/tracks.json?client_id=b5e21578d92314bc753b90ea7c971c1e&q='+genre.name+'&order=hotness&limit=70&offset=0'
-      } else {
-        var url = 'https://api.soundcloud.com/tracks.json?client_id=b5e21578d92314bc753b90ea7c971c1e&tags='+genre.name+'&order=hotness&limit=30&offset=0';
+      } else { // load default
+        var url = 'https://api.soundcloud.com/tracks.json?client_id=b5e21578d92314bc753b90ea7c971c1e&tags='+genre.name+'&order=hotness&limit=30&offset='+offset+'';
       }
       var that = this;
       var tracksArr = [];
       var xmlhttp = new XMLHttpRequest();
       xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-          var tracksArr = JSON.parse(xmlhttp.responseText);
-          that.displayTracks(tracksArr);
+          // var tracksArr = JSON.parse(xmlhttp.responseText);
+
+          if (that.state.cached) {
+            var totalTracks = JSON.parse(localStorage.tracks).concat(JSON.parse(xmlhttp.responseText));
+            localStorage["tracks"] = JSON.stringify(totalTracks);
+            that.displayTracks(totalTracks);
+          } else {
+            localStorage["tracks"] = xmlhttp.responseText;
+            that.state.cached = true;
+            that.displayTracks(JSON.parse(xmlhttp.responseText));
+          }
+          that.state.ready = true;
         }
       };
       xmlhttp.open("GET", url, true);
       xmlhttp.send();
+    },
+    getTracks: function() {
+      console.log("getTracks")
+      var genre = GenreStore.getGenre();
+      var authorId = PlayerStore.getTrack().user_id || "";
+      this.getTracksAjax(genre, authorId, this.state.offset);
+    },
+    getScrollTracks: function(offset) {
+      var genre = GenreStore.getGenre();
+      var authorId = PlayerStore.getTrack().user_id || "";
+      this.getTracksAjax(genre, authorId, this.state.offset);
+    },
+    componentWillMount: function() {
+      // for browser compatibility
+      function getDocHeight() {
+        var D = document;
+        return Math.max(
+          D.body.scrollHeight, D.documentElement.scrollHeight, D.body.offsetHeight, D.documentElement.offsetHeight, D.body.clientHeight, D.documentElement.clientHeight
+        );
+      }
+      var that = this;
+      window.addEventListener("scroll", function(){
+        if (that.state.ready){
+          if(window.scrollY + window.innerHeight > getDocHeight() - 100) {
+           that.state.offset = that.state.offset + 30;
+           that.getScrollTracks(that.state.offset);
+           that.state.ready = false;
+         }
+        }
+      });
     },
     componentDidMount: function(){
       this.getTracks();
