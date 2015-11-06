@@ -46,6 +46,7 @@ var TrackList =
             var totalTracks = JSON.parse(localStorage.tracks).concat(JSON.parse(xmlhttp.responseText));
             localStorage["tracks"] = JSON.stringify(totalTracks);
             that.displayTracks(totalTracks);
+            document.getElementById("loading-more-tracks").classList.remove("show");
           } else {
             localStorage["tracks"] = xmlhttp.responseText;
             that.state.cached = true;
@@ -67,6 +68,8 @@ var TrackList =
       var genre = GenreStore.getGenre();
       var authorId = PlayerStore.getTrack().user_id || "";
       this.getTracksAjax(genre, authorId, this.state.offset);
+
+      document.getElementById("loading-more-tracks").classList.add("show");
     },
     componentWillMount: function() {
       // for browser compatibility
@@ -114,6 +117,7 @@ var TrackList =
               </div>
             )
           })}
+          <div id="loading-more-tracks"><h3>Loading more tracks...</h3></div>
         </div>
       );
     }
