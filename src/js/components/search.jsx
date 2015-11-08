@@ -10,6 +10,7 @@ var Search =
       document.getElementById('search-wrapper').classList.add('active-panel');
     },
     search:function(){
+      window.location.hash = "";
       var query = document.getElementById("search-input").value;
       GenreActions.setGenre({type: "query", name: query});
     },

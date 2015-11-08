@@ -22,7 +22,6 @@ var Home =
         <div>
           <Overlay />
           <PlaylistModal />
-           <a href="#/track">Inbox</a>
           <div id="fixed-frame">
             <div id="player-wrapper" className="close">
               <Player />
