@@ -59,10 +59,15 @@ var TrackList =
       xmlhttp.send();
     },
     getTracks: function() {
-      console.log("getTracks")
-      var genre = GenreStore.getGenre();
-      var authorId = PlayerStore.getTrack().user_id || "";
-      this.getTracksAjax(genre, authorId, this.state.offset);
+      debugger;
+      if (window.location.hash.indexOf("/tracks/") >= 1){
+        var trackId = window.location.hash.split("/")[2];
+        this.getTracksAjax({type:"singleTrack",name: trackId});
+      } else {
+        var genre = GenreStore.getGenre();
+        var authorId = PlayerStore.getTrack().user_id || "";
+        this.getTracksAjax(genre, authorId, this.state.offset);
+      }
     },
     getScrollTracks: function(offset) {
       var genre = GenreStore.getGenre();
