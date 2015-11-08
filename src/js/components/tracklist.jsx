@@ -8,7 +8,7 @@ require('../../style/tracklist.less');
 var TrackList =
   React.createClass({
     getInitialState: function() {
-      return {tracks: [], ready: true, cached: false, offset: 0, fromScroll: false, artistUsername: "" };
+      return {tracks: [], ready: true, cached: false, offset: 0, fromScroll: false, artistUsername: "", artistId: ""};
     },
     displayTracks: function(tracksArr) {
       var that = this;
@@ -30,7 +30,8 @@ var TrackList =
         PlayerActions.setTrackIds(trackIds);
       } else {
         var artistUsername = tracksArr.user.username;
-        that.setState({tracks: tracksArr, artistUsername: artistUsername});
+        var artistId = tracksArr.user.id;
+        that.setState({tracks: tracksArr, artistUsername: artistUsername, artistId: artistId});
       }
     },
     getTracksAjax: function(genre, authorId, offset) {
@@ -73,7 +74,8 @@ var TrackList =
         this.getTracksAjax({type:"singleTrack",name: [trackId]});
       } else {
         var genre = GenreStore.getGenre();
-        var authorId = PlayerStore.getTrack().user_id || "";
+        var authorId = PlayerStore.getTrack().user_id || PlayerStore.getTrack().id || "";
+
         this.getTracksAjax(genre, authorId, this.state.offset);
       }
     },
@@ -145,7 +147,7 @@ var TrackList =
                     author={this.state.artistUsername}
                     artwork={this.state.tracks.artwork_url}
                     duration={this.state.tracks.duration}
-
+                    user_id={this.state.artistId}
                     tags={this.state.tracks.tag_list}
               />
             </div>
