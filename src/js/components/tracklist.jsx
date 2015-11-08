@@ -30,9 +30,11 @@ var TrackList =
         //set track ids for next/prev
         PlayerActions.setTrackIds(trackIds);
       } else {
-        var artistUsername = tracksArr.user.username;
-        var artistId = tracksArr.user.id;
-        that.setState({tracks: tracksArr, artistUsername: artistUsername, artistId: artistId});
+        if (tracksArr.user) {
+          var artistUsername = tracksArr.user.username;
+          var artistId = tracksArr.user.id;
+          that.setState({tracks: tracksArr, artistUsername: artistUsername, artistId: artistId});
+        }
       }
     },
     getTracksAjax: function(genre, authorId, offset) {
@@ -53,8 +55,8 @@ var TrackList =
           // var tracksArr = JSON.parse(xmlhttp.responseText);
 
           if (that.state.cached && that.state.fromScroll) {
-
-            if (JSON.parse(xmlhttp.responseText)[0].id && (JSON.parse(localStorage.tracks)[0].id == JSON.parse(xmlhttp.responseText)[0].id)) { //if end of scroll list
+            // check if end of scroll
+            if (JSON.parse(localStorage.tracks)[0].id && JSON.parse(xmlhttp.responseText)[0].id && (JSON.parse(localStorage.tracks)[0].id == JSON.parse(xmlhttp.responseText)[0].id)) { 
               document.getElementById("no-more-tracks").classList.add("show");
               document.getElementById("loading-more-tracks").classList.remove("show");
               setTimeout(function(){
@@ -63,7 +65,6 @@ var TrackList =
               that.state.cached = false;
               return;
             }
-            document.getElementById("no-more-tracks").classList.remove("show");
             var totalTracks = JSON.parse(localStorage.tracks).concat(JSON.parse(xmlhttp.responseText));
             localStorage["tracks"] = JSON.stringify(totalTracks);
             that.displayTracks(totalTracks);
