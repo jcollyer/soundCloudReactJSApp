@@ -12,6 +12,7 @@ var TrackList =
     },
     displayTracks: function(tracksArr) {
       var that = this;
+
       if(tracksArr.length > 1){
         var goodTracks = [];
         var trackIds = [];
@@ -52,6 +53,17 @@ var TrackList =
           // var tracksArr = JSON.parse(xmlhttp.responseText);
 
           if (that.state.cached && that.state.fromScroll) {
+
+            if (JSON.parse(xmlhttp.responseText)[0].id && (JSON.parse(localStorage.tracks)[0].id == JSON.parse(xmlhttp.responseText)[0].id)) { //if end of scroll list
+              document.getElementById("no-more-tracks").classList.add("show");
+              document.getElementById("loading-more-tracks").classList.remove("show");
+              setTimeout(function(){
+                document.getElementById("no-more-tracks").classList.remove("show");
+              },3500)
+              that.state.cached = false;
+              return;
+            }
+            document.getElementById("no-more-tracks").classList.remove("show");
             var totalTracks = JSON.parse(localStorage.tracks).concat(JSON.parse(xmlhttp.responseText));
             localStorage["tracks"] = JSON.stringify(totalTracks);
             that.displayTracks(totalTracks);
@@ -135,6 +147,8 @@ var TrackList =
               )
             })}
             <div id="loading-more-tracks"><h3>Loading more tracks...</h3></div>
+            <div id="no-more-tracks"><h3>End of tracks</h3></div>
+
           </div>
         );
       } else {
