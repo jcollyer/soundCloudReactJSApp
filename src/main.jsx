@@ -1,5 +1,6 @@
 var React = require('react');
-var App = require('./App.jsx');
+var Home = require('./home.jsx');
+var App;
 require('./sc-player.jsx');
 
-App = React.render(<App />, document.body);
+App = React.render(<Home />, document.body);
