@@ -15,7 +15,7 @@ require('./style/icon-fonts.css');
 require('./style/overlay.less');
 
 
-var Home =
+var App =
   React.createClass({
     render: function() {
       return (
@@ -41,4 +41,4 @@ var Home =
       );
     }
   });
-module.exports = Home;
+module.exports = App;
