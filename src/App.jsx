@@ -1,6 +1,6 @@
 var React = require('react');
+var Home = require('./js/components/home.jsx');
 var Login = require('./js/components/login.jsx');
-var Genre = require('./js/components/genre.jsx');
 var Playlist = require('./js/components/playlist.jsx');
 var Player = require('./js/components/player.jsx');
 var Favorites = require('./js/components/favorites.jsx');
@@ -28,11 +28,11 @@ var App =
             </div>
             <div id="side-nav">
               <div id="image-placeholder"></div>
+              <Home />
               <Login />
               <Search />
               <Playlist />
               <Favorites />
-              <Genre />
             </div>
           </div>
           <TrackList />
