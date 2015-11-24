@@ -53,10 +53,25 @@ var TrackList =
       var xmlhttp = new XMLHttpRequest();
       xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-          // var tracksArr = JSON.parse(xmlhttp.responseText);
+          var tracksArr = JSON.parse(xmlhttp.responseText);
 
           //hide home
           that.state.showHome = false;
+          //play track
+          // debugger;
+          var tags = tracksArr[0].tag_list;
+          var id = tracksArr[0].id;
+          var duration = tracksArr[0].duration;
+          var title = tracksArr[0].title;
+          var author = tracksArr[0].user.username;
+          var artwork = tracksArr[0].artwork_url;
+          var user_id = tracksArr[0].user.id;
+
+
+          PlayerActions.setTags(tags);
+          PlayerActions.setTrack(id, duration, title, author, artwork, user_id);
+          window.location.hash = "/tracks/"+id+"";
+
 
           if (that.state.cached && that.state.fromScroll) {
             // check if end of scroll
@@ -131,7 +146,7 @@ var TrackList =
       GenreStore.removeListener('change', this.getTracks);
     },
     render: function() {
-      if (this.state.showHome === true) {
+      if (this.state.showHome) {
         return (
           <div id="home-wrapper">
             <h1>Home!</h1>
