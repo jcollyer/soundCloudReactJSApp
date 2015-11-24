@@ -9,7 +9,8 @@ require('../../style/genre.less');
 var TrackList =
   React.createClass({
     getInitialState: function() {
-      return {tracks: [], ready: true, cached: false, offset: 0, fromScroll: false, artistUsername: "", artistId: "", showHome: true};
+      var singleTrackView = window.location.hash.indexOf("/tracks/") > -1;
+      return {tracks: [], ready: true, cached: false, offset: 0, fromScroll: false, artistUsername: "", artistId: "", showHome: true, singleTrackView: singleTrackView};
     },
     displayTracks: function(tracksArr) {
       var that = this;
@@ -71,6 +72,7 @@ var TrackList =
           PlayerActions.setTags(tags);
           PlayerActions.setTrack(id, duration, title, author, artwork, user_id);
           window.location.hash = "/tracks/"+id+"";
+          document.getElementById("player-wrapper").classList.remove("close");
 
 
           if (that.state.cached && that.state.fromScroll) {
@@ -146,39 +148,7 @@ var TrackList =
       GenreStore.removeListener('change', this.getTracks);
     },
     render: function() {
-      if (this.state.showHome) {
-        return (
-          <div id="home-wrapper">
-            <h1>Home!</h1>
-            <Genre />
-          </div>
-        );
-      } else if (this.state.tracks.length > 1) {
-        return (
-          <div id="tracklist-wrapper">
-            {this.state.tracks.map(function(track){
-              var bigImage = track.artwork_url? track.artwork_url.replace('large', 't200x200') : "";
-              var tags = track.tag_list.split(" ");
-              return (
-                <div className='col-md-2' key={track.id}>
-                  <Track
-                        id={track.id}
-                        title={track.title}
-                        author={track.user.username}
-                        artwork={bigImage}
-                        duration={track.duration}
-                        user_id={track.user.id}
-                        tags={track.tag_list}
-                  />
-                </div>
-              )
-            })}
-            <div id="loading-more-tracks"><h3>Loading more tracks...</h3></div>
-            <div id="no-more-tracks"><h3>End of tracks</h3></div>
-
-          </div>
-        );
-      } else {
+      if (this.state.singleTrackView) {
         return (
           <div id="tracklist-wrapper">
             <div className='col-md-2' key={this.state.tracks.id}>
@@ -194,6 +164,40 @@ var TrackList =
             </div>
           </div>
         );
+      } else {
+        if (this.state.showHome) {
+          return (
+            <div id="home-wrapper">
+              <h1>Home!</h1>
+              <Genre />
+            </div>
+          );
+        } else {
+          return (
+            <div id="tracklist-wrapper">
+              {this.state.tracks.map(function(track){
+                var bigImage = track.artwork_url? track.artwork_url.replace('large', 't200x200') : "";
+                var tags = track.tag_list.split(" ");
+                return (
+                  <div className='col-md-2' key={track.id}>
+                    <Track
+                          id={track.id}
+                          title={track.title}
+                          author={track.user.username}
+                          artwork={bigImage}
+                          duration={track.duration}
+                          user_id={track.user.id}
+                          tags={track.tag_list}
+                    />
+                  </div>
+                )
+              })}
+              <div id="loading-more-tracks"><h3>Loading more tracks...</h3></div>
+              <div id="no-more-tracks"><h3>End of tracks</h3></div>
+
+            </div>
+          );
+        }
       }
     }
   });
