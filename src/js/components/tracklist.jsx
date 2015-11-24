@@ -3,12 +3,13 @@ var GenreStore = require('../stores/genre-store.js');
 var PlayerActions = require('../actions/player-actions.js');
 var PlayerStore = require('../stores/player-store.js');
 var Track = require('./track.jsx');
+var Genre = require('./genre.jsx');
 require('../../style/tracklist.less');
-
+require('../../style/genre.less');
 var TrackList =
   React.createClass({
     getInitialState: function() {
-      return {tracks: [], ready: true, cached: false, offset: 0, fromScroll: false, artistUsername: "", artistId: ""};
+      return {tracks: [], ready: true, cached: false, offset: 0, fromScroll: false, artistUsername: "", artistId: "", showHome: true};
     },
     displayTracks: function(tracksArr) {
       var that = this;
@@ -54,9 +55,12 @@ var TrackList =
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
           // var tracksArr = JSON.parse(xmlhttp.responseText);
 
+          //hide home
+          that.state.showHome = false;
+
           if (that.state.cached && that.state.fromScroll) {
             // check if end of scroll
-            if (JSON.parse(localStorage.tracks)[0].id && JSON.parse(xmlhttp.responseText)[0].id && (JSON.parse(localStorage.tracks)[0].id == JSON.parse(xmlhttp.responseText)[0].id)) { 
+            if (JSON.parse(localStorage.tracks)[0].id && JSON.parse(xmlhttp.responseText)[0].id && (JSON.parse(localStorage.tracks)[0].id == JSON.parse(xmlhttp.responseText)[0].id)) {
               document.getElementById("no-more-tracks").classList.add("show");
               document.getElementById("loading-more-tracks").classList.remove("show");
               setTimeout(function(){
@@ -120,14 +124,21 @@ var TrackList =
       });
     },
     componentDidMount: function(){
-      this.getTracks();
+      // this.getTracks();
       GenreStore.on('change', this.getTracks);
     },
     componentWillUnmount: function() {
       GenreStore.removeListener('change', this.getTracks);
     },
     render: function() {
-      if (this.state.tracks.length > 1) {
+      if (this.state.showHome === true) {
+        return (
+          <div id="home-wrapper">
+            <h1>Home!</h1>
+            <Genre />
+          </div>
+        );
+      } else if (this.state.tracks.length > 1) {
         return (
           <div id="tracklist-wrapper">
             {this.state.tracks.map(function(track){
