@@ -1,5 +1,7 @@
 /* this is here due to .less miss-calculating */
 #player-wrapper .player #progress-container,
-#player-wrapper .player-box {
+#player-wrapper .player-box,
+#home-wrapper,
+#tracklist-wrapper  {
   width: calc(100% - 110px);
 }

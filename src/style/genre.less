@@ -1,0 +1,26 @@
+#genre-wrapper {
+  border-top: 2px solid;
+  bottom: 7px;
+  margin: 50px 0px;
+  &:after {
+    content: "tags";
+    left: 7px;
+    position: absolute;
+    top: -22px;
+  }
+  #genre-wrapper-scroll {
+    max-height: 160px;
+    overflow: scroll;
+    button {
+      border: none;
+      background: #333;
+      color: #555;
+      border-radius: 2px;
+      margin: 4px 0px 0px 7px;
+      max-width: 100px;
+      &:hover {
+        background: #222;
+      }
+    }
+  }
+}
