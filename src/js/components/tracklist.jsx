@@ -10,11 +10,11 @@ var TrackList =
   React.createClass({
     getInitialState: function() {
       var singleTrackView = window.location.hash.indexOf("/tracks/") > -1;
-      return {tracks: [], ready: true, cached: false, offset: 0, fromScroll: false, artistUsername: "", artistId: "", showHome: true, singleTrackView: singleTrackView};
+      var showHome = !singleTrackView;
+      return {tracks: [], ready: true, cached: false, offset: 0, fromScroll: false, artistUsername: "", artistId: "", showHome: showHome, singleTrackView: singleTrackView};
     },
     displayTracks: function(tracksArr) {
       var that = this;
-
       if(tracksArr.length > 1){
         var goodTracks = [];
         var trackIds = [];
@@ -35,7 +35,7 @@ var TrackList =
         if (tracksArr.user) {
           var artistUsername = tracksArr.user.username;
           var artistId = tracksArr.user.id;
-          that.setState({tracks: tracksArr, artistUsername: artistUsername, artistId: artistId});
+          that.setState({tracks: [tracksArr]});
         }
       }
     },
@@ -56,23 +56,26 @@ var TrackList =
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
           var tracksArr = JSON.parse(xmlhttp.responseText);
 
+          //play track if no player from home
+          if (that.state.showHome) {
+            var tags = tracksArr[0].tag_list;
+            var id = tracksArr[0].id;
+            var duration = tracksArr[0].duration;
+            var title = tracksArr[0].title;
+            var author = tracksArr[0].user.username;
+            var artwork = tracksArr[0].artwork_url;
+            var user_id = tracksArr[0].user.id;
+
+            PlayerActions.setTags(tags);
+            PlayerActions.setTrack(id, duration, title, author, artwork, user_id);
+            window.location.hash = "/tracks/"+id+"";
+            document.getElementById("player-wrapper").classList.remove("close");
+            document.getElementById("home-side-nav-link").classList.remove("active-side-nav-button");
+
+            that.state.cached = false;
+          }
           //hide home
           that.state.showHome = false;
-          //play track
-          // debugger;
-          var tags = tracksArr[0].tag_list;
-          var id = tracksArr[0].id;
-          var duration = tracksArr[0].duration;
-          var title = tracksArr[0].title;
-          var author = tracksArr[0].user.username;
-          var artwork = tracksArr[0].artwork_url;
-          var user_id = tracksArr[0].user.id;
-
-
-          PlayerActions.setTags(tags);
-          PlayerActions.setTrack(id, duration, title, author, artwork, user_id);
-          window.location.hash = "/tracks/"+id+"";
-          document.getElementById("player-wrapper").classList.remove("close");
 
 
           if (that.state.cached && that.state.fromScroll) {
@@ -103,7 +106,7 @@ var TrackList =
       xmlhttp.send();
     },
     getTracks: function() {
-      if (window.location.hash.indexOf("/tracks/") >= 1){
+      if (this.state.singleTrackView){
         var trackId = window.location.hash.split("/")[2];
         this.getTracksAjax({type:"singleTrack",name: [trackId]});
       } else {
@@ -141,63 +144,47 @@ var TrackList =
       });
     },
     componentDidMount: function(){
-      // this.getTracks();
+      if (!this.state.showHome) {
+        this.getTracks();
+      }
+
       GenreStore.on('change', this.getTracks);
     },
     componentWillUnmount: function() {
       GenreStore.removeListener('change', this.getTracks);
     },
     render: function() {
-      if (this.state.singleTrackView) {
+      if (this.state.showHome) {
         return (
-          <div id="tracklist-wrapper">
-            <div className='col-md-2' key={this.state.tracks.id}>
-              <Track
-                    id={this.state.tracks.id}
-                    title={this.state.tracks.title}
-                    author={this.state.artistUsername}
-                    artwork={this.state.tracks.artwork_url}
-                    duration={this.state.tracks.duration}
-                    user_id={this.state.artistId}
-                    tags={this.state.tracks.tag_list}
-              />
-            </div>
+          <div id="home-wrapper">
+            <h1>Home!</h1>
+            <Genre />
           </div>
         );
       } else {
-        if (this.state.showHome) {
-          return (
-            <div id="home-wrapper">
-              <h1>Home!</h1>
-              <Genre />
-            </div>
-          );
-        } else {
-          return (
-            <div id="tracklist-wrapper">
-              {this.state.tracks.map(function(track){
-                var bigImage = track.artwork_url? track.artwork_url.replace('large', 't200x200') : "";
-                var tags = track.tag_list.split(" ");
-                return (
-                  <div className='col-md-2' key={track.id}>
-                    <Track
-                          id={track.id}
-                          title={track.title}
-                          author={track.user.username}
-                          artwork={bigImage}
-                          duration={track.duration}
-                          user_id={track.user.id}
-                          tags={track.tag_list}
-                    />
-                  </div>
-                )
-              })}
-              <div id="loading-more-tracks"><h3>Loading more tracks...</h3></div>
-              <div id="no-more-tracks"><h3>End of tracks</h3></div>
-
-            </div>
-          );
-        }
+        return (
+          <div id="tracklist-wrapper">
+            {this.state.tracks.map(function(track){
+              var bigImage = track.artwork_url? track.artwork_url.replace('large', 't200x200') : "";
+              var tags = track.tag_list.split(" ");
+              return (
+                <div className='col-md-2' key={track.id}>
+                  <Track
+                        id={track.id}
+                        title={track.title}
+                        author={track.user.username}
+                        artwork={bigImage}
+                        duration={track.duration}
+                        user_id={track.user.id}
+                        tags={track.tag_list}
+                  />
+                </div>
+              )
+            })}
+            <div id="loading-more-tracks"><h3>Loading more tracks...</h3></div>
+            <div id="no-more-tracks"><h3>End of tracks</h3></div>
+          </div>
+        );
       }
     }
   });
