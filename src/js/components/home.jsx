@@ -1,9 +1,10 @@
 var React = require('react');
+var HomeActions = require('../actions/home-actions.js');
 
 var Home =
   React.createClass({
     handleClick: function(){
-      alert("click")
+      HomeActions.show();
     },
     render: function() {
       return (
