@@ -2,6 +2,7 @@ var React = require('react');
 var GenreStore = require('../stores/genre-store.js');
 var PlayerActions = require('../actions/player-actions.js');
 var PlayerStore = require('../stores/player-store.js');
+var HomeStore = require('../stores/home-store.js');
 var Track = require('./track.jsx');
 var Genre = require('./genre.jsx');
 require('../../style/tracklist.less');
@@ -105,10 +106,15 @@ var TrackList =
       xmlhttp.open("GET", url, true);
       xmlhttp.send();
     },
+    updateView: function() {
+      this.setState({showHome: true});
+    },
     getTracks: function() {
       if (this.state.singleTrackView){
         var trackId = window.location.hash.split("/")[2];
         this.getTracksAjax({type:"singleTrack",name: [trackId]});
+        // remove active class when single track view
+        document.getElementById("home-side-nav-link").classList.remove("active-side-nav-button");
       } else {
         var genre = GenreStore.getGenre();
         var authorId = PlayerStore.getTrack().user_id || PlayerStore.getTrack().id || "";
@@ -149,9 +155,11 @@ var TrackList =
       }
 
       GenreStore.on('change', this.getTracks);
+      HomeStore.on('change', this.updateView);
     },
     componentWillUnmount: function() {
       GenreStore.removeListener('change', this.getTracks);
+      HomeStore.removeListener('change', this.updateView);
     },
     render: function() {
       if (this.state.showHome) {
