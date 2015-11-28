@@ -10,6 +10,12 @@ var AppActions = {
       verb: verb,
       playlistId: playlistId
     })
+  },
+  showHome:function(bool){
+    AppDispatcher.handleViewAction({
+      actionType: AppConstants.SHOW_HOME,
+      bool: bool
+    })
   }
 }
 

@@ -1,10 +1,10 @@
 var React = require('react');
-var Home = require('./js/components/home.jsx');
+var HomeLink = require('./js/components/home-link.jsx');
+var ViewSwitch = require('./js/components/view-switch.jsx');
 var Login = require('./js/components/login.jsx');
 var Playlist = require('./js/components/playlist.jsx');
 var Player = require('./js/components/player.jsx');
 var Favorites = require('./js/components/favorites.jsx');
-var TrackList = require('./js/components/tracklist.jsx');
 var Search = require('./js/components/search.jsx');
 var Overlay = require('./js/components/overlay.jsx');
 var PlaylistModal = require('./js/components/playlistModal.jsx');
@@ -17,6 +17,7 @@ require('./style/overlay.less');
 
 var App =
   React.createClass({
+
     render: function() {
       return (
         <div>
@@ -28,15 +29,15 @@ var App =
             </div>
             <div id="side-nav">
               <div id="image-placeholder"></div>
-              <Home />
+
+              <HomeLink />
               <Login />
               <Search />
               <Playlist />
               <Favorites />
             </div>
           </div>
-          <TrackList />
-
+          <ViewSwitch />
         </div>
       );
     }

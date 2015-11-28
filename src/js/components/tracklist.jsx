@@ -2,9 +2,8 @@ var React = require('react');
 var GenreStore = require('../stores/genre-store.js');
 var PlayerActions = require('../actions/player-actions.js');
 var PlayerStore = require('../stores/player-store.js');
-var HomeStore = require('../stores/home-store.js');
 var Track = require('./track.jsx');
-var Genre = require('./genre.jsx');
+
 require('../../style/tracklist.less');
 require('../../style/genre.less');
 var TrackList =
@@ -106,9 +105,6 @@ var TrackList =
       xmlhttp.open("GET", url, true);
       xmlhttp.send();
     },
-    updateView: function() {
-      this.setState({showHome: true});
-    },
     getTracks: function() {
       if (this.state.singleTrackView){
         var trackId = window.location.hash.split("/")[2];
@@ -153,47 +149,36 @@ var TrackList =
       if (!this.state.showHome) {
         this.getTracks();
       }
-
+      
       GenreStore.on('change', this.getTracks);
-      HomeStore.on('change', this.updateView);
     },
     componentWillUnmount: function() {
       GenreStore.removeListener('change', this.getTracks);
-      HomeStore.removeListener('change', this.updateView);
     },
     render: function() {
-      if (this.state.showHome) {
-        return (
-          <div id="home-wrapper">
-            <h1>Home!</h1>
-            <Genre />
-          </div>
-        );
-      } else {
-        return (
-          <div id="tracklist-wrapper">
-            {this.state.tracks.map(function(track){
-              var bigImage = track.artwork_url? track.artwork_url.replace('large', 't200x200') : "";
-              var tags = track.tag_list.split(" ");
-              return (
-                <div className='col-md-2' key={track.id}>
-                  <Track
-                        id={track.id}
-                        title={track.title}
-                        author={track.user.username}
-                        artwork={bigImage}
-                        duration={track.duration}
-                        user_id={track.user.id}
-                        tags={track.tag_list}
-                  />
-                </div>
-              )
-            })}
-            <div id="loading-more-tracks"><h3>Loading more tracks...</h3></div>
-            <div id="no-more-tracks"><h3>End of tracks</h3></div>
-          </div>
-        );
-      }
+      return (
+        <div id="tracklist-wrapper">
+          {this.state.tracks.map(function(track){
+            var bigImage = track.artwork_url? track.artwork_url.replace('large', 't200x200') : "";
+            var tags = track.tag_list.split(" ");
+            return (
+              <div className='col-md-2' key={track.id}>
+                <Track
+                      id={track.id}
+                      title={track.title}
+                      author={track.user.username}
+                      artwork={bigImage}
+                      duration={track.duration}
+                      user_id={track.user.id}
+                      tags={track.tag_list}
+                />
+              </div>
+            )
+          })}
+          <div id="loading-more-tracks"><h3>Loading more tracks...</h3></div>
+          <div id="no-more-tracks"><h3>End of tracks</h3></div>
+        </div>
+      );
     }
   });
 module.exports = TrackList;

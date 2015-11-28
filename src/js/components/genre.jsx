@@ -1,15 +1,18 @@
 var React = require('react');
+var Appctions = require('../actions/app-actions.js');
 var GenreActions = require('../actions/genre-actions.js');
-var GenreStore = require('../stores/genre-store.js');
+var AppActions = require('../actions/app-actions.js');
+// var GenreStore = require('../stores/genre-store.js');
 
 var Genre =
   React.createClass({
-    getInitialState: function() {
-      GenreActions.setGenre({type: "genre", name: "blake"});
-      var genre = GenreStore.getGenre().name;
-      return {genre: genre};
-    },
+    // getInitialState: function() {
+    //   GenreActions.setGenre({type: "genre", name: "blake"});
+    //   var genre = GenreStore.getGenre().name;
+    //   return {genre: genre};
+    // },
     handleClick: function(event) {
+      AppActions.showHome(false)
       var genre = {type: "genre", name: event.target.getAttribute("data-genre")};
       GenreActions.setGenre(genre);
     },

@@ -8,6 +8,7 @@ var PlaylistModalActions = require('../actions/playlistModal-actions.js');
 var CHANGE_EVENT = "change";
 
 var _userId = "";
+var _showHomePage = true;
 var userAction = {};
 window.isLoggedInSC = false;
 
@@ -33,6 +34,11 @@ function _logIn(action){
       setActionCallback(userAction, _userId);
     });
   });
+};
+
+function _showHome(bool){
+  _showHomePage = bool;
+  AppStore.emit('change');
 };
 
 function setActionCallback(userAction, _userId) {
@@ -95,12 +101,24 @@ var AppStore = assign({}, EventEmitter.prototype, {
     }
   },
 
+  shouldShowHome:function(){
+    if (_showHomePage){
+      return true;
+    } else {
+      return false;
+    }
+  },
+
   dispatcherIndex:AppDispatcher.register(function(payload){
     var action = payload.action; // this is our action from handleViewAction
     switch(action.actionType){
 
       case AppConstants.LOGIN:
         _logIn(payload.action);
+        break;
+
+      case AppConstants.SHOW_HOME:
+        _showHome(payload.action.bool);
         break;
     }
 
