@@ -2,6 +2,7 @@ var React = require('react');
 var GenreStore = require('../stores/genre-store.js');
 var PlayerActions = require('../actions/player-actions.js');
 var PlayerStore = require('../stores/player-store.js');
+var AppActions = require('../actions/app-actions.js');
 var Track = require('./track.jsx');
 
 require('../../style/tracklist.less');
@@ -9,9 +10,9 @@ require('../../style/genre.less');
 var TrackList =
   React.createClass({
     getInitialState: function() {
-      var singleTrackView = window.location.hash.indexOf("/tracks/") > -1;
-      var showHome = !singleTrackView;
-      return {tracks: [], ready: true, cached: false, offset: 0, fromScroll: false, artistUsername: "", artistId: "", showHome: showHome, singleTrackView: singleTrackView};
+      var urlBool = window.location.hash.indexOf("/tracks/") > -1;
+      var showHome = !urlBool;
+      return {tracks: [], ready: true, cached: false, offset: 0, fromScroll: false, artistUsername: "", artistId: "", showHome: showHome, singleTrackView: urlBool};
     },
     displayTracks: function(tracksArr) {
       var that = this;
@@ -106,6 +107,12 @@ var TrackList =
       xmlhttp.send();
     },
     getTracks: function() {
+      if (window.location.hash.indexOf("/tracks/") > -1) {
+        this.state.singleTrackView = true;
+      } else {
+        this.state.singleTrackView = false;
+      }
+
       if (this.state.singleTrackView){
         var trackId = window.location.hash.split("/")[2];
         this.getTracksAjax({type:"singleTrack",name: [trackId]});
@@ -149,7 +156,7 @@ var TrackList =
       if (!this.state.showHome) {
         this.getTracks();
       }
-      
+
       GenreStore.on('change', this.getTracks);
     },
     componentWillUnmount: function() {

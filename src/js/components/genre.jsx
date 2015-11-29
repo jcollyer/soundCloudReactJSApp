@@ -1,7 +1,6 @@
 var React = require('react');
 var Appctions = require('../actions/app-actions.js');
 var GenreActions = require('../actions/genre-actions.js');
-var AppActions = require('../actions/app-actions.js');
 // var GenreStore = require('../stores/genre-store.js');
 
 var Genre =
@@ -12,7 +11,6 @@ var Genre =
     //   return {genre: genre};
     // },
     handleClick: function(event) {
-      AppActions.showHome(false)
       var genre = {type: "genre", name: event.target.getAttribute("data-genre")};
       GenreActions.setGenre(genre);
     },

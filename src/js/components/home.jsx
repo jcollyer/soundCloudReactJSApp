@@ -5,7 +5,7 @@ var Home =
   React.createClass({
     render: function() {
       return (
-        <div id="home-wrapper">
+        <div id="home-page">
           <h1>Home!</h1>
           <Genre />
         </div>

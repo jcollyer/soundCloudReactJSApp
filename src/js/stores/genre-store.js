@@ -1,5 +1,6 @@
 var GenreDispatcher = require('../dispatchers/genre-dispatcher');
 var GenreConstants = require('../constants/genre-constants');
+var AppActions = require('../actions/app-actions.js');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 
@@ -9,6 +10,7 @@ var _genre = {kind: "", name: ""};
 
 function _setGenre(genre) {
   _genre = genre;
+  AppActions.showHome(false);
 };
 
 var GenreStore = assign({}, EventEmitter.prototype, {

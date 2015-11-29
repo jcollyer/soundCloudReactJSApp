@@ -12,7 +12,7 @@ button {
   position: fixed;
   top: 0px;
   width: 100%;
-  z-index: 1;
+  z-index: 2;
 }
 
 img[src='Error.src']{
@@ -25,9 +25,17 @@ img[src='Error.src']{
   }
 }
 
+#home-wrapper.show {
+  display: block;
+}
 #home-wrapper {
-  background: #eee;
-  float: right;
-  padding-top: 40px;
-  height: 100%;
+  display: none;
+  #home-page {
+    background: #eee;
+    right: 0px;
+    margin-top: 110px;
+    height: 100%;
+    position: fixed;
+    z-index: 1;
+  }
 }
