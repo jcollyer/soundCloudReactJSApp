@@ -12,7 +12,9 @@ var TrackList =
     getInitialState: function() {
       var urlBool = window.location.hash.indexOf("/tracks/") > -1;
       var showHome = !urlBool;
-      return {tracks: [], ready: true, cached: false, offset: 0, fromScroll: false, artistUsername: "", artistId: "", showHome: showHome, singleTrackView: urlBool};
+      var showPlayer = urlBool || false;
+
+      return {tracks: [], ready: true, cached: false, offset: 0, fromScroll: false, artistUsername: "", artistId: "", showHome: showHome, showPlayer: showPlayer, singleTrackView: urlBool, tracksArr: [], tagsArr: []};
     },
     displayTracks: function(tracksArr) {
       var that = this;
@@ -55,24 +57,15 @@ var TrackList =
       var xmlhttp = new XMLHttpRequest();
       xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-          var tracksArr = JSON.parse(xmlhttp.responseText);
-
-          //play track if no player from home
-          if (that.state.showHome) {
-            var tags = tracksArr[0].tag_list;
-            var id = tracksArr[0].id;
-            var duration = tracksArr[0].duration;
-            var title = tracksArr[0].title;
-            var author = tracksArr[0].user.username;
-            var artwork = tracksArr[0].artwork_url;
-            var user_id = tracksArr[0].user.id;
-
-            PlayerActions.setTags(tags);
-            PlayerActions.setTrack(id, duration, title, author, artwork, user_id);
-            window.location.hash = "/tracks/"+id+"";
-            document.getElementById("player-wrapper").classList.remove("close");
-            that.state.cached = false;
+          // var tracksArr = JSON.parse(xmlhttp.responseText);
+          that.state.tracksArr = JSON.parse(xmlhttp.responseText);
+          if (that.state.tracksArr[0]){
+            that.state.tagsArr = that.state.tracksArr[0].tag_list;
+            that.state.tracksArr = that.state.tracksArr[0];
+          } else {
+            that.state.tagsArr = that.state.tracksArr.tag_list;
           }
+
           //hide home
           that.state.showHome = false;
 
@@ -93,9 +86,14 @@ var TrackList =
             that.state.fromScroll = false;
             document.getElementById("loading-more-tracks").classList.remove("show");
           } else {
+            //add to local storage
             localStorage["tracks"] = xmlhttp.responseText;
             that.state.cached = true;
             that.displayTracks(JSON.parse(xmlhttp.responseText));
+            if(that.state.showPlayer) {
+              //show player
+              that.showthePlayer(that.state.tracksArr, that.state.tagsArr);
+            }
           }
           that.state.ready = true;
         }
@@ -103,10 +101,22 @@ var TrackList =
       xmlhttp.open("GET", url, true);
       xmlhttp.send();
     },
+    showthePlayer: function(tracksArr, tagsArr) {
+      var id = tracksArr.id;
+      var duration = tracksArr.duration;
+      var title = tracksArr.title;
+      var author = tracksArr.user.username;
+      var artwork = tracksArr.artwork_url;
+      var user_id = tracksArr.user.id;
+      PlayerActions.setTrack(id, duration, title, author, artwork, user_id);
+      PlayerActions.setTags(tagsArr);
+      document.getElementById("player-wrapper").classList.remove("close");
+      this.state.showPlayer = false;
+    },
     getTracks: function() {
       // un-active home link
       document.getElementById("home-side-nav-link").classList.remove("active-side-nav-button");
-      
+
       if (window.location.hash.indexOf("/tracks/") > -1) {
         this.state.singleTrackView = true;
       } else {
@@ -154,6 +164,7 @@ var TrackList =
     },
     componentDidMount: function(){
       if (!this.state.showHome) {
+
         this.getTracks();
       }
 
