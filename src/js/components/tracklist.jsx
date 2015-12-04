@@ -12,9 +12,8 @@ var TrackList =
     getInitialState: function() {
       var urlBool = window.location.hash.indexOf("/tracks/") > -1;
       var showHome = !urlBool;
-      var showPlayer = urlBool || false;
 
-      return {tracks: [], ready: true, cached: false, offset: 0, fromScroll: false, artistUsername: "", artistId: "", showHome: showHome, showPlayer: showPlayer, singleTrackView: urlBool, tracksArr: [], tagsArr: []};
+      return {tracks: [], ready: true, cached: false, offset: 0, fromScroll: false, artistUsername: "", artistId: "", showHome: showHome, showPlayer: true, singleTrackView: urlBool, tracksArr: [], tagsArr: []};
     },
     displayTracks: function(tracksArr) {
       var that = this;
@@ -90,6 +89,7 @@ var TrackList =
             localStorage["tracks"] = xmlhttp.responseText;
             that.state.cached = true;
             that.displayTracks(JSON.parse(xmlhttp.responseText));
+            
             if(that.state.showPlayer) {
               //show player
               that.showthePlayer(that.state.tracksArr, that.state.tagsArr);
