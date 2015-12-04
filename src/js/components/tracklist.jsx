@@ -71,13 +71,10 @@ var TrackList =
             PlayerActions.setTrack(id, duration, title, author, artwork, user_id);
             window.location.hash = "/tracks/"+id+"";
             document.getElementById("player-wrapper").classList.remove("close");
-            document.getElementById("home-side-nav-link").classList.remove("active-side-nav-button");
-
             that.state.cached = false;
           }
           //hide home
           that.state.showHome = false;
-
 
           if (that.state.cached && that.state.fromScroll) {
             // check if end of scroll
@@ -107,6 +104,9 @@ var TrackList =
       xmlhttp.send();
     },
     getTracks: function() {
+      // un-active home link
+      document.getElementById("home-side-nav-link").classList.remove("active-side-nav-button");
+      
       if (window.location.hash.indexOf("/tracks/") > -1) {
         this.state.singleTrackView = true;
       } else {
