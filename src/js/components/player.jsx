@@ -255,7 +255,7 @@ var Player =
                 {this.state.tags.map(function(tag){
                   var cleanTag = tag.replace(/['"]+/g, '');
                   return (
-                    <button onClick={that.setTags} data-genre={cleanTag}>{cleanTag}</button>
+                    <button onClick={that.setTags} data-genre={cleanTag} key={tag}>{cleanTag}</button>
                   )
                 })}
               </div>
@@ -265,7 +265,7 @@ var Player =
             </div>
           </div>
 
-          <iframe id="soundcloud_widget" width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F1848538&show_artwork=true"></iframe>
+          <iframe id="soundcloud_widget" width="100%" height="166" scrolling="no" frameBorder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F1848538&show_artwork=true"></iframe>
 
         </div>
       );
