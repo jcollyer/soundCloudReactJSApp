@@ -8,7 +8,7 @@
   display: none;
 }
 #player-wrapper {
-  background: #eee;
+  background: #fff;
   float: right;
   height: 110px;
   position: absolute;
@@ -20,14 +20,23 @@
     width: 100%;
 
     .player-image {
-      float: left;
-      width: 110px;
+      background-color: white;
+      border-radius: 50%;
+      box-shadow: 0px -1px 7px #000;
+      position: absolute;
+      width: 200px;
+      margin: -50px auto;
+      left: 0px;
+      right: 0px;
+      padding: 2px;
       img {
         width: 100%;
+        border-radius: 50%;
       }
     }
     .player-box {
       float: left;
+      width: 100%;
       p {
         marign: 0px;
       }
@@ -36,22 +45,25 @@
       }
       .player-info {
         float: left;
-        width: 65%;
+        width: 75%;
         button {
           border: none;
           background-color: transparent;
           color: #aaa;
           padding: 0px;
-          margin: 5px;
           &:hover {
             color: #999;
           }
         }
         .player-actions {
           float: left;
-          width: 50px;
+          width: 54px;
+          background: #333;
           button {
-            font-size: 40px;
+            font-size: 53px;
+            &:first-child{
+              border-bottom: 1px solid #fff;
+            }
           }
           .lnr {
             font-size: 25px;
@@ -59,7 +71,7 @@
         }
         .player-details {
           float: left;
-          width: 55%;
+          width: 45%;
           h3 {
             color: #999;
             cursor: pointer;
@@ -79,7 +91,8 @@
         }
         .playlist-controls {
           float: left;
-          width: 35%;
+          padding: 14px 0px 0px 20px;
+          width: 45%;
           .player-seek {
             width: 100%;
             button {
@@ -87,11 +100,12 @@
               margin: 0px;
             }
             button#toggle {
+              background: #555;
               border: 2px solid;
               border-radius: 50%;
               font-size: 50px;
               height: 59px;
-              margin: 0px 3px;
+              margin: 0px 83px;
               position: relative;
               transform: translateY(7px);
               width: 59px;
@@ -107,32 +121,11 @@
               }
             }
           }
-          .player-volume {
-            margin: 15px 0px;
-            width: 100%;
-            #volume-container{
-              background: #ccc;
-              border-radius: 3px;
-              float: left;
-              height: 15px;
-              width: 100px;
-              #volume-bar {
-                background: #999;
-                border-radius: 3px;
-                height: 100%;
-              }
-            }
-            button {
-              float: left;
-              font-size: 23px;
-              margin: -5px 3px 0px 3px;
-            }
-          }
         }
       }
       .player-tags {
         float: left;
-        width: 30%;
+        width: 18%;
         h3 {
           border-bottom: 2px solid #ddd;
           color: #aaa;
@@ -157,16 +150,73 @@
           }
         }
       }
+      .player-volume {
+        float: left;
+        width: 2%;
+        padding-left: 65px;
+        #volume-container{
+          background: #111;
+          right: 0px;
+          height: 110px;
+          width: 30px;
+          position: absolute;
+          #volume-bar {
+            background: #555;
+            height: 80%;
+            bottom: 0px;
+            position: absolute;
+            width: 30px;
+          }
+        }
+        button {
+          color: #ccc;
+          float: left;
+          font-size: 23px;
+          margin: 5px 0px 40px 0px;
+          z-index: 9;
+          border: none;
+          position: relative;
+        }
+      }
     }
     #progress-container {
-      background: #ddd;
-      bottom: 0px;
+      top: 0px;
       position: absolute;
       width: 100%;
       .progress{
         background: #999;
-        height: 12px;
+        height: 3px;
       }
     }
   }
+}
+
+@-webkit-keyframes spinnerRotate
+{
+    from{-webkit-transform:rotate(0deg);}
+    to{-webkit-transform:rotate(360deg);}
+}
+@-moz-keyframes spinnerRotate
+{
+    from{-moz-transform:rotate(0deg);}
+    to{-moz-transform:rotate(360deg);}
+}
+@-ms-keyframes spinnerRotate
+{
+    from{-ms-transform:rotate(0deg);}
+    to{-ms-transform:rotate(360deg);}
+}
+.record-spin{
+    -webkit-animation-name: spinnerRotate;
+    -webkit-animation-duration: 5s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-name: spinnerRotate;
+    -moz-animation-duration: 5s;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-timing-function: linear;
+    -ms-animation-name: spinnerRotate;
+    -ms-animation-duration: 5s;
+    -ms-animation-iteration-count: infinite;
+    -ms-animation-timing-function: linear;
 }

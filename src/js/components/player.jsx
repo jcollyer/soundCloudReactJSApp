@@ -25,9 +25,8 @@ var Player =
         user_id: "",
         duration: 0,
         currentTime: 0,
-        currentVolume: .25,
+        currentVolume: 70,
         playing: false,
-        mute: false,
         tags: [],
         uPlaylistNames: [],
         connectedToSoundCloud: false
@@ -61,13 +60,17 @@ var Player =
       player.pause();
       this.setState({playing: false});
     },
-    muteTrack: function() {
-      player.setVolume(0);
-      this.setState({mute: true, currentVolume: 0});
+    lowerTrackVolume: function() {
+      var newVolume = this.state.currentVolume - 10;
+      var newSCVolume = newVolume/100;
+      player.setVolume(newSCVolume);
+      this.setState({currentVolume: newVolume});
     },
-    fullVolumeTrack: function() {
-      player.setVolume(1);
-      this.setState({mute: false, currentVolume: 100});
+    increaseTrackVolume: function() {
+      var newVolume = this.state.currentVolume + 10;
+      var newSCVolume = newVolume/100;
+      player.setVolume(newSCVolume);
+      this.setState({currentVolume: newVolume});
     },
     getPlayer: function() {
       var that = this;
@@ -140,8 +143,7 @@ var Player =
         duration: track.duration,
         user_id: track.user_id,
         currentTime: 0,
-        playing: false,
-        mute: false
+        playing: false
       });
       this.getPlayer();
       this.updateTags();
@@ -150,13 +152,6 @@ var Player =
       // var oldActiveTrack = document.querySelector("._active-track");
       // if (oldActiveTrack != null) oldActiveTrack.classList.remove("_active-track");
       // document.getElementById(track.id).classList.add("_active-track");
-    },
-    updateTrackVolume: function(event) {
-      var clickLocation = event.clientX - event.target.getBoundingClientRect().left;
-      var volume = clickLocation/100
-      player.setVolume(volume);
-
-      this.setState({currentVolume: clickLocation});
     },
     updateTrackTime: function(event) {
       var width = document.getElementById("progress-container").clientWidth;
@@ -212,7 +207,7 @@ var Player =
       return (
         <div className="player">
           <div className="player-image">
-            <img className="track-artwork" src={this.state.artwork} />
+            <img className="track-artwork record-spin" src={this.state.artwork} />
           </div>
           <div className="player-box">
             <div className="player-info">
@@ -240,13 +235,6 @@ var Player =
                     <div className="icon-skip-forward"></div>
                   </button>
                 </div>
-                <div className="player-volume">
-                  <button id="mute" onClick={this.muteTrack} className='icon-mute'></button>
-                  <div id="volume-container" onClick={this.updateTrackVolume}>
-                    <div id="volume-bar" style={{width: this.state.currentVolume + '%'}}></div>
-                  </div>
-                  <button onClick={this.fullVolumeTrack} className='icon-volume'></button>
-                </div>
               </div>
             </div>
             <div className="player-tags">
@@ -259,6 +247,13 @@ var Player =
                   )
                 })}
               </div>
+            </div>
+            <div className="player-volume">
+              <div id="volume-container">
+                <div id="volume-bar" style={{height: this.state.currentVolume + '%'}}></div>
+              </div>
+              <button onClick={this.increaseTrackVolume} className='icon-volume'></button>
+              <button onClick={this.lowerTrackVolume} className='icon-mute'></button>
             </div>
             <div id="progress-container" onClick={this.updateTrackTime}>
               <div className="progress" style={{width: this.state.currentTime + '%'}}></div>
