@@ -24,7 +24,7 @@ var App =
           <Overlay />
           <PlaylistModal />
           <div id="fixed-frame">
-            <div id="player-wrapper" className="close">
+            <div id="player-wrapper" className="hide">
               <Player />
             </div>
             <div id="side-nav">

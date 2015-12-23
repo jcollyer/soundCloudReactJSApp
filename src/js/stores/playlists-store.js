@@ -70,7 +70,7 @@ function _addPlaylist(userId, playlistName) {
       console.log("Some error occured: " + error.message);
     }else{
       // hide "choose playlist menu" and  "new playlist" menu
-      document.getElementById("playlist-select-menu").classList.remove("show");
+      document.getElementById("playlist-select-modal").classList.remove("show");
       document.getElementById('new-playlist').classList.remove('show');
       _setPlaylists(userId);
       PlaylistsActions.openPlaylists();
@@ -102,7 +102,7 @@ function _addPlaylist_track(playlistId) {
           if(error){
             console.log("Some error occured: " + error.message);
           }else{
-            document.getElementById("playlist-select-menu").classList.remove("show");
+            document.getElementById("playlist-select-modal").classList.remove("show");
             _setPlaylists(userId);
             PlaylistsActions.openPlaylists();
           }

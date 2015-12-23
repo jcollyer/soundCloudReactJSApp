@@ -4,7 +4,7 @@
   left: -99999px;
 }
 
-#player-wrapper.close {
+#player-wrapper.hide {
   display: none;
 }
 #player-wrapper {
@@ -46,23 +46,24 @@
       .player-info {
         float: left;
         width: 75%;
-        button {
-          border: none;
-          background-color: transparent;
-          color: #aaa;
-          padding: 0px;
-          &:hover {
-            color: #999;
-          }
-        }
         .player-actions {
           float: left;
           width: 54px;
           background: #333;
           button {
+            border-right: 1px solid #222;
+            color: #aaa;
             font-size: 53px;
-            &:first-child{
-              border-bottom: 1px solid #fff;
+            padding: 0px;
+            .icon-heart {
+              border-bottom: 1px solid #222;
+            }
+            .icon-circle-plus {
+              border-top: 1px solid #444;
+            }
+            &:hover {
+              background: #444;
+              color: #ddd;
             }
           }
           .lnr {
@@ -75,12 +76,13 @@
           h3 {
             color: #999;
             cursor: pointer;
-            font-size: 30px;
+            font-size: 20px;
             margin: 0px;
             text-align: center;
             width: 100%;
+            text-decoration: underline;
             &:hover {
-              text-decoration: underline;
+              color: #777;
             }
           }
           h4 {
@@ -98,14 +100,19 @@
             button {
               font-size: 45px;
               margin: 0px;
+              color: #aaa;
+              padding: 0px;
+              &:hover {
+                color: #777;
+              }
             }
             button#toggle {
-              background: #555;
+              background: #fff;
               border: 2px solid;
               border-radius: 50%;
               font-size: 50px;
               height: 59px;
-              margin: 0px 83px;
+              margin: 0px 80px;
               position: relative;
               transform: translateY(7px);
               width: 59px;
@@ -125,7 +132,18 @@
       }
       .player-tags {
         float: left;
+        margin-top: 20px;
         width: 18%;
+        position: relative;
+        &:after {
+          content: 'tags';
+          position: absolute;
+          left: -32px;
+          top: 40%;
+          transform: rotate(270deg);
+          color: #999;
+          font-size: 18px;
+        }
         h3 {
           border-bottom: 2px solid #ddd;
           color: #aaa;
@@ -134,18 +152,18 @@
           text-align: center;
         }
         .player-tag-buttons {
+          border-left: 2px solid #999;
           width: 100%;
           height: 67px;
           overflow: scroll;
           button {
-            border: none;
             background: #ddd;
             color: #999;
             cursor: pointer;
             border-radius: 2px;
             margin: 2px 3px;
             &:hover {
-              background: #cfcfcf;
+              background: #000;
             }
           }
         }
@@ -172,20 +190,21 @@
           color: #ccc;
           float: left;
           font-size: 23px;
-          margin: 5px 0px 40px 0px;
+          margin: 5px 0px 40px 3px;
           z-index: 9;
-          border: none;
           position: relative;
         }
       }
     }
     #progress-container {
-      top: 0px;
+      bottom: 34px;
       position: absolute;
       width: 100%;
+      z-index: -1;
       .progress{
-        background: #999;
-        height: 3px;
+        background: rgba(255,255,255,0.3);
+        height: 1px;
+        box-shadow: -3px 3px 6px #000;
       }
     }
   }

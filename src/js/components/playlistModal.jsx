@@ -18,7 +18,7 @@ var PlaylistModal =
         var playlists = PlaylistsStore.getPlaylists();
         that.setState({playlists:playlists});
       },500)
-      document.getElementById("playlist-select-menu").classList.add("show");
+      document.getElementById("playlist-select-modal").classList.add("show");
     },
     selectPlaylist: function(playlistId) {
       PlaylistsActions.addPlaylistTrack(playlistId);
@@ -32,7 +32,7 @@ var PlaylistModal =
       PlaylistsActions.addPlaylist(userId, playlistName);
     },
     cancelSelectPlaylist: function() {
-      document.getElementById("playlist-select-menu").classList.remove('show');
+      document.getElementById("playlist-select-modal").classList.remove('show');
     },
     componentDidMount: function(){
       PlaylistModalStore.on('change', this.open);
@@ -44,7 +44,7 @@ var PlaylistModal =
       var that = this;
       return (
 
-        <div id="playlist-select-menu">
+        <div id="playlist-select-modal">
           <button onClick={this.cancelSelectPlaylist} className='close-button'>
             <i className='icon-circle-cross'></i>
           </button>

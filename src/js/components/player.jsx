@@ -212,10 +212,10 @@ var Player =
           <div className="player-box">
             <div className="player-info">
               <div className="player-actions">
-                <button className="track-favorite-add" onClick={this.favoriteTrack.bind(null, this.state.id)}>
+                <button onClick={this.favoriteTrack.bind(null, this.state.id)}>
                   <div className="icon-heart"></div>
                 </button>
-                <button className="track-playlist-add" onClick={this.clickAddToPlaylist.bind(null, this.state.id)}>
+                <button onClick={this.clickAddToPlaylist.bind(null, this.state.id)}>
                   <div className="icon-circle-plus"></div>
                 </button>
               </div>
@@ -238,7 +238,6 @@ var Player =
               </div>
             </div>
             <div className="player-tags">
-              <h3>tags</h3>
               <div className="player-tag-buttons">
                 {this.state.tags.map(function(tag){
                   var cleanTag = tag.replace(/['"]+/g, '');

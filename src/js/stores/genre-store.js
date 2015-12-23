@@ -43,7 +43,8 @@ var GenreStore = assign({}, EventEmitter.prototype, {
       {name: 'redbull'},
       {name: 'style'},
       {name: 'chill'},
-      {name: 'mac'}
+      {name: 'mac'},
+      {name: 'TopDawgEnt'}
     ]
   },
 
