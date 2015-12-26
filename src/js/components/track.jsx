@@ -5,7 +5,6 @@ require('../../style/track.less');
 var Track =
   React.createClass({
     handleClick: function (event) {
-      document.getElementById("overlay").classList.add("show");
       PlayerActions.setTags(this.props.tags);
       PlayerActions.setTrack(this.props.id, this.props.duration, this.props.title, this.props.author, this.props.artwork, this.props.user_id);
       document.getElementById("player-wrapper").classList.remove("hide");
