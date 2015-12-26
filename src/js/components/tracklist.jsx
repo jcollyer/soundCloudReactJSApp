@@ -1,19 +1,31 @@
 var React = require('react');
 var GenreStore = require('../stores/genre-store.js');
-var PlayerActions = require('../actions/player-actions.js');
 var PlayerStore = require('../stores/player-store.js');
-var AppActions = require('../actions/app-actions.js');
+var AppStore = require('../stores/app-store.js');
+var PlayerActions = require('../actions/player-actions.js');
 var Track = require('./track.jsx');
 
 require('../../style/tracklist.less');
 require('../../style/genre.less');
-var TrackList =
+
+var Tracklist =
   React.createClass({
     getInitialState: function() {
-      var urlBool = window.location.hash.indexOf("/tracks/") > -1;
-      var showHome = !urlBool;
-
-      return {tracks: [], ready: true, cached: false, offset: 0, fromScroll: false, artistUsername: "", artistId: "", showHome: showHome, showPlayer: true, singleTrackView: urlBool, tracksArr: [], tagsArr: []};
+      var showHome = AppStore.shouldShowHome();
+      return {
+        tracks: [],
+        ready: true,
+        cached: false,
+        offset: 0,
+        fromScroll: false,
+        artistUsername: "",
+        artistId: "",
+        showHome: showHome,
+        showPlayer: true,
+        tracksArr: [],
+        tagsArr: [],
+        showTracks: false
+      };
     },
     displayTracks: function(tracksArr) {
       var that = this;
@@ -113,27 +125,18 @@ var TrackList =
       document.getElementById("player-wrapper").classList.remove("hide");
       this.state.showPlayer = false;
     },
+    showTracks: function() {
+      var showHome = AppStore.shouldShowHome();
+      this.state.showTracks = !showHome;
+    },
     getTracks: function() {
       // un-active home link
       document.getElementById("home-side-nav-link").classList.remove("active-side-nav-button");
 
-      if (window.location.hash.indexOf("/tracks/") > -1) {
-        this.state.singleTrackView = true;
-      } else {
-        this.state.singleTrackView = false;
-      }
+      var genre = GenreStore.getGenre();
+      var authorId = PlayerStore.getTrack().user_id || PlayerStore.getTrack().id || "";
 
-      if (this.state.singleTrackView){
-        var trackId = window.location.hash.split("/")[2];
-        this.getTracksAjax({type:"singleTrack",name: [trackId]});
-        // remove active class when single track view
-        document.getElementById("home-side-nav-link").classList.remove("active-side-nav-button");
-      } else {
-        var genre = GenreStore.getGenre();
-        var authorId = PlayerStore.getTrack().user_id || PlayerStore.getTrack().id || "";
-
-        this.getTracksAjax(genre, authorId, this.state.offset);
-      }
+      this.getTracksAjax(genre, authorId, this.state.offset);
     },
     getScrollTracks: function(offset) {
       var genre = GenreStore.getGenre();
@@ -164,18 +167,18 @@ var TrackList =
     },
     componentDidMount: function(){
       if (!this.state.showHome) {
-
         this.getTracks();
       }
-
       GenreStore.on('change', this.getTracks);
+      AppStore.on('change', this.showTracks);
     },
     componentWillUnmount: function() {
       GenreStore.removeListener('change', this.getTracks);
+      AppStore.removeListener('change', this.showTracks);
     },
     render: function() {
       return (
-        <div id="tracklist-wrapper">
+        <div id="tracklist-wrapper" className={this.state.showTracks ? "" : "hide"}>
           {this.state.tracks.map(function(track){
             var bigImage = track.artwork_url? track.artwork_url.replace('large', 't200x200') : "";
             var tags = track.tag_list.split(" ");
@@ -199,4 +202,4 @@ var TrackList =
       );
     }
   });
-module.exports = TrackList;
+module.exports = Tracklist;

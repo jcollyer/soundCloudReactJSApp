@@ -9,7 +9,6 @@ var Home =
     },
     handleClick: function(){
       AppActions.showHome(true);
-      window.location.hash = "";
 
       // de-active other side nav elements. active home link
       [].slice.call(document.getElementsByClassName("side-nav-link")).forEach(function(d){d.classList.remove("active-side-nav-button")});

@@ -167,7 +167,6 @@ var Player =
       this.setState({currentTime: currentTime});
     },
     displayArtistTracks: function(author) {
-      window.location.hash = "";
       GenreActions.setGenre({type: "author", name: author});
     },
     favoriteTrack: function(id, e) {
@@ -187,7 +186,6 @@ var Player =
       }
     },
     setTags: function() {
-      window.location.hash = "";
       var genre = {type: "genre", name: event.target.getAttribute("data-genre")};
       GenreActions.setGenre(genre);
       this.updateTags();
