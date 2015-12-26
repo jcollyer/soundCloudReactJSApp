@@ -1,17 +1,10 @@
 #side-nav {
-  background: #444;
   position: fixed;
+  top: 190px;
   width: 110px;
-  top: 0px;
   left: 0px;
   height: 100%;
-  z-index: 1;
-  #image-placeholder {
-    background-color: #fff;
-    background-image: url('https://s3-us-west-2.amazonaws.com/soundcloud-client/jplay-logo.png');
-    height: 110px;
-    width: 110px;
-  }
+  z-index: 2;
   .side-nav-link {
     color: #ccc;
     cursor: pointer;
@@ -67,7 +60,7 @@
     overflow: scroll;
     padding: 5px 10px 0px 10px;
     position: absolute;
-    top: 110px;
+    top: 2px;
     width: 300px;
     z-index: 2;
     .favorite-close-button, .playlist-close-button {
@@ -197,14 +190,14 @@
     border-bottom-right-radius: 10px;
     display: none;
     left: 110px;
-    top: 110px;
+    top: 2px;
     position: absolute;
     width: 400px;
-    height: 76px;
+    height: 112px;
     .search {
       input#search-input {
         float: left;
-        margin: 15px 0px 0px 26px;
+        margin: 35px 0px 0px 26px;
         height: 40px;
         padding: 0px 5px;
         width: 260px;
@@ -216,7 +209,7 @@
         border-bottom-right-radius: 4px;
         color: #ddd;
         height: 40px;
-        margin: 15px 0px;
+        margin: 35px 0px;
       }
     }
     .search-close-button {

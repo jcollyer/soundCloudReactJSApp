@@ -89,7 +89,7 @@ var TrackList =
             localStorage["tracks"] = xmlhttp.responseText;
             that.state.cached = true;
             that.displayTracks(JSON.parse(xmlhttp.responseText));
-            
+
             if(that.state.showPlayer) {
               //show player
               that.showthePlayer(that.state.tracksArr, that.state.tagsArr);
@@ -106,11 +106,11 @@ var TrackList =
       var duration = tracksArr.duration;
       var title = tracksArr.title;
       var author = tracksArr.user.username;
-      var artwork = tracksArr.artwork_url;
+      var artwork = tracksArr.artwork_url? tracksArr.artwork_url.replace('large', 't200x200') : "";
       var user_id = tracksArr.user.id;
       PlayerActions.setTrack(id, duration, title, author, artwork, user_id);
       PlayerActions.setTags(tagsArr);
-      document.getElementById("player-wrapper").classList.remove("close");
+      document.getElementById("player-wrapper").classList.remove("hide");
       this.state.showPlayer = false;
     },
     getTracks: function() {

@@ -30,6 +30,24 @@ var GenreStore = assign({}, EventEmitter.prototype, {
     return _genre;
   },
 
+  getGenreList:function() {
+    return [
+      {name: 'rock'},
+      {name: 'dance'},
+      {name: 'hegemon'},
+      {name: 'smallroom'},
+      {name: 'disco'},
+      {name: 'deephouse'},
+      {name: 'acoustic'},
+      {name: 'FutureRnB'},
+      {name: 'redbull'},
+      {name: 'style'},
+      {name: 'chill'},
+      {name: 'mac'},
+      {name: 'TopDawgEnt'}
+    ]
+  },
+
   dispatcherIndex:GenreDispatcher.register(function(payload){
     var action = payload.action; // this is our action from handleViewAction
     switch(action.actionType){

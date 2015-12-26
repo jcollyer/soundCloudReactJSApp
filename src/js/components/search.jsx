@@ -22,7 +22,7 @@ var Search =
       return (
         <div>
           <div onClick={this.handleClick} className='side-nav-link' id="show-search-button">
-            <i className='side-nav-icon icon-search'></i>
+            <i className='side-nav-icon icon-lintern'></i>
             <p>Search</p>
           </div>
           <div id="search-wrapper" className="close panel-box">

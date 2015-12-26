@@ -1,16 +1,20 @@
+
+
+
 @font-face {
 	font-family: 'icomoon';
-	src:url('../icon-fonts/icomoon.eot?4nfxvk');
-	src:url('../icon-fonts/icomoon.eot?#iefix4nfxvk') format('embedded-opentype'),
-		url('../icon-fonts/icomoon.ttf?4nfxvk') format('truetype'),
-		url('../icon-fonts/icomoon.woff?4nfxvk') format('woff'),
-		url('../icon-fonts/icomoon.svg?4nfxvk#icomoon') format('svg');
+	src:url('../icon-fonts/icomoon.eot?6zgiic');
+	src:url('../icon-fonts/icomoon.eot?6zgiic#iefix') format('embedded-opentype'),
+		url('../icon-fonts/icomoon.ttf?6zgiic') format('truetype'),
+		url('../icon-fonts/icomoon.woff?6zgiic') format('woff'),
+		url('../icon-fonts/icomoon.svg?6zgiic#icomoon') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
 
 [class^="icon-"], [class*=" icon-"] {
-	font-family: 'icomoon';
+    /* use !important to prevent issues with browser extensions that change fonts */
+	font-family: 'icomoon' !important;
 	speak: none;
 	font-style: normal;
 	font-weight: normal;
@@ -23,48 +27,63 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.icon-heart:before {
-	content: "\e024";
-}
-.icon-align-right:before {
-	content: "\e029";
-}
-.icon-search:before {
-	content: "\e036";
-}
-.icon-circle-plus:before {
-	content: "\e040";
-}
-.icon-circle-cross:before {
-	content: "\e043";
-}
-.icon-skip-back:before {
-	content: "\e050";
+.icon-pause:before {
+	content: "\e900";
 }
 .icon-play:before {
-	content: "\e052";
+	content: "\e901";
 }
-.icon-pause:before {
-	content: "\e053";
+.icon-circle-cross:before {
+	content: "\e902";
 }
-.icon-skip-forward:before {
-	content: "\e056";
+.icon-cloud-download:before {
+	content: "\e903";
+}
+.icon-cloud-upload:before {
+	content: "\e904";
+}
+.icon-edit:before {
+	content: "\e905";
 }
 .icon-folder:before {
-	content: "\e059";
+	content: "\e906";
 }
-.icon-head:before {
-	content: "\e074";
+.icon-home:before {
+	content: "\e907";
 }
-.icon-volume:before {
-	content: "\e098";
+.icon-heart:before {
+	content: "\e908";
 }
-.icon-mute:before {
-	content: "\e099";
+.icon-lintern:before {
+	content: "\e909";
+}
+.icon-musiclist:before {
+	content: "\e90a";
+}
+.icon-skip-forward:before {
+	content: "\e90b";
+}
+.icon-circle-plus:before {
+	content: "\e90c";
+}
+.icon-skip-back:before {
+	content: "\e90d";
+}
+.icon-radio:before {
+	content: "\e90e";
+}
+.icon-rocket:before {
+	content: "\e90f";
 }
 .icon-trash:before {
-	content: "\e109";
+	content: "\e910";
 }
-.icon-plus:before {
-	content: "\e114";
+.icon-head:before {
+	content: "\e911";
+}
+.icon-volume:before {
+	content: "\e912";
+}
+.icon-mute:before {
+	content: "\e913";
 }

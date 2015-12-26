@@ -4,11 +4,11 @@
   left: -99999px;
 }
 
-#player-wrapper.close {
+#player-wrapper.hide {
   display: none;
 }
 #player-wrapper {
-  background: #eee;
+  background: #fff;
   float: right;
   height: 110px;
   position: absolute;
@@ -20,14 +20,62 @@
     width: 100%;
 
     .player-image {
-      float: left;
-      width: 110px;
+      background-color: white;
+      border-radius: 50%;
+      box-shadow: 0px -1px 7px #000;
+      position: absolute;
+      width: 200px;
+      margin: -50px auto;
+      left: 0px;
+      right: 0px;
+      padding: 2px;
       img {
         width: 100%;
+        border-radius: 50%;
+      }
+      .playlist-controls {
+        position: absolute;
+        width: 320px;
+        left: -55px;
+        top: 77px;
+        button {
+          font-size: 45px;
+          margin: 0px;
+          color: #aaa;
+          padding: 0px;
+          float: left;
+          &:hover {
+            color: #777;
+          }
+        }
+        button#toggle {
+          background: #fff;
+          border: 2px solid;
+          border-radius: 50%;
+          font-size: 50px;
+          height: 59px;
+          margin: 0px 80px;
+          position: relative;
+          transform: translateY(7px);
+          width: 59px;
+          top: -10px;
+          .icon-play {
+            position: absolute;
+            left: 6px;
+            top: 0px;
+          }
+          .icon-pause {
+            position: absolute;
+            left: 4px;
+            top: 2px;
+          }
+        }
+
       }
     }
     .player-box {
       float: left;
+      width: 100%;
       p {
         marign: 0px;
       }
@@ -36,22 +84,26 @@
       }
       .player-info {
         float: left;
-        width: 65%;
-        button {
-          border: none;
-          background-color: transparent;
-          color: #aaa;
-          padding: 0px;
-          margin: 5px;
-          &:hover {
-            color: #999;
-          }
-        }
+        width: 75%;
         .player-actions {
           float: left;
-          width: 50px;
+          width: 54px;
+          background: #333;
           button {
-            font-size: 40px;
+            border-right: 1px solid #222;
+            color: #aaa;
+            font-size: 53px;
+            padding: 0px;
+            .icon-heart {
+              border-bottom: 1px solid #222;
+            }
+            .icon-circle-plus {
+              border-top: 1px solid #444;
+            }
+            &:hover {
+              background: #444;
+              color: #ddd;
+            }
           }
           .lnr {
             font-size: 25px;
@@ -59,80 +111,40 @@
         }
         .player-details {
           float: left;
-          width: 55%;
+          width: 45%;
           h3 {
             color: #999;
             cursor: pointer;
-            font-size: 30px;
+            font-size: 20px;
             margin: 0px;
             text-align: center;
             width: 100%;
+            text-decoration: underline;
             &:hover {
-              text-decoration: underline;
+              color: #777;
             }
           }
           h4 {
             color: #888;
-            margin: 20px 0px 0px;
+            margin: 30px 0px 0px;
             text-align: center;
-          }
-        }
-        .playlist-controls {
-          float: left;
-          width: 35%;
-          .player-seek {
-            width: 100%;
-            button {
-              font-size: 45px;
-              margin: 0px;
-            }
-            button#toggle {
-              border: 4px solid;
-              border-radius: 50%;
-              font-size: 50px;
-              height: 60px;
-              margin: 0px 3px;
-              position: relative;
-              transform: translateY(7px);
-              width: 60px;
-              .icon-play {
-                position: absolute;
-                left: 6px;
-                top: 0px;
-              }
-              .icon-pause {
-                position: absolute;
-                left: 1px;
-                top: 0px;
-              }
-            }
-          }
-          .player-volume {
-            margin: 15px 0px;
-            width: 100%;
-            #volume-container{
-              background: #ccc;
-              border-radius: 3px;
-              float: left;
-              height: 15px;
-              width: 100px;
-              #volume-bar {
-                background: #999;
-                border-radius: 3px;
-                height: 100%;
-              }
-            }
-            button {
-              float: left;
-              font-size: 23px;
-              margin: -5px 3px 0px 3px;
-            }
           }
         }
       }
       .player-tags {
         float: left;
-        width: 30%;
+        margin-top: 20px;
+        width: 18%;
+        position: relative;
+        &:after {
+          content: 'tags';
+          position: absolute;
+          left: -32px;
+          top: 40%;
+          transform: rotate(270deg);
+          color: #999;
+          font-size: 18px;
+        }
         h3 {
           border-bottom: 2px solid #ddd;
           color: #aaa;
@@ -141,32 +153,101 @@
           text-align: center;
         }
         .player-tag-buttons {
+          border-left: 2px solid #999;
           width: 100%;
           height: 67px;
           overflow: scroll;
           button {
-            border: none;
             background: #ddd;
             color: #999;
             cursor: pointer;
             border-radius: 2px;
             margin: 2px 3px;
             &:hover {
-              background: #cfcfcf;
+              background: #000;
             }
           }
         }
       }
+      .player-volume {
+        float: left;
+        width: 2%;
+        padding-left: 65px;
+        #volume-container{
+          background: #111;
+          right: 0px;
+          height: 110px;
+          width: 30px;
+          position: absolute;
+          #volume-bar {
+            background: #555;
+            height: 80%;
+            bottom: 0px;
+            position: absolute;
+            width: 30px;
+          }
+        }
+        button {
+          color: #ccc;
+          float: left;
+          font-size: 23px;
+          margin: 5px 0px 40px 3px;
+          z-index: 9;
+          position: relative;
+        }
+      }
     }
     #progress-container {
-      background: #ddd;
-      bottom: 0px;
+      bottom: 34px;
       position: absolute;
       width: 100%;
+      z-index: -1;
       .progress{
-        background: #999;
-        height: 12px;
+        background: rgba(255,255,255,0.3);
+        height: 2px;
+        background: #333;
+        position: relative;
+        &:after {
+          content: '';
+          position: absolute;
+          right: 0px;
+          top: -2px;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #333;
+        }
       }
     }
   }
+}
+
+@-webkit-keyframes spinnerRotate
+{
+    from{-webkit-transform:rotate(0deg);}
+    to{-webkit-transform:rotate(360deg);}
+}
+@-moz-keyframes spinnerRotate
+{
+    from{-moz-transform:rotate(0deg);}
+    to{-moz-transform:rotate(360deg);}
+}
+@-ms-keyframes spinnerRotate
+{
+    from{-ms-transform:rotate(0deg);}
+    to{-ms-transform:rotate(360deg);}
+}
+.record-spin{
+    -webkit-animation-name: spinnerRotate;
+    -webkit-animation-duration: 5s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-name: spinnerRotate;
+    -moz-animation-duration: 5s;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-timing-function: linear;
+    -ms-animation-name: spinnerRotate;
+    -ms-animation-duration: 5s;
+    -ms-animation-iteration-count: infinite;
+    -ms-animation-timing-function: linear;
 }

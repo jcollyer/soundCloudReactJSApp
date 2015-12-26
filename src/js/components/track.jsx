@@ -10,7 +10,7 @@ var Track =
       PlayerActions.setTags(this.props.tags);
       PlayerActions.setTrack(this.props.id, this.props.duration, this.props.title, this.props.author, this.props.artwork, this.props.user_id);
       window.location.hash = "/tracks/"+this.props.id+"";
-      document.getElementById("player-wrapper").classList.remove("close");
+      document.getElementById("player-wrapper").classList.remove("hide");
     },
     render: function() {
       return (

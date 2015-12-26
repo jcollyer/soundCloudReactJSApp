@@ -1,10 +1,15 @@
 var React = require('react');
 var Appctions = require('../actions/app-actions.js');
+
 var GenreActions = require('../actions/genre-actions.js');
-// var GenreStore = require('../stores/genre-store.js');
+var GenreStore = require('../stores/genre-store.js');
 
 var Genre =
   React.createClass({
+    getInitialState: function() {
+      var genreList = GenreStore.getGenreList();
+      return {genreList: genreList};
+    },
     // getInitialState: function() {
     //   GenreActions.setGenre({type: "genre", name: "blake"});
     //   var genre = GenreStore.getGenre().name;
@@ -15,17 +20,15 @@ var Genre =
       GenreActions.setGenre(genre);
     },
     render: function() {
+      var that = this;
       return (
         <div id="genre-wrapper">
           <div id="genre-wrapper-scroll">
-            <button onClick={this.handleClick} data-genre=".sinh">.sinh</button>
-            <button onClick={this.handleClick} data-genre="hegemon">hegemon</button>
-            <button onClick={this.handleClick} data-genre="smallroom">smallroom</button>
-            <button onClick={this.handleClick} data-genre="pat%20lok">pat lok</button>
-            <button onClick={this.handleClick} data-genre="disco">disco</button>
-            <button onClick={this.handleClick} data-genre="deephouse">deephouse</button>
-            <button onClick={this.handleClick} data-genre="acoustic">acoustic</button>
-            <button onClick={this.handleClick} data-genre="FutureRnB">FutureRnB</button>
+            {this.state.genreList.map(function(genre){
+              return (
+                <button onClick={that.handleClick} key={genre.name} data-genre={genre.name}>{genre.name}</button>
+              )
+            })}
           </div>
         </div>
       );
