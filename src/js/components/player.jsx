@@ -113,7 +113,7 @@ var Player =
       xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
           var track = JSON.parse(xmlhttp.responseText);
-          var artwork = track.artwork_url;
+          var artwork = track.artwork_url? track.artwork_url.replace('large', 't200x200') : "";
           PlayerActions.setTags(track.tag_list);
           PlayerActions.setTrack(nextTrack, track.duration, track.title, track.user.username, artwork);
         }

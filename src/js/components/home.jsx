@@ -7,7 +7,7 @@ var Home =
       return (
         <div id="home-page">
           <div id="image-placeholder"></div>
-          <h1>Click to get started...</h1>
+          <h1>trending tags...</h1>
           <Genre />
         </div>
       );
