@@ -28,8 +28,6 @@ var App =
               <Player />
             </div>
             <div id="side-nav">
-              <div id="image-placeholder"></div>
-
               <HomeLink />
               <Login />
               <Search />

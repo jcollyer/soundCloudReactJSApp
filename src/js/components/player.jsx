@@ -207,7 +207,18 @@ var Player =
       return (
         <div className="player">
           <div className="player-image">
-            <img className="track-artwork record-spin" src={this.state.artwork} />
+            <img className={this.state.playing ? "track-artwork record-spin" : "track-artwork"} src={this.state.artwork} />
+            <div className="playlist-controls">
+              <button id="prev" onClick={this.clickPrevTrack}>
+                <div className="icon-skip-back"></div>
+              </button>
+              <button id="toggle" onClick={this.toggleTrack}>
+                <i className={this.state.playing ? 'icon-pause' : 'icon-play'}></i>
+              </button>
+              <button id="next" onClick={this.clickNextTrack}>
+                <div className="icon-skip-forward"></div>
+              </button>
+            </div>
           </div>
           <div className="player-box">
             <div className="player-info">
@@ -222,19 +233,6 @@ var Player =
               <div className="player-details">
                 <h4>{this.state.title}</h4>
                 <h3 onClick={this.displayArtistTracks.bind(null, this.state.user_id)}>{this.state.author}</h3>
-              </div>
-              <div className="playlist-controls">
-                <div className="player-seek">
-                  <button id="prev" onClick={this.clickPrevTrack}>
-                    <div className="icon-skip-back"></div>
-                  </button>
-                  <button id="toggle" onClick={this.toggleTrack}>
-                    <i className={this.state.playing ? 'icon-pause' : 'icon-play'}></i>
-                  </button>
-                  <button id="next" onClick={this.clickNextTrack}>
-                    <div className="icon-skip-forward"></div>
-                  </button>
-                </div>
               </div>
             </div>
             <div className="player-tags">
