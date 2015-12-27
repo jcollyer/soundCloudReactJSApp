@@ -207,7 +207,7 @@ var Player =
                 <div className="icon-skip-back"></div>
               </button>
               <button id="toggle" onClick={this.toggleTrack}>
-                <i className={this.state.playing ? 'icon-pause' : 'icon-play'}></i>
+                <i className={this.state.playing ? 'icon-pause2' : 'icon-play2'}></i>
               </button>
               <button id="next" onClick={this.clickNextTrack}>
                 <div className="icon-skip-forward"></div>
@@ -242,9 +242,9 @@ var Player =
             <div className="player-volume">
               <div id="volume-container">
                 <div id="volume-bar" style={{height: this.state.currentVolume + '%'}}></div>
+                <button onClick={this.increaseTrackVolume} className='icon-volume'></button>
+                <button onClick={this.lowerTrackVolume} className='icon-mute'></button>
               </div>
-              <button onClick={this.increaseTrackVolume} className='icon-volume'></button>
-              <button onClick={this.lowerTrackVolume} className='icon-mute'></button>
             </div>
             <div id="progress-container" onClick={this.updateTrackTime}>
               <div className="progress" style={{width: this.state.currentTime + '%'}}></div>

@@ -30,8 +30,110 @@ img[src='Error.src']{
 }
 
 @media (max-width: 768px) {
-  .player-tags {
-    display: none;
+  #player-wrapper{
+    .player {
+      .player-image {
+        background-color: transparent;
+        border-radius: 0px;
+        box-shadow: none;
+        height: 180px;
+        width: 110px;
+        left: 55px;
+        right: auto;
+        margin: 0px;
+        padding: 0px;
+        img{
+          border-radius: 0px;
+          top: -20%;
+        }
+        img.record-spin {
+          -webkit-animation-name: none;
+          -moz-animation-name: none;
+          -ms-animation-name: none;
+        }
+        .playlist-controls {
+          button {
+            margin-left: 190px;
+            position: absolute;
+            top: -10px;
+          }
+          #toggle {
+            left: 50px;
+          }
+        }
+      }
+      .player-box {
+        .player-info {
+          .player-actions {}
+          .player-details {
+            width: 75%;
+            h4 {
+              width: 80%;
+              text-align: left;
+              margin-top: 10px;
+              margin-left: 120px;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+            h3 {
+              width: 80%;
+              margin-left: 120px;
+              font-size: 16px;
+              text-align: left;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+          }
+        }
+        .player-volume,
+        .player-tags {
+          display: none;
+        }
+      }
+    }
+  }
+  #side-nav {
+    width: 30px !important;
+    div {
+      p {
+        display: none;
+      }
+    }
+  }
+  #home-wrapper {
+    #home-page {
+      padding-right: 10px;
+      h1 {
+        margin: 0px !important;
+      }
+      #image-placeholder {
+        left: -50px;
+      }
+      #genre-wrapper {
+        margin: 0px;
+      }
+    }
+  }
+  #tracklist-wrapper {
+    .track {
+      height: 40px;
+      .track-image {
+        float: left;
+        width: 50px;
+      }
+      .track-info {
+        float: left;
+        width: 80%;
+        p, p.title{
+          margin: 0px 0px 5px 10px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
   }
 }
 

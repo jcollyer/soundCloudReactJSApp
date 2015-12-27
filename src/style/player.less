@@ -49,25 +49,26 @@
           }
         }
         button#toggle {
-          background: #fff;
-          border: 2px solid;
+          background: linear-gradient(to bottom right, #3498DB,#9B59B6);
           border-radius: 50%;
-          font-size: 50px;
+          font-size: 35px;
           height: 59px;
           margin: 0px 80px;
           position: relative;
           transform: translateY(7px);
           width: 59px;
           top: -10px;
-          .icon-play {
+          .icon-play2 {
+            color: white;
             position: absolute;
-            left: 6px;
-            top: 0px;
+            left: 15px;
+            top: 12px;
           }
-          .icon-pause {
+          .icon-pause2 {
+            color: white;
             position: absolute;
-            left: 4px;
-            top: 2px;
+            left: 12px;
+            top: 12px;
           }
         }
 
@@ -84,7 +85,7 @@
       }
       .player-info {
         float: left;
-        width: 75%;
+        width: 70%;
         .player-actions {
           float: left;
           width: 54px;
@@ -134,7 +135,7 @@
       .player-tags {
         float: left;
         margin-top: 20px;
-        width: 18%;
+        width: 20%;
         position: relative;
         &:after {
           content: 'tags';
@@ -171,7 +172,7 @@
       }
       .player-volume {
         float: left;
-        width: 2%;
+        width: 10%;
         padding-left: 65px;
         #volume-container{
           background: #111;
@@ -191,14 +192,13 @@
           color: #ccc;
           float: left;
           font-size: 23px;
-          margin: 5px 0px 40px 3px;
+          margin: 5px 0px 40px 0px;
           z-index: 9;
           position: relative;
         }
       }
     }
     #progress-container {
-      bottom: 34px;
       position: absolute;
       width: 100%;
       z-index: -1;
