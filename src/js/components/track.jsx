@@ -12,6 +12,7 @@ var Track =
     render: function() {
       return (
         <div className="track" id={this.props.id} onClick={this.handleClick}>
+          <div className="track-play-icon"><div className="icon-play2"></div></div>
           <div className="track-image">
             <img src={this.props.artwork} />
           </div>

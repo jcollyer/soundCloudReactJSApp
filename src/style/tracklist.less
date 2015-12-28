@@ -7,16 +7,36 @@
   .track {
     margin-bottom: 15px;
     position: relative;
+    .track-play-icon {
+      display: none;
+      position: absolute;
+      left: 0px;
+      right: 0px;
+      margin: 0px auto;
+      top: 35%;
+      width: 40px;
+      font-size: 40px;
+      color: white;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+    &:hover > .track-play-icon {
+      display:block;
+    }
+    &:hover > .track-image {
+      outline: 2px solid #fff;
+    }
     .track-info {
       p.title {
         color: #ddd;
         font-family: 'Josefin Sans', sans-serif;
         font-size: 14px;
         margin: 2px 0px 0px;
+        line-height: 17px;
       }
       p.author {
         color: #eee;
-        line-height: 10px;
       }
     }
   }
