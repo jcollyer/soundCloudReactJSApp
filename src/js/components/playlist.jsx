@@ -57,7 +57,7 @@ var Playlist =
         <div>
           <div onClick={this.getUserPlaylists} id="get-playlist-button" className="side-nav-link">
             <i className="side-nav-icon icon-folder"></i>
-            <p>playlists</p>
+            <p className="side-nav-link-text">playlists</p>
           </div>
 
           <div id="playlist-wrapper" className="panel-box close">

@@ -6,8 +6,13 @@
 
 
 @media (max-width: 768px) {
-  #home-page,
-  #tracklist-wrapper  {
+  #home-page{
     width: calc(100% - 50px);
+  }
+  #tracklist-wrapper  {
+    width: calc(100% - 30px);
+  }
+  #player-wrapper .player #progress-container {
+    width: calc(100% - 390px);
   }
 }

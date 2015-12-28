@@ -50,7 +50,7 @@ var Favorites = React.createClass({
       <div>
         <div onClick={this.getUserFavorites} id="get-favorites-button" className="side-nav-link">
           <i className="side-nav-icon icon-heart"></i>
-          <p>Favorites</p>
+          <p className='side-nav-link-text'>Favorites</p>
         </div>
         <div id="favorites-wrapper" className="panel-box close">
           <div onClick={this.closeFavoritePane} className="favorite-close-button">

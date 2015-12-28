@@ -10,7 +10,7 @@ var Login =
       return (
         <div onClick={this.handleClick}  className="side-nav-link">
           <i className="side-nav-icon icon-head"></i>
-          <p>Login</p>
+          <p className="side-nav-link-text">Login</p>
         </div>
       )
     }

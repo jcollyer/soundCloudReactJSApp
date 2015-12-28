@@ -28,7 +28,7 @@ var Home =
       return (
         <div onClick={this.handleClick}  id="home-side-nav-link" className={this.state.active ? "side-nav-link active-side-nav-button" : "side-nav-link"}>
           <i className="side-nav-icon icon-home"></i>
-          <p>Home</p>
+          <p className="side-nav-link-text">Home</p>
         </div>
       );
     }

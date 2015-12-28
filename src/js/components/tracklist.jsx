@@ -183,7 +183,7 @@ var Tracklist =
             var bigImage = track.artwork_url? track.artwork_url.replace('large', 't200x200') : "";
             var tags = track.tag_list.split(" ");
             return (
-              <div className='col-md-2' key={track.id}>
+              <div className='col-xs-12 col-sm-4 col-md-2' key={track.id}>
                 <Track
                       id={track.id}
                       title={track.title}

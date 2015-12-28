@@ -51,7 +51,6 @@ var App =
             <Home />
           </div>
           <Tracklist />
-
         </div>
       );
     }

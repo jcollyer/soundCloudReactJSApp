@@ -28,16 +28,25 @@ button {
 img[src='Error.src']{
   display: none;
 }
-
+@media (max-width: 992px) {
+  #player-wrapper .player .player-box .player-info .player-details {
+    padding: 0px 10px;
+    width: 37%;
+  }
+}
 @media (max-width: 768px) {
   #player-wrapper{
     .player {
+       #progress-container {
+          bottom: 17px;
+          left: 260px;
+          background-color: #ccc;
+       }
       .player-image {
         background-color: transparent;
         border-radius: 0px;
         box-shadow: none;
-        height: 180px;
-        width: 110px;
+        width: 100%;
         left: 55px;
         right: auto;
         margin: 0px;
@@ -45,6 +54,7 @@ img[src='Error.src']{
         img{
           border-radius: 0px;
           top: -20%;
+          width: 110px;
         }
         img.record-spin {
           -webkit-animation-name: none;
@@ -52,13 +62,20 @@ img[src='Error.src']{
           -ms-animation-name: none;
         }
         .playlist-controls {
-          button {
-            margin-left: 190px;
+          width: 100%;
+          height: 33px;
+          #prev{
+            left: 200px;
+            bottom: -5px;
             position: absolute;
-            top: -10px;
           }
           #toggle {
             left: 50px;
+          }
+          #next {
+            right: 70px;
+            bottom: -5px;
+            position: absolute;
           }
         }
       }
@@ -72,18 +89,12 @@ img[src='Error.src']{
               text-align: left;
               margin-top: 10px;
               margin-left: 120px;
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
             }
             h3 {
               width: 80%;
               margin-left: 120px;
               font-size: 16px;
               text-align: left;
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
             }
           }
         }
@@ -97,9 +108,13 @@ img[src='Error.src']{
   #side-nav {
     width: 30px !important;
     div {
-      p {
+      .side-nav-link-text {
         display: none;
       }
+    }
+    #favorites-wrapper.active-panel, #playlist-wrapper.active-panel  {
+      left: 30px !important;
+      top: -20px;
     }
   }
   #home-wrapper {
