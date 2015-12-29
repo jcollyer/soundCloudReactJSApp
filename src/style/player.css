@@ -13,6 +13,6 @@
     width: calc(100% - 30px);
   }
   #player-wrapper .player #progress-container {
-    width: calc(100% - 390px);
+    width: calc(100% - 310px);
   }
 }
