@@ -25,6 +25,7 @@ var Player =
         user_id: "",
         duration: 0,
         currentTime: 0,
+        timeInSeconds: 0,
         currentVolume: 70,
         playing: false,
         tags: [],
@@ -127,7 +128,18 @@ var Player =
       player.getPosition(function(time){
         var currentTime = 100 * (time / duration);
         that.setState({currentTime: currentTime});
+        that.toHHMMSS(time);
       })
+    },
+    toHHMMSS: function (time) {
+      time = Number(time)/1000;
+      console.log(time);
+      var h = Math.floor(time / 3600);
+      var m = Math.floor(time % 3600 / 60);
+      var s = Math.floor(time % 3600 % 60);
+
+      var timeInSeconds = (h > 0 ? h + ":" + (m < 10 ? "0" : "") : "") + m + ":" + (s < 10 ? "0" : "") + s;
+      this.setState({timeInSeconds: timeInSeconds})
     },
     updateTrack:function() {
       var track = PlayerStore.getTrack();
@@ -151,7 +163,7 @@ var Player =
     },
     updateTrackTime: function(event) {
       var width = document.getElementById("progress-container").clientWidth;
-      var xoffset = event.clientX - 110;
+      var xoffset = event.clientX - 65;
       var duration = this.state.duration;
       var currentTime = (xoffset / width) * duration;
       var time = Math.floor(currentTime);
@@ -160,7 +172,7 @@ var Player =
 
       // update progress bar - this is here so it works while track is paused
       var currentTime = 100 * (time / duration);
-      this.setState({currentTime: currentTime});
+      this.setState({currentTime: currentTime, progressInSeconds: progressInSeconds});
     },
     displayArtistTracks: function(author) {
       GenreActions.setGenre({type: "author", name: author});
@@ -227,6 +239,11 @@ var Player =
               <div className="player-details">
                 <h4>{this.state.title}</h4>
                 <h3 onClick={this.displayArtistTracks.bind(null, this.state.user_id)}>{this.state.author}</h3>
+                { this.state.timeInSeconds}
+                <div id="progress-container" onClick={this.updateTrackTime}>
+                  <div className="progress" style={{width: this.state.currentTime + '%'}}></div>
+                </div>
+                { this.state.duration}
               </div>
             </div>
             <div className="player-tags">
@@ -245,9 +262,6 @@ var Player =
                 <button onClick={this.increaseTrackVolume} className='icon-volume'></button>
                 <button onClick={this.lowerTrackVolume} className='icon-mute'></button>
               </div>
-            </div>
-            <div id="progress-container" onClick={this.updateTrackTime}>
-              <div className="progress" style={{width: this.state.currentTime + '%'}}></div>
             </div>
           </div>
 
