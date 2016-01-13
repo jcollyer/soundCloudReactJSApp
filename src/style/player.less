@@ -14,6 +14,7 @@
   position: absolute;
   width: 100%;
   z-index: 3;
+
   .player {
     position: absolute;
     top: 0px;
@@ -29,15 +30,18 @@
       left: 0px;
       right: 0px;
       padding: 2px;
+
       img {
         width: 100%;
         border-radius: 50%;
       }
+
       .playlist-controls {
         position: absolute;
         width: 320px;
         left: -55px;
         top: 77px;
+
         button {
           font-size: 45px;
           margin: 0px;
@@ -71,7 +75,6 @@
             top: 12px;
           }
         }
-
       }
     }
     .player-box {
@@ -204,25 +207,44 @@
         }
       }
     }
-    #progress-container {
-      background: #ddd;
-      cursor: pointer;
-      margin: 10px 0px 0px 20px;
-      position: relative;
-      width: 100%;
-      .progress{
-        background: #555;
-        height: 4px;
+    #progress-data {
+      span {
+        float: left;
+        padding: 8px 0px 0px 10px;
+        font-size: 10px;
+        width: 40px;
+      }
+      #progress-container {
+        background: #ddd;
+        cursor: pointer;
+        float: left;
+        margin: 13px 0px 0px 0px;
         position: relative;
-        &:after {
-          background: #555;
-          border-radius: 50%;
-          content: '';
-          height: 8px;
+
+
+        @media (max-width: 768px) {
           position: absolute;
-          right: 0px;
-          top: -2px;
-          width: 8px;
+          top: 77px;
+          left: 265px;
+        }
+        @media (max-width: 450px) {
+          top: 50px;
+          left: 200px;
+        }
+        .progress{
+          background: #555;
+          height: 4px;
+          position: relative;
+          &:after {
+            background: #555;
+            border-radius: 50%;
+            content: '';
+            height: 8px;
+            position: absolute;
+            right: -5px;
+            top: -2px;
+            width: 8px;
+          }
         }
       }
     }

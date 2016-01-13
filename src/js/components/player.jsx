@@ -26,6 +26,7 @@ var Player =
         duration: 0,
         currentTime: 0,
         timeInSeconds: 0,
+        durationInSeconds: 0,
         currentVolume: 70,
         playing: false,
         tags: [],
@@ -125,10 +126,11 @@ var Player =
     getCurrentTime: function() {
       var that = this;
       var duration = this.state.duration;
+
       player.getPosition(function(time){
         var currentTime = 100 * (time / duration);
-        that.setState({currentTime: currentTime});
-        that.toHHMMSS(time);
+        var timeInSeconds = that.toHHMMSS(time);
+        that.setState({currentTime: currentTime, timeInSeconds: timeInSeconds});
       })
     },
     toHHMMSS: function (time) {
@@ -138,8 +140,7 @@ var Player =
       var m = Math.floor(time % 3600 / 60);
       var s = Math.floor(time % 3600 % 60);
 
-      var timeInSeconds = (h > 0 ? h + ":" + (m < 10 ? "0" : "") : "") + m + ":" + (s < 10 ? "0" : "") + s;
-      this.setState({timeInSeconds: timeInSeconds})
+      return (h > 0 ? h + ":" + (m < 10 ? "0" : "") : "") + m + ":" + (s < 10 ? "0" : "") + s;
     },
     updateTrack:function() {
       var track = PlayerStore.getTrack();
@@ -149,12 +150,14 @@ var Player =
         author: track.author,
         artwork: track.artwork,
         duration: track.duration,
+        durationInSeconds: this.toHHMMSS(track.duration),
         user_id: track.user_id,
         currentTime: 0,
         playing: false
       });
       this.getPlayer();
       this.updateTags();
+
 
       // this seems smelly
       // var oldActiveTrack = document.querySelector("._active-track");
@@ -239,11 +242,13 @@ var Player =
               <div className="player-details">
                 <h4>{this.state.title}</h4>
                 <h3 onClick={this.displayArtistTracks.bind(null, this.state.user_id)}>{this.state.author}</h3>
-                { this.state.timeInSeconds}
-                <div id="progress-container" onClick={this.updateTrackTime}>
-                  <div className="progress" style={{width: this.state.currentTime + '%'}}></div>
+                <div id="progress-data">
+                  <span>{ this.state.timeInSeconds}</span>
+                  <div id="progress-container" onClick={this.updateTrackTime}>
+                    <div className="progress" style={{width: this.state.currentTime + '%'}}></div>
+                  </div>
+                  <span>{this.state.durationInSeconds}</span>
                 </div>
-                { this.state.duration}
               </div>
             </div>
             <div className="player-tags">

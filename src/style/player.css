@@ -4,6 +4,15 @@
   width: calc(100% - 110px);
 }
 
+#player-wrapper .player #progress-container {
+  width: calc(70% - 0px);
+}
+
+@media (max-width: 992px) {
+  #player-wrapper .player #progress-container {
+    width: calc(55% - 0px);
+  }
+}
 
 @media (max-width: 768px) {
   #home-page{
@@ -13,6 +22,12 @@
     width: calc(100% - 30px);
   }
   #player-wrapper .player #progress-container {
-    width: calc(100% - 40px);
-  }
+   width: calc(100% - 330px);
+ }
+}
+
+@media (max-width: 450px) {
+  #player-wrapper .player #progress-container {
+   width: calc(100% - 210px);
+ }
 }
