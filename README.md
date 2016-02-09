@@ -7,5 +7,5 @@ $ make
 localhost:3000
 ```
 
-[live url](https://limitless-lake-7219.herokuapp.com)
+[live url](www.jcollyer.com)
 ==
