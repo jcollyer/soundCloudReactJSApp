@@ -4,7 +4,7 @@ var Webpack = require('webpack');
 module.exports = {
   devtool: 'eval',
   entry: [
-    './src/main'
+    './src/main.jsx'
   ],
   output: {
     path: '/build',
