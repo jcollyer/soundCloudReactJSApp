@@ -24,15 +24,11 @@
     "webpack-dev-server": "^1.9.0"
   },
   "devDependencies": {
-<<<<<<< 9c6a209cf1e29d4873ef47d668ff97aed57431e0
-    "chai": "^3.4.1",
-=======
     "babel-core": "^6.4.5",
     "babel-jest": "^5.3.0",
     "babel-loader": "^6.2.2",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
->>>>>>> add jest, preprocessor
     "jest-cli": "^0.8.2",
     "react-addons-test-utils": "^0.14.7"
   },
