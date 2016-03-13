@@ -175,7 +175,6 @@ var Player =
 
       // update progress bar - this is here so it works while track is paused
       var currentTime = 100 * (time / duration);
-      this.setState({currentTime: currentTime, progressInSeconds: progressInSeconds});
     },
     displayArtistTracks: function(author) {
       GenreActions.setGenre({type: "author", name: author});
