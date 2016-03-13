@@ -9,7 +9,6 @@ var FavoritesActions = require('../actions/favorites-actions.js');
 require('../../style/player.less');
 require('../../style/player.css');
 var player = '';
-var interval = 0;
 var nextTrack = "";
 
 var Player =
@@ -31,7 +30,8 @@ var Player =
         playing: false,
         tags: [],
         uPlaylistNames: [],
-        connectedToSoundCloud: false
+        connectedToSoundCloud: false,
+        playbackInterval: 0
       };
     },
     toggleTrack: function() {
@@ -52,13 +52,13 @@ var Player =
     },
     getCurrentTimeInterval: function() {
       var that = this;
-      interval = setInterval(function(){
+      this.state.playbackInterval = setInterval(function(){
         console.log("hi");
         that.getCurrentTime();
       }, 300);
     },
     pauseTrack: function() {
-      if (interval > 0) clearInterval(interval);
+      if (this.state.playbackInterval > 0) clearInterval(this.state.playbackInterval);
       player.pause();
       this.setState({playing: false});
     },
@@ -76,7 +76,7 @@ var Player =
     },
     getPlayer: function() {
       var that = this;
-      if (interval) clearInterval(interval);
+      if (this.state.playbackInterval) clearInterval(this.state.playbackInterval);
 
       var widgetIframe = document.getElementById('soundcloud_widget');
       player = SC.Widget(widgetIframe);
@@ -88,7 +88,7 @@ var Player =
       });
 
       player.bind(SC.Widget.Events.FINISH, function() {
-        clearInterval(interval);
+        clearInterval(this.state.playbackInterval);
         that.clickNextTrack();
       });
 
