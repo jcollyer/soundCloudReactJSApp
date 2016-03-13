@@ -92,21 +92,19 @@
         .player-actions {
           float: left;
           width: 54px;
-          background: #333;
+          button:first-child {
+            border-bottom: 2px solid #aaa;
+          }
           button {
-            border-right: 1px solid #222;
-            color: #aaa;
-            font-size: 53px;
+            font-size: 40px;
+            height: 52px;
+            margin: 0px 8px;
             padding: 0px;
-            .icon-heart {
-              border-bottom: 1px solid #222;
-            }
-            .icon-circle-plus {
-              border-top: 1px solid #444;
-            }
-            &:hover {
-              background: #444;
-              color: #ddd;
+            i {
+              color: #aaa;
+              &:hover {
+                font-weight: bolder;
+              }
             }
           }
           .lnr {
@@ -179,31 +177,32 @@
           }
         }
       }
+      .track-options {
+
+      }
       .player-volume {
         float: left;
         width: 10%;
         padding-left: 65px;
         #volume-container{
           background: #111;
-          right: 0px;
-          height: 110px;
-          width: 30px;
-          position: absolute;
+          height: 60px;
+          margin-left: 13px;
+          position: relative;
+          width: 5px;
           #volume-bar {
             background: #555;
             height: 80%;
             bottom: 0px;
             position: absolute;
-            width: 30px;
+            width: 5px;
           }
         }
         button {
-          color: #ccc;
-          float: left;
-          font-size: 23px;
-          margin: 5px 0px 40px 0px;
+          color: #777;
+          display: block;
+          font-size: 20px;
           z-index: 9;
-          position: relative;
         }
       }
     }

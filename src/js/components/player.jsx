@@ -233,10 +233,10 @@ var Player =
             <div className="player-info">
               <div className="player-actions">
                 <button onClick={this.favoriteTrack.bind(null, this.state.id)}>
-                  <div className="icon-heart"></div>
+                  <i className="icon-heart"></i>
                 </button>
                 <button onClick={this.clickAddToPlaylist.bind(null, this.state.id)}>
-                  <div className="icon-circle-plus"></div>
+                  <i className="icon-circle-plus"></i>
                 </button>
               </div>
               <div className="player-details">
@@ -261,10 +261,12 @@ var Player =
                 })}
               </div>
             </div>
-            <div className="player-volume">
-              <div id="volume-container">
-                <div id="volume-bar" style={{height: this.state.currentVolume + '%'}}></div>
+            <div className="track-options">
+              <div className="player-volume">
                 <button onClick={this.increaseTrackVolume} className='icon-volume'></button>
+                <div id="volume-container">
+                  <div id="volume-bar" style={{height: this.state.currentVolume + '%'}}></div>
+                </div>
                 <button onClick={this.lowerTrackVolume} className='icon-mute'></button>
               </div>
             </div>
