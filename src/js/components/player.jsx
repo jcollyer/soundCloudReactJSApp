@@ -10,7 +10,6 @@ require('../../style/player.less');
 require('../../style/player.css');
 var player = '';
 var nextTrack = "";
-
 var Player =
   React.createClass({
     widgetIframe: '',
@@ -31,7 +30,8 @@ var Player =
         tags: [],
         uPlaylistNames: [],
         connectedToSoundCloud: false,
-        playbackInterval: 0
+        playbackInterval: 0,
+        volumeDragging: false
       };
     },
     toggleTrack: function() {
@@ -62,17 +62,31 @@ var Player =
       player.pause();
       this.setState({playing: false});
     },
-    lowerTrackVolume: function() {
-      var newVolume = this.state.currentVolume - 10;
-      var newSCVolume = newVolume/100;
-      player.setVolume(newSCVolume);
-      this.setState({currentVolume: newVolume});
+    volumeMoving:function(e) {
+      var volumeOffset = document.getElementById("volume-container").offsetTop;
+      var playerHeight = document.getElementById("player-wrapper").clientHeight;
+      var yOffset = e.clientY - volumeOffset;
+      var max = 100;
+      var min = 0;
+      var volume = 0;
+
+      //TODO find a more dynamic way to calculate this
+      volume = (52 - yOffset) * 2;
+
+      if(volume > max ) {
+        volume = max;
+      } else if(volume < min){
+        volume = min;
+      }
+
+      player.setVolume(volume/100);
+      this.setState({currentVolume: volume});
     },
-    increaseTrackVolume: function() {
-      var newVolume = this.state.currentVolume + 10;
-      var newSCVolume = newVolume/100;
-      player.setVolume(newSCVolume);
-      this.setState({currentVolume: newVolume});
+    updateTrackVolumeMouseUp:function(e) {
+      this.setState({volumeDragging: false});
+    },
+    updateTrackVolume:function(e) {
+      this.setState({volumeDragging: true});
     },
     getPlayer: function() {
       var that = this;
@@ -263,11 +277,11 @@ var Player =
             </div>
             <div className="track-options">
               <div className="player-volume">
-                <button onClick={this.increaseTrackVolume} className='icon-volume'></button>
-                <div id="volume-container">
-                  <div id="volume-bar" style={{height: this.state.currentVolume + '%'}}></div>
+                <i className='icon-volume noselect'></i>
+                <div id="volume-container" onClick={this.volumeMoving} onMouseDown={this.updateTrackVolume} onMouseUp={this.updateTrackVolumeMouseUp}>
+                  <div id="volume-bar" onMouseMove={this.state.volumeDragging ? this.volumeMoving : null} style={{height: this.state.currentVolume + '%'}}></div>
                 </div>
-                <button onClick={this.lowerTrackVolume} className='icon-mute'></button>
+                <i className='icon-mute noselect'></i>
               </div>
             </div>
           </div>
