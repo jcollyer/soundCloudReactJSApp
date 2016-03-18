@@ -5,12 +5,12 @@
 }
 
 #player-wrapper .player #progress-container {
-  width: calc(70% - 0px);
+  width: calc(70% - 20px);
 }
 
 @media (max-width: 992px) {
   #player-wrapper .player #progress-container {
-    width: calc(55% - 0px);
+    width: calc(55% - 20px);
   }
 }
 

@@ -31,7 +31,8 @@ var Player =
         uPlaylistNames: [],
         connectedToSoundCloud: false,
         playbackInterval: 0,
-        volumeDragging: false
+        volumeDragging: false,
+        progressDragging: false
       };
     },
     toggleTrack: function() {
@@ -178,18 +179,47 @@ var Player =
       // if (oldActiveTrack != null) oldActiveTrack.classList.remove("_active-track");
       // document.getElementById(track.id).classList.add("_active-track");
     },
+    updateTrackProgressMouseUp:function(e) {
+      this.setState({progressDragging: false});
+    },
+    updateTrackProgress:function(e) {
+      this.setState({progressDragging: true});
+    },
     updateTrackTime: function(event) {
-      var width = document.getElementById("progress-container").clientWidth;
-      var xoffset = event.clientX - 65;
+      var progress = document.getElementById("progress-container");
+      var width = progress.clientWidth;
+      var targetOffest = progress.offsetLeft;
+      var xoffset = event.clientX - targetOffest;
       var duration = this.state.duration;
-      var currentTime = (xoffset / width) * duration;
-      var time = Math.floor(currentTime);
-      // update SoundCloud player
-      player.seekTo(time);
+      var max = 100;
+      var min = 0;
+      var currentTime;
+      var currentTimePercentage;
+
+      currentTime = Math.floor((xoffset / width) * duration);
+// var time = Math.floor(currentTime);
 
       // update progress bar - this is here so it works while track is paused
-      var currentTime = 100 * (time / duration);
-      this.setState({currentTime: currentTime});
+      var currentTimePercentage = 100 * (currentTime / duration);
+      if(currentTimePercentage > 99) {
+        currentTimePercentage = max;
+        currentTime = duration - 1;
+      } else if(currentTimePercentage < 1) {
+        currentTimePercentage = min;
+        currentTime = 0;
+      }
+
+      // update UI
+      this.setState({currentTime: currentTimePercentage});
+
+      // update SoundCloud player
+
+      player.seekTo(currentTime);
+      console.log("width: " + width);
+      console.log("targetOffest: " + targetOffest);
+      console.log("xoffset: " + xoffset);
+      console.log("currentTime: " + currentTime);
+      console.log("currentTimePercentage: " + currentTimePercentage);
     },
     displayArtistTracks: function(author) {
       GenreActions.setGenre({type: "author", name: author});
@@ -258,8 +288,8 @@ var Player =
                 <h3 onClick={this.displayArtistTracks.bind(null, this.state.user_id)}>{this.state.author}</h3>
                 <div id="progress-data">
                   <span>{ this.state.timeInSeconds}</span>
-                  <div id="progress-container" onClick={this.updateTrackTime}>
-                    <div className="progress" style={{width: this.state.currentTime + '%'}}></div>
+                  <div id="progress-container" onClick={this.updateTrackTime} onMouseDown={this.updateTrackProgress} onMouseUp={this.updateTrackProgressMouseUp}>
+                    <div className="progress" onMouseMove={this.state.progressDragging ? this.updateTrackTime : null} style={{width: this.state.currentTime + '%'}}></div>
                   </div>
                   <span>{this.state.durationInSeconds}</span>
                 </div>

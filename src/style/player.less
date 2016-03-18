@@ -137,6 +137,54 @@
             overflow: hidden;
             text-overflow: ellipsis;
           }
+          #progress-data {
+            width: 200px;
+            margin: 6px auto 0px;
+            span {
+              color: #777;
+              float: left;
+              padding: 8px 0px 0px 8px;
+              font-size: 10px;
+              width: 40px;
+              @media (max-width: 768px) {
+                display: none;
+              }
+            }
+            #progress-container {
+              background: #ddd;
+              border-radius: 4px;
+              cursor: pointer;
+              float: left;
+              margin: 11px 0px 0px 0px;
+              position: relative;
+
+              @media (max-width: 768px) {
+                position: absolute;
+                top: 77px;
+                left: 265px;
+              }
+              @media (max-width: 450px) {
+                top: 50px;
+                left: 200px;
+              }
+              .progress{
+                background: #555;
+                border-radius: 4px;
+                height: 6px;
+                position: relative;
+                &:after {
+                  background: #555;
+                  border-radius: 50%;
+                  content: '';
+                  height: 10px;
+                  position: absolute;
+                  right: -5px;
+                  top: -2px;
+                  width: 10px;
+                }
+              }
+            }
+          }
         }
       }
       .player-tags {
@@ -218,47 +266,6 @@
           font-size: 20px;
           margin: 5px 0px;
           z-index: 9;
-        }
-      }
-    }
-    #progress-data {
-      span {
-        float: left;
-        padding: 8px 0px 0px 10px;
-        font-size: 10px;
-        width: 40px;
-      }
-      #progress-container {
-        background: #ddd;
-        cursor: pointer;
-        float: left;
-        margin: 13px 0px 0px 0px;
-        position: relative;
-
-
-        @media (max-width: 768px) {
-          position: absolute;
-          top: 77px;
-          left: 265px;
-        }
-        @media (max-width: 450px) {
-          top: 50px;
-          left: 200px;
-        }
-        .progress{
-          background: #555;
-          height: 4px;
-          position: relative;
-          &:after {
-            background: #555;
-            border-radius: 50%;
-            content: '';
-            height: 8px;
-            position: absolute;
-            right: -5px;
-            top: -2px;
-            width: 8px;
-          }
         }
       }
     }
