@@ -82,7 +82,7 @@ var Player =
       player.setVolume(volume/100);
       this.setState({currentVolume: volume});
     },
-    updateTrackVolumeMouseUp:function(e) {
+    stopUpdateTrackVolume:function(e) {
       this.setState({volumeDragging: false});
     },
     updateTrackVolume:function(e) {
@@ -311,7 +311,11 @@ var Player =
             <div className="track-options">
               <div className="player-volume">
                 <i className='icon-volume noselect'></i>
-                <div id="volume-container" onClick={this.volumeMoving} onMouseDown={this.updateTrackVolume} onMouseUp={this.updateTrackVolumeMouseUp}>
+                <div id="volume-container"
+                     onClick={this.volumeMoving}
+                     onMouseDown={this.updateTrackVolume}
+                     onMouseUp={this.stopUpdateTrackVolume}
+                     onMouseLeave={this.stopUpdateTrackVolume}>
                   <div id="volume-bar" onMouseMove={this.state.volumeDragging ? this.volumeMoving : null} style={{height: this.state.currentVolume + '%'}}></div>
                 </div>
                 <i className='icon-mute noselect'></i>
