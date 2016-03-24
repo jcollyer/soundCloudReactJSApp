@@ -102,7 +102,7 @@ var Player =
       });
 
       player.bind(SC.Widget.Events.FINISH, function() {
-        clearInterval(this.state.playbackInterval);
+        clearInterval(that.state.playbackInterval);
         that.clickNextTrack();
       });
 
