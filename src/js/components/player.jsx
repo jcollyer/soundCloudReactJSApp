@@ -177,11 +177,14 @@ var Player =
       // if (oldActiveTrack != null) oldActiveTrack.classList.remove("_active-track");
       // document.getElementById(track.id).classList.add("_active-track");
     },
-    updateTrackProgressMouseUp:function(e) {
+    updateStopTrackProgress:function(e) {
       this.setState({progressDragging: false});
     },
     updateTrackProgress:function(e) {
       this.setState({progressDragging: true});
+    },
+    stopTrackUpdateProgress:function() {
+
     },
     updateTrackTime: function(event) {
       var progress = document.getElementById("progress-container");
@@ -284,7 +287,11 @@ var Player =
                 <h3 onClick={this.displayArtistTracks.bind(null, this.state.user_id)}>{this.state.author}</h3>
                 <div id="progress-data">
                   <span>{ this.state.timeInSeconds}</span>
-                  <div id="progress-container" onClick={this.updateTrackTime} onMouseDown={this.updateTrackProgress} onMouseUp={this.updateTrackProgressMouseUp}>
+                  <div id="progress-container"
+                       onClick={this.updateTrackTime}
+                       onMouseDown={this.updateTrackProgress}
+                       onMouseUp={this.updateStopTrackProgress}
+                       onMouseLeave={this.updateStopTrackProgress}>
                     <div className="progress" onMouseMove={this.state.progressDragging ? this.updateTrackTime : null} style={{width: this.state.currentTime + '%'}}></div>
                   </div>
                   <span>{this.state.durationInSeconds}</span>
