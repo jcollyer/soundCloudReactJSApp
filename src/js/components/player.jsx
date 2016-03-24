@@ -54,7 +54,6 @@ var Player =
     getCurrentTimeInterval: function() {
       var that = this;
       this.state.playbackInterval = setInterval(function(){
-        console.log("hi");
         that.getCurrentTime();
       }, 300);
     },
@@ -150,7 +149,6 @@ var Player =
     },
     toHHMMSS: function (time) {
       time = Number(time)/1000;
-      console.log(time);
       var h = Math.floor(time / 3600);
       var m = Math.floor(time % 3600 / 60);
       var s = Math.floor(time % 3600 % 60);
@@ -195,9 +193,10 @@ var Player =
       var min = 0;
       var currentTime;
       var currentTimePercentage;
+      var timeInSeconds;
 
+      // current time in percentage
       currentTime = Math.floor((xoffset / width) * duration);
-// var time = Math.floor(currentTime);
 
       // update progress bar - this is here so it works while track is paused
       var currentTimePercentage = 100 * (currentTime / duration);
@@ -209,17 +208,14 @@ var Player =
         currentTime = 0;
       }
 
+      // update the timeInSeconds, eg: "2:33"
+      timeInSeconds = this.toHHMMSS(this.state.duration * Math.floor(currentTimePercentage)/100);
+
       // update UI
-      this.setState({currentTime: currentTimePercentage});
+      this.setState({currentTime: currentTimePercentage, timeInSeconds: timeInSeconds});
 
       // update SoundCloud player
-
       player.seekTo(currentTime);
-      console.log("width: " + width);
-      console.log("targetOffest: " + targetOffest);
-      console.log("xoffset: " + xoffset);
-      console.log("currentTime: " + currentTime);
-      console.log("currentTimePercentage: " + currentTimePercentage);
     },
     displayArtistTracks: function(author) {
       GenreActions.setGenre({type: "author", name: author});
