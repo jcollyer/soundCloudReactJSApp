@@ -7,5 +7,5 @@ $ make
 localhost:3000
 ```
 
-[live url](www.jcollyer.com)
+[live url](http://www.jcollyer.com)
 ==
